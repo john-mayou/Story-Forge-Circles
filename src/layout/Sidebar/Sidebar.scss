@@ -1,0 +1,202 @@
+.navbar {
+    z-index: 1000;
+
+    $navbar-text-primary: #b6b6b6;
+    $navbar-text-secondary: #ececec;
+    $navbar-bg-primary: #23232e;
+    $navbar-bg-secondary: #141418;
+    $transition-speed: 400ms;
+
+    position: fixed;
+    background-color: $navbar-bg-primary;
+    transition: width $transition-speed ease;
+
+    &__nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+    }
+
+    &__item {
+        cursor: pointer;
+        width: 100%;
+
+        &:last-child {
+            margin-top: auto;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        height: 5rem;
+        color: $navbar-text-primary;
+        text-decoration: none;
+        filter: grayscale(100%) opacity(0.7);
+        transition: $transition-speed;
+
+        &:hover {
+            filter: grayscale(0%) opacity(1);
+            background: $navbar-bg-secondary;
+            color: $navbar-text-secondary;
+        }
+
+        & .link-text {
+            font-size: 1.2rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            margin-left: 1rem;
+            color: $navbar-text-primary;
+            transition: all 0s ease-in;
+
+            &:not(.logo-text) {
+                margin-left: 0;
+            }
+        }
+
+        & .link-icon {
+            width: 2rem;
+            min-width: 2rem;
+            margin: 0 1.5rem;
+            font-size: 1.3rem;
+            color: $navbar-text-primary;
+        }
+    }
+
+    &__logo {
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: $navbar-text-secondary;
+        background: $navbar-bg-secondary;
+        font-size: 1.5rem;
+        letter-spacing: 0.2ch;
+        width: 100%;
+
+        & .logo-icon {
+            transform: rotate(0deg);
+            transition: $transition-speed;
+            font-weight: 800;
+            font-size: 2rem;
+        }
+
+        & .logo-text {
+            display: inline;
+            position: absolute;
+            left: -999px;
+            transition: $transition-speed;
+            text-align: left;
+        }
+
+        & .logo-text-top,
+        & .logo-text-bottom {
+            display: block;
+        }
+    }
+
+    &:hover .logo-icon {
+        transform: rotate(-180deg);
+    }
+}
+
+// Small screens
+@media only screen and (max-width: 600px) {
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+
+        &__logo {
+            display: none;
+        }
+
+        &__nav {
+            flex-direction: row;
+        }
+
+        &__item {
+            // FOR RE-ORDERING NAVBAR IN MOBILE MODE
+            // &:nth-child(2) {
+            //     order: 4;
+            // } // Reading List
+            // &:nth-child(3) {
+            //     order: 3;
+            // } // Writers Desk
+            // &:nth-child(4) {
+            //     order: 5;
+            // } // Circles
+            // &:nth-child(5) {
+            //     order: 2;
+            // } // Logout
+
+            &:last-child {
+                margin-top: 0;
+            }
+        }
+
+        &__link {
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 0.3rem;
+
+            & .link-text {
+                opacity: 1;
+                visibility: visible;
+                font-size: 13px;
+                margin-top: 0.5rem;
+            }
+
+            & .remove-for-mobile {
+                display: none;
+            }
+        }
+    }
+}
+
+// Bigger screens
+@media only screen and (min-width: 600px) {
+    .navbar {
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+
+        &:hover {
+            width: 16rem;
+
+            & .link-text {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            & .navbar__item .link-text {
+                transition: opacity 600ms ease-in;
+            }
+
+            & .logo-icon {
+                margin-left: 13rem;
+            }
+
+            & .logo-text {
+                left: 0px;
+            }
+        }
+    }
+}
+
+// Super small screens
+@media only screen and (max-width: 450px) {
+    .navbar {
+        &__link {
+            & .link-icon {
+                margin: 0 0.5rem;
+            }
+        }
+    }
+}

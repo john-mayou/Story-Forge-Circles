@@ -1,79 +1,55 @@
 html,
 body,
 #react-root {
-  height: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
+    margin: 0px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
 }
 
 img {
-  display: inline-block;
-  max-width: 100%;
+    display: inline-block;
+    max-width: 100%;
 }
-
 /* --------------------------------------------------------------------------------
-Container
+Resetting Default Formatting
 -------------------------------------------------------------------------------- */
 
-.container {
-  padding: 20px;
+a:link,
+a:visited,
+a:hover,
+a:active {
+    color: black;
+    text-decoration: none;
 }
 
-/* --------------------------------------------------------------------------------
-Button
--------------------------------------------------------------------------------- */
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-color: #014041;
-  border-width: 1px 1px 3px;
-  border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
-  font-size: 1.1rem;
-  outline: 0;
-  cursor: pointer;
+input,
+button,
+textarea,
+select {
+    font: inherit;
 }
 
-.btn_sizeMin {
-  min-height: 50px;
-  min-width: 100px;
-}
-
-.btn_sizeSm {
-  padding: 10px 15px;
-  font-size: 0.8rem;
-}
-
-.btn_sizeFull {
-  display: block;
-  width: 100%;
-}
-
-.btn:hover {
-  background-color: #008183;
-  text-decoration: none;
-}
-
-/* This line makes the "Register" and "Login" buttons look like links */
-.btn_asLink {
-  padding: 0;
-  border-width: 0;
-  border-bottom: 1px solid #444;
-  border-radius: 0;
-  background: none;
-  font: inherit;
-  color: #444;
-}
-
-.btn_asLink:hover {
-  background-color: transparent;
-  border-color: #008183;
-  color: #008183;
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+    margin: 0;
 }
 
 /* --------------------------------------------------------------------------------
@@ -81,32 +57,27 @@ Alert
 -------------------------------------------------------------------------------- */
 
 .alert {
-  box-sizing: border-box;
-  padding: 15px 10px;
-  margin: 15px 0;
-  border: 2px solid #e01616;
-  background-color: #efefef;
-  border-radius: 3px;
-  color: #e01616;
-  font-size: 0.8rem;
+    box-sizing: border-box;
+    padding: 15px 10px;
+    margin: 15px 0;
+    border: 2px solid #e01616;
+    background-color: #efefef;
+    border-radius: 3px;
+    color: #e01616;
+    font-size: 0.8rem;
 }
 
 /* --------------------------------------------------------------------------------
-Form Treatment
+Main Content
 -------------------------------------------------------------------------------- */
 
-.formPanel {
-  box-sizing: border-box;
-  width: 400px;
-  max-width: 100%;
-  padding: 25px;
-  margin: 0 auto 20px;
-  background-color: #efefef;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
+.content-main {
+    margin-left: 5rem;
 }
 
-input {
-  margin: 5px;
-  margin-bottom: 10px;
+@media only screen and (max-width: 600px) {
+    .content-main {
+        margin-left: 0;
+        padding-bottom: 5rem;
+    }
 }
