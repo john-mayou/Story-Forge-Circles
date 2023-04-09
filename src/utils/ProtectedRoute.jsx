@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import LoginPage from "../components/LoginPage/LoginPage";
+import LoginPage from "../pages/Login/LoginPage/LoginPage";
 import { useSelector } from "react-redux";
 
 // A Custom Wrapper Component -- This will keep our code DRY.

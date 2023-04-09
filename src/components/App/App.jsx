@@ -10,9 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
-import UserPage from "../UserPage/UserPage";
-import LoginPage from "../LoginPage/LoginPage";
-import RegisterPage from "../RegisterPage/RegisterPage";
+// User / Admin Pages
+import ReadingListPage from "../../pages/User/ReadingListPage/ReadingListPage";
+import WritersDeskPage from "../../pages/User/WritersDeskPage/WritersDeskPage";
+import MyCirclesPage from "../../pages/User/MyCirclesPage/MyCirclesPage";
+
+// Login Pages
+import LoginPage from "../../pages/Login/LoginPage/LoginPage";
+import RegisterPage from "../../pages/Login/RegisterPage/RegisterPage";
 
 import "./App.css";
 
@@ -29,16 +34,24 @@ function App() {
         <Router>
             <div>
                 <Switch>
-                    <Redirect exact from="/" to="/user" />
+                    <Redirect exact from="/" to="/reading-list" />
 
-                    <ProtectedRoute exact path="/user">
-                        <UserPage />
+                    <ProtectedRoute exact path="/reading-list">
+                        <ReadingListPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/writers-desk">
+                        <WritersDeskPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/circles">
+                        <MyCirclesPage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
                         {user.id ? (
                             // If the user is already logged in
-                            <Redirect to="/user" />
+                            <Redirect to="/reading-list" />
                         ) : (
                             // Otherwise, show the login page
                             <LoginPage />
@@ -48,25 +61,12 @@ function App() {
                     <Route exact path="/registration">
                         {user.id ? (
                             // If the user is already logged in
-                            <Redirect to="/user" />
+                            <Redirect to="/reading-list" />
                         ) : (
                             // Otherwise, show the registration page
                             <RegisterPage />
                         )}
                     </Route>
-
-                    {/* <Route
-            exact
-            path="/home"
-          >
-            {user.id ?
-              // If the user is already logged in
-              <Redirect to="/user" />
-              :
-              // Otherwise, show the Landing page
-              <LandingPage />
-            }
-          </Route> */}
 
                     {/* If none of the other routes matched, we will show a 404. */}
                     <Route>
