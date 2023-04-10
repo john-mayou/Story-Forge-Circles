@@ -14,13 +14,13 @@ import ProtectedRoute from "../../utils/ProtectedRoute";
 import Sidebar from "../../layout/Sidebar/Sidebar";
 
 // User / Admin Pages
-import ReadingListPage from "../../pages/User/ReadingListPage/ReadingListPage";
-import WritersDeskPage from "../../pages/User/WritersDeskPage/WritersDeskPage";
-import MyCirclesPage from "../../pages/User/MyCirclesPage/MyCirclesPage";
+import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
+import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
+import MyCirclesPage from "../../pages/User/MyCircles/MyCirclesPage/MyCirclesPage";
 
 // Login Pages
-import LoginPage from "../../pages/Login/LoginPage/LoginPage";
-import RegisterPage from "../../pages/Login/RegisterPage/RegisterPage";
+import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
+import RegisterPage from "../../pages/Login/Register/RegisterPage/RegisterPage";
 
 import "./App.css";
 
