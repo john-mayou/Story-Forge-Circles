@@ -25,7 +25,8 @@ CREATE TABLE "circles" (
 	"id" serial NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"description" TEXT NOT NULL,
-	"owner_id" int NOT NULL
+	"owner_id" int NOT NULL,
+	CONSTRAINT "circles_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -157,6 +158,14 @@ ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk1" FOREIGN KEY ("c
 
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("user_id") REFERENCES "users"("id");
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+
+
+
+
+
+
+
+
 
 
 
