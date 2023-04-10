@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
+// Layout Components
+import Sidebar from "../../layout/Sidebar/Sidebar";
+
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDeskPage/WritersDeskPage";
@@ -33,6 +36,7 @@ function App() {
     return (
         <Router>
             <div>
+                {user.id && <Sidebar />}
                 <Switch>
                     <Redirect exact from="/" to="/reading-list" />
 
