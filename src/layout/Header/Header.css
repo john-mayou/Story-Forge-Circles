@@ -1,0 +1,49 @@
+#content-header {
+    display: flex;
+    position: sticky;
+    height: 50px;
+}
+
+.header-empty-div {
+    flex: 1;
+}
+
+.header-title-box {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-title {
+    font-weight: 600;
+}
+
+.header-notification-bell {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.header-right-end-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.header-avatar-image {
+    border-radius: 50%;
+}
+
+.header-username {
+    text-transform: uppercase;
+    font-weight: 600;
+}

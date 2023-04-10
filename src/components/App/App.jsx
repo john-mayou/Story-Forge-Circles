@@ -12,6 +12,7 @@ import ProtectedRoute from "../../utils/ProtectedRoute";
 
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
+import Header from "../../layout/Header/Header";
 
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
@@ -37,6 +38,7 @@ function App() {
         <Router>
             <div>
                 {user.id && <Sidebar />}
+                {user.id && <Header />}
                 <Switch>
                     <Redirect exact from="/" to="/reading-list" />
 
