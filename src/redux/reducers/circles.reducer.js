@@ -11,8 +11,11 @@ const circles = (state = initialState, action) => {
         ...state,
         myJoinedCircleList: action.payload,
       };
-    case "ADD_CIRCLE":
-      return [...state, action.payload];
+    case "CREATE_NEW_CIRCLE":
+      return {
+        ...state,
+        myCreatedCricleList: [...state.myCreatedCircleList, action.payload],
+      };
     case "CLEAR_MY_CIRCLES_LIST":
       return [];
     case "SET_MY_CREATED_CIRCLES_LIST":
