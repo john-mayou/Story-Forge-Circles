@@ -20,7 +20,7 @@ import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/Writer
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
-import SearchJoinedCirclesPage from "../../pages/Search/SearchPage/SearchJoinedCirclesPage";
+import SearchJoinedCirclesPage from "../../pages/Search/SearchJoinedCirclesPage/SearchJoinedCirclesPage";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
