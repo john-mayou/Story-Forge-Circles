@@ -8,7 +8,7 @@ import circlesSaga from "./circles.saga";
 // It bundles up all of the other sagas so our project can use them.
 // This is imported in index.js as rootSaga
 
-// somex sagas trigger other sagas, as an example
+// some sagas trigger other sagas, as an example
 // the registration triggers a login
 // and login triggers setting the user
 export default function* rootSaga() {
