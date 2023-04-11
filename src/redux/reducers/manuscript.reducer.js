@@ -12,3 +12,4 @@ const manuscriptList = (state = [], action) => {
 };
 
 export default manuscriptList;
+
