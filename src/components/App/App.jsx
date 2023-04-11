@@ -16,10 +16,12 @@ import Sidebar from "../../layout/Sidebar/Sidebar";
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
+import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
 
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
+
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -45,6 +47,10 @@ function App() {
 
                     <ProtectedRoute exact path="/reading-list">
                         <ReadingListPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/manuscript-read">
+                        <ReadManuscriptPage/>
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/writers-desk">
