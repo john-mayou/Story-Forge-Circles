@@ -16,8 +16,12 @@ import Sidebar from "../../layout/Sidebar/Sidebar";
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
-import MyCirclesPage from "../../pages/User/MyCircles/MyCirclesPage/MyCirclesPage";
 import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
+
+// Circles Pages
+import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
+import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
+
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -55,6 +59,10 @@ function App() {
 
                     <ProtectedRoute exact path="/circles">
                         <MyCirclesPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/circles-browser">
+                        <BrowserCirclePage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
