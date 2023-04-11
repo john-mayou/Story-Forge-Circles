@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ManuscriptListItem from "../../../../components/ManuscriptListItem";
+import { useHistory } from "react-router-dom";
 
 function ReadingListPage() {
   const user = useSelector((store) => store.user);
@@ -8,6 +9,7 @@ function ReadingListPage() {
     (store) => store.publicManuscriptList
   );
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const currentPage = 'ReadingListPage';
 
@@ -16,6 +18,11 @@ function ReadingListPage() {
       type: "FETCH_PUBLIC_MANUSCRIPT_LIST",
     });
   }, []);
+
+  const goToManuscript = () => {
+    history.push('/manuscript-read')
+  };
+
 
   return (
     <main className="content-main">
@@ -31,6 +38,7 @@ function ReadingListPage() {
           </>
         );
       })}
+      <button onClick={goToManuscript}>Manuscript</button>
     </main>
   );
 }
