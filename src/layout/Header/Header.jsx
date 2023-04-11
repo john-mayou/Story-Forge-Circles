@@ -17,7 +17,7 @@ function Header() {
                     icon={faBell}
                     className="header-notification-bell"
                 />
-                <div class="header-profile-container">
+                <div className="header-profile-container">
                     <img
                         src="https://loremflickr.com/40/40"
                         className="header-avatar-image"

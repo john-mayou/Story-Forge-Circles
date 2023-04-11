@@ -5,21 +5,53 @@ const router = express.Router();
 router.get("/", (req, res) => {
     // get all notifications
     // WHERE recipient_id = req.user.id
-    // Need to send back
+
+    // FROM DATABASE
     // circle_id
     // circle_name
     // type
     // actor_id
     // actor_name
-    // ACTION_NEEDED?
+    // nomination_id
     // nominated_by_id
     // nominated_by_name
     // nominated_id
     // nominated_name
-    // const notificationsQuery = `
-    //     SELECT FROM ""
-    // `;
-    // TODODODODODODODDO
+
+    // THINGS TO SEND BACK
+    // message:string
+    // action_required:boolean
+    // action_button_names:JSON
+    // type
+    //
+
+    const notificationsQuery = `
+        SELECT 
+            c.id AS "circle_id",
+            c.name AS "circle_name",
+            n.type,
+            n.actor_id,
+            u.username AS "actor_name",
+            nom.nominated_by_id,
+            u2.username AS "nominated_by_name",
+            nom.nominated_id,
+            u3.username AS "nominated_name"
+        FROM "notifications" AS n
+            LEFT JOIN "nominations" AS nom ON nom.id = n.nomination_id
+            JOIN "circles" AS c ON c.id = n.circle_id
+            JOIN "user" AS u ON u.id = n.actor_id
+            LEFT JOIN "user" AS u2 ON u2.id = nom.nominated_by_id
+            LEFT JOIN "user" AS u3 ON u3.id = nom.nominated_id
+        WHERE n.recipient_id = $1;
+    `;
+
+    pool.query(notificationsQuery, [req.user.id])
+        .then((result) => {
+            res.send(result.rows).status(200);
+        })
+        .catch((error) => {
+            console.log(`Error making query ${notificationsQuery}`, error);
+        });
 });
 
 router.post("/new", async (req, res) => {

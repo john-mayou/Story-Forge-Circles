@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function NotificationActionsPage() {
     // CIRCLE DUMMY DATA
@@ -11,6 +11,10 @@ function NotificationActionsPage() {
     };
 
     const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {
+        getNotifications();
+    }, []);
 
     const getNotifications = () => {
         axios
@@ -97,7 +101,7 @@ function NotificationActionsPage() {
     };
 
     return (
-        <main class="content-main">
+        <main className="content-main">
             <div>
                 <button onClick={RequestToJoin}>REQUEST TO JOIN</button>
             </div>
@@ -113,8 +117,8 @@ function NotificationActionsPage() {
                 </button>
             </div>
             <div>
-                {notifications.map((n) => {
-                    return <p>{JSON.stringify(n)}</p>;
+                {notifications.map((n, i) => {
+                    return <p key={i}>{JSON.stringify(n)}</p>;
                 })}
             </div>
         </main>
