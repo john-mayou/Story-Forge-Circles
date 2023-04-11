@@ -30,8 +30,6 @@ router.get("/", (req, res) => {
  * POST route template
  */
 router.post("/", rejectUnauthenticated, async (req, res) => {
-
-
   console.log("req.body", req.body);
   console.log("req.user.id", req.user.id);
 
@@ -52,10 +50,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
       title,
       body,
     ]);
-
     const newManuscriptId = manuscriptResult.rows[0].id;
-
-    console.log('manuscriptResult', newManuscriptId);
 
     const selectShelvesIDQueryText = `
     SELECT "shelves".id FROM "shelves"
@@ -63,21 +58,20 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     WHERE "user".id = $1;
     `;
 
-    const ShelvesResult = await connection.query(selectShelvesIDQueryText, [req.user.id]);
-
-
-
+    const ShelvesResult = await connection.query(selectShelvesIDQueryText, [
+      req.user.id,
+    ]);
     const ShelvesID = ShelvesResult.rows[0].id;
-
-    console.log('ShelvesID', ShelvesID);
 
     const manuscriptShelfQueryText = `
     INSERT INTO "manuscript_shelf" ("shelf_id", "manuscript_id")
     VALUES ($1, $2);
     `;
 
-    await connection.query(manuscriptShelfQueryText, [ShelvesID, newManuscriptId]);
-
+    await connection.query(manuscriptShelfQueryText, [
+      ShelvesID,
+      newManuscriptId,
+    ]);
 
     await connection.query("COMMIT");
     res.sendStatus(201);
