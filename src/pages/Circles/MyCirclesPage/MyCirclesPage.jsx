@@ -39,12 +39,12 @@ function MyCirclesPage() {
     }
   };
 
-  const handleCreateCircle = (name, description) => {
+  const handleCreateCircle = () => {
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
-        name,
-        description,
+        name: circleName,
+        description: circleDescription,
         ownerId: id,
       },
     });

@@ -14,6 +14,9 @@ function* fetchMyJoinedCirclesList(action) {
   }
 }
 
+/**
+ * Fetches List of User's created circles
+ */
 function* fetchMyCreatedCirclesList(action) {
   try {
     const id = action.payload;
@@ -24,9 +27,17 @@ function* fetchMyCreatedCirclesList(action) {
   }
 }
 
+/**
+ * Create User's new circle
+ */
 function* createNewCircle(action) {
   try {
-    yield axios.post("api/circles", action.payload);
+    const data = JSON.stringify(action.payload); // convert to string
+    yield axios.post("/api/circles", data, {
+        headers: {
+          "Content-Type": "application/json", //Setting the Content-Type header to "application/json" is important as it tells the server that the request payload is in JSON format and it needs to be parsed accordingly. Without this header, the server may try to parse the data in a different format and may result in errors.
+        },
+    });
     yield put({
       type: "FETCH_MY_CREATED_CIRCLES",
       payload: action.payload.ownerId,
