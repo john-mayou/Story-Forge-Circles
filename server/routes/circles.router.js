@@ -15,13 +15,28 @@ router.get("/joined", async (req, res) => {
         ON circles.id = circle_user.circle_id
         WHERE circle_user.user_id = $1
       `, [id]);
-      console.log('circles', circles.rows)
       res.json(circles.rows);
     } catch (error) {
       console.error('Error fetching circles:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+router.get("/created", async (req, res) => {
+  const { id } = req.query;
+  try {
+    const circles = await pool.query(`
+      SELECT *
+      FROM circles
+      WHERE owner_id = $1
+    `, [id]);
+    res.json(circles.rows);
+  } catch (error) {
+    console.error('Error fetching circles:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 /**
  * POST route template
