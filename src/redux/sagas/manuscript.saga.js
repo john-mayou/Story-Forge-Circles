@@ -26,9 +26,20 @@ function* fetchWritersDeskList() {
     }
 }
 
+function* addManuscript(action) {
+    try {
+        yield axios.post('/manuscript', action.payload);
+        yield put({ type: "FETCH_WRITERS_DESK_LIST" });
+    } catch (error) {
+        console.log('add manuscript error in saga', error);
+    }
+
+}
+
 function* publicManuscriptListSaga() {
     yield takeLatest('FETCH_PUBLIC_MANUSCRIPT_LIST', fetchPublicManuscriptList);
     yield takeLatest('FETCH_WRITERS_DESK_LIST', fetchWritersDeskList);
+    yield takeLatest('ADD_MANUSCRIPT', addManuscript)
 }
 
 export default publicManuscriptListSaga;

@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import { useHistory, Link } from "react-router-dom";
 
 /**
  *
@@ -7,6 +8,8 @@ import { useState } from "react";
  * @returns individual manuscript list objects to be displayed on various Manuscript list pages.
  */
 function ManuscriptListItem(props) {
+  const history = useHistory();
+
   let preview = props.manuscript.body;
 
   if (props.manuscript.body.length > 100) {
@@ -14,12 +17,19 @@ function ManuscriptListItem(props) {
   }
 
   const handleManuscriptClick = () => {
-    console.log('in Handle Manuscript Click');
-    console.log('currentPage is', props.currentPage);
-    console.log('manuscript ID is', props.manuscript.id);
+    console.log("in Handle Manuscript Click");
+    console.log("currentPage is", props.currentPage);
+    console.log("manuscript ID is", props.manuscript.id);
 
-
-  }
+    switch (props.currentPage) {
+      case "WritersDeskPage":
+        history.push("/reading-list");
+        break;
+      case "ReadingListPage":
+        history.push("/writers-desk");
+        break;
+    }
+  };
 
   return (
     <>

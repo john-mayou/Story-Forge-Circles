@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ManuscriptListItem from "../../../../components/ManuscriptListItem";
 
@@ -8,8 +8,7 @@ function WritersDeskPage() {
     (store) => store.writersDeskManuscriptList
   );
   const dispatch = useDispatch();
-
-  const currentPage = 'WritersDeskPage';
+  const currentPage = "WritersDeskPage";
 
   useEffect(() => {
     dispatch({
@@ -17,12 +16,31 @@ function WritersDeskPage() {
     });
   }, []);
 
+  const [newTitle, setNewTitle] = useState("");
+  const [newBody, setNewBody] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newManuscript = {
+      title: newTitle,
+      body: newBody,
+    };
+
+    console.log("newManuscript", newManuscript);
+
+    dispatch({
+      type: "ADD_MANUSCRIPT",
+      payload: newManuscript,
+    });
+
+    setNewTitle("");
+    setNewBody("");
+  };
 
   const handleDelete = (event) => {
-    console.log('clicked delete on', event.target.getAttribute("dataID"));
-
-  }
-
+    console.log("clicked delete on", event.target.getAttribute("dataID"));
+  };
 
   return (
     <main className="content-main">
@@ -30,15 +48,45 @@ function WritersDeskPage() {
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
+      <br></br>
 
+      <h2>New Manuscript:</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Title:</label>
+        <input
+          type="text"
+          placeholder="Title"
+          value = {newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+
+        <label>Body:</label>
+        <textarea
+          rows="5"
+          cols="40"
+          placeholder="Body..."
+          value = {newBody}
+          onChange={(e) => setNewBody(e.target.value)}
+        />
+
+        <input className="submit-button" type="submit" />
+      </form>
+
+      <br></br>
 
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <>
             <div>
               <br></br>
-              <ManuscriptListItem key={manuscript.id} currentPage={currentPage} manuscript={manuscript} />
-              <button onClick={handleDelete} dataID={manuscript.id}>Delete</button>
+              <ManuscriptListItem
+                key={manuscript.id}
+                currentPage={currentPage}
+                manuscript={manuscript}
+              />
+              <button onClick={handleDelete} dataID={manuscript.id}>
+                Delete
+              </button>
             </div>
           </>
         );
