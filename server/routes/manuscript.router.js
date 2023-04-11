@@ -6,11 +6,12 @@ const router = express.Router();
  * GET PUBLIC Manuscripts route
  */
 router.get("/", (req, res) => {
-    const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body FROM "manuscripts"
+
+    const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
     JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
     JOIN "user" ON "user".id = "shelves".user_id
-    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body;`
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`
 
     pool.query(query)
     .then( result => {
@@ -28,5 +29,30 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     // POST route code here
 });
+
+
+router.get("/writersdesk", (req, res) => {
+
+    const userID = req.user.id;
+
+    const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body FROM "manuscripts"
+    JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
+    JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
+    JOIN "user" ON "user".id = "shelves".user_id
+    WHERE "user".id = $1
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body;`
+
+    pool.query(query, [userID])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Get all movies', err);
+      res.sendStatus(500)
+    })
+});
+
+
+
 
 module.exports = router;

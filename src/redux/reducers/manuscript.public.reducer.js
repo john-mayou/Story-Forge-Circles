@@ -9,4 +9,5 @@ const publicManuscriptList = (state = [], action) => {
   }
 };
 
+
 export default publicManuscriptList;

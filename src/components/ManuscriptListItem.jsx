@@ -21,8 +21,9 @@ function ManuscriptListItem(item) {
   return (
     <>
       <div className="ManuscriptListItem" onClick={handleManuscriptClick}>
-        <h1>{item.manuscript.title}</h1>
-        <p>{preview}...</p>
+        <h1>Title: {item.manuscript.title}</h1>
+        <h3>Author: {item.manuscript.username}</h3>
+        <p>Preview: {preview}...</p>
       </div>
     </>
   );

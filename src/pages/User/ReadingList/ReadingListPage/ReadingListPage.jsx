@@ -4,7 +4,9 @@ import ManuscriptListItem from "../../../../components/ManuscriptListItem";
 
 function ReadingListPage() {
   const user = useSelector((store) => store.user);
-  const publicManuscriptList = useSelector((store) => store.publicManuscriptList);
+  const publicManuscriptList = useSelector(
+    (store) => store.publicManuscriptList
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,6 +24,7 @@ function ReadingListPage() {
       {publicManuscriptList?.map((manuscript) => {
         return (
           <>
+            <br></br>
             <ManuscriptListItem key={manuscript.id} manuscript={manuscript} />
           </>
         );

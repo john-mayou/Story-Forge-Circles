@@ -15,8 +15,20 @@ function* fetchPublicManuscriptList() {
     }
 }
 
+function* fetchWritersDeskList() {
+    try {
+        // console.log('in list of teams');
+        const response = yield axios.get(`/manuscript/writersdesk`);
+        yield put({ type: "SET_WRITERS_DESK_LIST", payload: response.data })
+
+    } catch (error) {
+        console.log("Get Manuscript List request failed in Saga", error);
+    }
+}
+
 function* publicManuscriptListSaga() {
     yield takeLatest('FETCH_PUBLIC_MANUSCRIPT_LIST', fetchPublicManuscriptList);
+    yield takeLatest('FETCH_WRITERS_DESK_LIST', fetchWritersDeskList);
 }
 
 export default publicManuscriptListSaga;
