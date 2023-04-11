@@ -9,6 +9,8 @@ function ReadingListPage() {
   );
   const dispatch = useDispatch();
 
+  const currentPage = 'ReadingListPage';
+
   useEffect(() => {
     dispatch({
       type: "FETCH_PUBLIC_MANUSCRIPT_LIST",
@@ -25,7 +27,7 @@ function ReadingListPage() {
         return (
           <>
             <br></br>
-            <ManuscriptListItem key={manuscript.id} manuscript={manuscript} />
+            <ManuscriptListItem key={manuscript.id} currentPage={currentPage} manuscript={manuscript} />
           </>
         );
       })}

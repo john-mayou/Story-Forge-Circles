@@ -9,6 +9,8 @@ function WritersDeskPage() {
   );
   const dispatch = useDispatch();
 
+  const currentPage = 'WritersDeskPage';
+
   useEffect(() => {
     dispatch({
       type: "FETCH_WRITERS_DESK_LIST",
@@ -35,7 +37,7 @@ function WritersDeskPage() {
           <>
             <div>
               <br></br>
-              <ManuscriptListItem key={manuscript.id} manuscript={manuscript} />
+              <ManuscriptListItem key={manuscript.id} currentPage={currentPage} manuscript={manuscript} />
               <button onClick={handleDelete} dataID={manuscript.id}>Delete</button>
             </div>
           </>
