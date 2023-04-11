@@ -12,6 +12,9 @@ function MyCirclesPage() {
   const history = useHistory();
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [circleName, setCircleName] = useState("");
+  const [circleDescription, setCircleDescription] = useState("");
 
   useEffect(() => {
     dispatch({
@@ -34,6 +37,22 @@ function MyCirclesPage() {
     if (e.keyCode === 13) {
       handleSearch();
     }
+  };
+
+  const handleCreateCircle = (name, description) => {
+    dispatch({
+      type: "CREATE_NEW_CIRCLE",
+      payload: {
+        name,
+        description,
+        ownerId: id,
+      },
+    });
+
+    // hide the modal and clear the input values
+    setShowModal(false);
+    setCircleName("");
+    setCircleDescription("");
   };
 
   return (
@@ -77,7 +96,12 @@ function MyCirclesPage() {
       </table>
 
       <div>
-        <button className="create-btn-new-circle">New Circle</button>
+        <button
+          className="create-btn-new-circle"
+          onClick={() => setShowModal(true)}
+        >
+          New Circle
+        </button>
 
         <p>CIRCLES I OWN / MY CIRCLES</p>
         <table>
@@ -97,6 +121,31 @@ function MyCirclesPage() {
           </tbody>
         </table>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <h3>Create a new circle</h3>
+            <input
+              type="text"
+              id="circle-name"
+              value={circleName}
+              placeholder="Circle Name"
+              onChange={(e) => setCircleName(e.target.value)}
+            />
+            <input
+              id="circle-description"
+              value={circleDescription}
+              placeholder="Description"
+              onChange={(e) => setCircleDescription(e.target.value)}
+            />
+            <div className="modal-actions">
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+              <button onClick={handleCreateCircle}>Create Circle</button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
