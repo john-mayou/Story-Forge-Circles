@@ -25,21 +25,20 @@ function MyCirclesPage() {
     });
   }, [id, dispatch]);
 
-const handleSearch = () => {
-  history.push(`/search-joined-cirlces?term=${searchTerm}`);
-};
+  const handleSearch = () => {
+    history.push(`/search-joined-cirlces?term=${searchTerm}`);
+  };
 
-//the "Enter" key (keyCode 13) 
-const handleKeyDown =(e) => {
-  if (e.keyCode === 13) {
-    handleSearch();
-  }
-};
+  //the "Enter" key (keyCode 13)
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleSearch();
+    }
+  };
 
   return (
     <main className="content-main">
       <h1>My Circles</h1>
-  
 
       <h2>Joined Circles</h2>
       <button
@@ -56,14 +55,15 @@ const handleKeyDown =(e) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <button className="search-btn-joined-circle" onClick={handleSearch}>search!</button>
+      <button className="search-btn-joined-circle" onClick={handleSearch}>
+        search!
+      </button>
       <p>JOINED CIRCLES BELOW</p>
       <table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Owner</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +71,6 @@ const handleKeyDown =(e) => {
             <tr key={circle.id}>
               <td>{circle.name}</td>
               <td>{circle.description}</td>
-              <td>{circle.owner_id}</td>
             </tr>
           ))}
         </tbody>
@@ -86,7 +85,6 @@ const handleKeyDown =(e) => {
             <tr>
               <th>Name</th>
               <th>Description</th>
-              <th>Owner</th>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +92,6 @@ const handleKeyDown =(e) => {
               <tr key={circle.id}>
                 <td>{circle.name}</td>
                 <td>{circle.description}</td>
-                <td>{circle.owner_id}</td>
               </tr>
             ))}
           </tbody>
