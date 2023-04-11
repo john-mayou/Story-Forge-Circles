@@ -2,8 +2,9 @@ import { all } from "redux-saga/effects";
 import loginSaga from "./login.saga";
 import registrationSaga from "./registration.saga";
 import userSaga from "./user.saga";
-import manuscriptListSaga from "./manuscript.saga";
+import publicManuscriptListSaga from "./manuscript.saga";
 import circlesSaga from "./circles.saga";
+
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
 // This is imported in index.js as rootSaga
@@ -12,11 +13,11 @@ import circlesSaga from "./circles.saga";
 // the registration triggers a login
 // and login triggers setting the user
 export default function* rootSaga() {
-  yield all([
-    loginSaga(), // login saga is now registered
-    registrationSaga(),
-    userSaga(),
-    manuscriptListSaga(),
-    circlesSaga(),
-  ]);
+    yield all([
+        loginSaga(), // login saga is now registered
+        registrationSaga(),
+        userSaga(),
+        publicManuscriptListSaga(),
+        circlesSaga(),
+    ]);
 }
