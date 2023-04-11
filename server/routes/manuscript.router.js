@@ -1,6 +1,9 @@
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
 
 /**
  * GET PUBLIC Manuscripts route
@@ -31,7 +34,10 @@ router.post("/", (req, res) => {
 });
 
 
-router.get("/writersdesk", (req, res) => {
+/**
+ * GET WRITERS DESK Manuscripts route
+ */
+router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
 
     const userID = req.user.id;
 
