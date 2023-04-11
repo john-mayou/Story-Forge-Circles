@@ -53,7 +53,6 @@ const notifications = {
 // 	"actor_id" int NOT NULL,
 //  "nomination_id" int,
 // 	"type" varchar(255) NOT NULL,
-// 	"response" BOOLEAN,
 //  "completed": false,
 // );
 
