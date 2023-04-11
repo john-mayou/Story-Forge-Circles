@@ -22,6 +22,9 @@ router.get("/joined", async (req, res) => {
     }
 });
 
+/**
+ * GET all created circles
+ */
 router.get("/created", async (req, res) => {
   const { id } = req.query;
   try {

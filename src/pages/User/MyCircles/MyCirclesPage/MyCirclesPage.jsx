@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector,  useDispatch } from "react-redux";
 
 function MyCirclesPage() {
@@ -6,14 +6,17 @@ function MyCirclesPage() {
   const {myJoinedCircleList, myCreatedCircleList} = useSelector((store) => store.circles);
 
   const dispatch = useDispatch();
-//   const filteredCircles = joinedCircles ? joinedCircles.filter((circle) =>
-//     circle.name.toLowerCase().includes(searchQuery.toLowerCase())
-//   ) : [];
+  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredJoinedCircles, setFilteredJoinedCircles] = useState([]);
 
-  const handleSearchKeyDown = (event) => {
-    if (event.key === "Enter") {
-      setSearchQuery(event.target.value);
-    }
+
+  
+  const handleSearch = () => {
+    const filteredCircles = myJoinedCircleList.filter((circle) =>
+      circle.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredJoinedCircles(filteredCircles);
   };
 
 
@@ -28,8 +31,14 @@ function MyCirclesPage() {
         type: "FETCH_MY_CREATED_CIRCLES",
         payload: id
       });
-  }, [id]);
+  }, [id, dispatch]);
   
+  useEffect(() => {
+    const filteredCircles = myJoinedCircleList.filter((circle) =>
+      circle.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredJoinedCircles(filteredCircles);
+  }, [myJoinedCircleList, searchQuery]);
 
   return (
     <main className="content-main">
@@ -42,8 +51,8 @@ function MyCirclesPage() {
       <input
         type="text"
         className="search-joined-circles"
-        placeholder="search by name"
-        onKeyDown={handleSearchKeyDown}
+        placeholder="Search by name"
+        onChange={(event) => setSearchQuery(event.target.value)}
       />
       <p>JOINED CIRCLES BELOW</p>
       <table>
@@ -55,7 +64,7 @@ function MyCirclesPage() {
       </tr>
     </thead>
     <tbody>
-      {myJoinedCircleList.map((circle) => (
+      {filteredJoinedCircles.map((circle) => (
         <tr key={circle.id}>
           <td>{circle.name}</td>
           <td>{circle.description}</td>
