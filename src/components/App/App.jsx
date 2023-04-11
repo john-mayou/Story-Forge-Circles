@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
+// Notification Actions (REMOVE LATER)
+import NotificationActionsPage from "../../utils/NotificationActionsPage";
+
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
 import Header from "../../layout/Header/Header";
@@ -52,6 +55,10 @@ function App() {
 
                     <ProtectedRoute exact path="/circles">
                         <MyCirclesPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/notification-actions">
+                        <NotificationActionsPage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
