@@ -32,10 +32,10 @@ function ReadingListPage() {
 
       {publicManuscriptList?.map((manuscript) => {
         return (
-          <>
+          <div key={manuscript.id} >
             <br></br>
-            <ManuscriptListItem key={manuscript.id} currentPage={currentPage} manuscript={manuscript} />
-          </>
+            <ManuscriptListItem currentPage={currentPage} manuscript={manuscript} />
+          </div>
         );
       })}
       <button onClick={goToManuscript}>Manuscript</button>

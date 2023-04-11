@@ -38,8 +38,8 @@ function WritersDeskPage() {
     setNewBody("");
   };
 
-  const handleDelete = (event) => {
-    console.log("clicked delete on", event.target.getAttribute("dataID"));
+  const handleDelete = (id) => {
+    console.log("clicked delete on", id);
   };
 
   return (
@@ -56,7 +56,7 @@ function WritersDeskPage() {
         <input
           type="text"
           placeholder="Title"
-          value = {newTitle}
+          value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
         />
 
@@ -65,7 +65,7 @@ function WritersDeskPage() {
           rows="5"
           cols="40"
           placeholder="Body..."
-          value = {newBody}
+          value={newBody}
           onChange={(e) => setNewBody(e.target.value)}
         />
 
@@ -76,19 +76,17 @@ function WritersDeskPage() {
 
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
-          <>
-            <div>
+
+            <div key={manuscript.id}>
               <br></br>
               <ManuscriptListItem
-                key={manuscript.id}
                 currentPage={currentPage}
                 manuscript={manuscript}
               />
-              <button onClick={handleDelete} dataID={manuscript.id}>
+              <button onClick={() => handleDelete(manuscript.id)}>
                 Delete
               </button>
             </div>
-          </>
         );
       })}
     </main>
