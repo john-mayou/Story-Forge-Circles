@@ -18,6 +18,7 @@ import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/Readin
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
 import MyCirclesPage from "../../pages/User/MyCircles/MyCirclesPage/MyCirclesPage";
 import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
+import MessageBoard from "../../pages/User/MyCircles/MessageBoard/MessageBoard";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -55,6 +56,10 @@ function App() {
 
                     <ProtectedRoute exact path="/circles">
                         <MyCirclesPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/message-board">
+                        <MessageBoard />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
