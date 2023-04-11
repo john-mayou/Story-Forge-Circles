@@ -20,6 +20,7 @@ import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/Writer
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
+import SearchJoinedCirclesPage from "../../pages/Search/SearchPage/SearchJoinedCirclesPage";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -57,6 +58,10 @@ function App() {
 
                     <ProtectedRoute exact path="/circles-browser">
                         <BrowserCirclePage />
+                    </ProtectedRoute>
+                    
+                    <ProtectedRoute exact path="/search-joined-cirlces">
+                        <SearchJoinedCirclesPage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">

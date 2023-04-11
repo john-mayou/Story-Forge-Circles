@@ -10,8 +10,8 @@ function MyCirclesPage() {
 
   const dispatch = useDispatch();
   const history = useHistory();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredJoinedCircles, setFilteredJoinedCircles] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch({
@@ -25,12 +25,16 @@ function MyCirclesPage() {
     });
   }, [id, dispatch]);
 
-  useEffect(() => {
-    const filteredCircles = myJoinedCircleList.filter((circle) =>
-      circle.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredJoinedCircles(filteredCircles);
-  }, [myJoinedCircleList, searchQuery]);
+const handleSearch = () => {
+  history.push(`/search-joined-cirlces?term=${searchTerm}`);
+};
+
+//the "Enter" key (keyCode 13) 
+const handleKeyDown =(e) => {
+  if (e.keyCode === 13) {
+    handleSearch();
+  }
+};
 
   return (
     <main className="content-main">
@@ -48,8 +52,11 @@ function MyCirclesPage() {
         type="text"
         className="search-joined-circles"
         placeholder="Search by name"
-        onChange={(event) => setSearchQuery(event.target.value)}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
+      <button className="search-btn-joined-circle" onClick={handleSearch}>search!</button>
       <p>JOINED CIRCLES BELOW</p>
       <table>
         <thead>
@@ -60,7 +67,7 @@ function MyCirclesPage() {
           </tr>
         </thead>
         <tbody>
-          {filteredJoinedCircles.map((circle) => (
+          {myJoinedCircleList.map((circle) => (
             <tr key={circle.id}>
               <td>{circle.name}</td>
               <td>{circle.description}</td>
@@ -71,7 +78,7 @@ function MyCirclesPage() {
       </table>
 
       <div>
-        <button className="create-new-circle-btn">New Circle</button>
+        <button className="create-btn-new-circle">New Circle</button>
 
         <p>CIRCLES I OWN / MY CIRCLES</p>
         <table>
