@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import CircleTableView from "../../../components/CircleTableView";
 
 function MyCirclesPage() {
   const { id, username } = useSelector((store) => store.user);
@@ -78,22 +79,8 @@ function MyCirclesPage() {
         search!
       </button>
       <p>JOINED CIRCLES BELOW</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myJoinedCircleList.map((circle) => (
-            <tr key={circle.id}>
-              <td>{circle.name}</td>
-              <td>{circle.description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <CircleTableView circlelist={myJoinedCircleList} />
 
       <div>
         <button
@@ -104,22 +91,8 @@ function MyCirclesPage() {
         </button>
 
         <p>CIRCLES I OWN / MY CIRCLES</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myCreatedCircleList.map((circle) => (
-              <tr key={circle.id}>
-                <td>{circle.name}</td>
-                <td>{circle.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        <CircleTableView circlelist={myCreatedCircleList} />
       </div>
 
       {showModal && (

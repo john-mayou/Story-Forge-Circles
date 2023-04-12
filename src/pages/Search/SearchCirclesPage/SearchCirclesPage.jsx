@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
+import CircleTableView from "../../../components/CircleTableView";
 
 export default function SearchCirclesPage() {
   // Get the 'type' parameter from the URL
@@ -82,22 +83,8 @@ export default function SearchCirclesPage() {
 
       {/* Search results */}
       <h2>Search Results for "{searchTerm}"</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCircles.map((circle) => (
-            <tr key={circle.id}>
-              <td>{circle.name}</td>
-              <td>{circle.description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <CircleTableView circlelist={filteredCircles} isJoined={type === 'allPublicCirclesList' ? true : false}/>
     </main>
   );
 }

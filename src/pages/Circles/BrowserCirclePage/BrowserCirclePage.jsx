@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import CircleTableView from "../../../components/CircleTableView";
 
 function BrowserCirclePage() {
   const { allPublicCirclesList } = useSelector((store) => store.circles);
@@ -62,22 +63,7 @@ function BrowserCirclePage() {
         search!
       </button>
       <p>JOINABLE CIRCLES BELOW</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allPublicCirclesList.map((circle) => (
-            <tr key={circle.id}>
-              <td>{circle.name}</td>
-              <td>{circle.description}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <CircleTableView circlelist={allPublicCirclesList} isJoined={true}/>
     </main>
   );
 }
