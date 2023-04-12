@@ -18,28 +18,11 @@ function ManuscriptListItem(props) {
   }
 
   const handleManuscriptClick = () => {
-    console.log("in Handle Manuscript Click");
-    console.log("currentPage is", props.currentPage);
-    console.log("manuscript ID is", props.manuscript.id);
-
-    switch (props.currentPage) {
-      case "WritersDeskPage":
         dispatch({
           type: "SET_MANUSCRIPT",
-          payload: props.manuscript
+          payload: props.manuscript,
         });
-        history.push("/manuscript-write");
-
-        break;
-      case "ReadingListPage":
-        dispatch({
-          type: "SET_MANUSCRIPT",
-          payload: props.manuscript
-        });
-
         history.push("/manuscript-read");
-        break;
-    }
   };
 
   return (
