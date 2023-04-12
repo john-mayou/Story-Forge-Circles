@@ -29,7 +29,7 @@ function MyCirclesPage() {
   }, [id, dispatch]);
 
   const handleSearch = () => {
-    history.push(`/search-joined-cirlces?term=${searchTerm}`);
+    history.push(`/search-circles/myJoinedCircleList?term=${searchTerm}`);
   };
 
   //the "Enter" key (keyCode 13)

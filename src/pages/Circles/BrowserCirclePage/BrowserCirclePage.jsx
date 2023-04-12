@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-function MyCirclesPage() {
-  const { allPublicCirclesList } = useSelector(
-    (store) => store.circles
-  );
+function BrowserCirclePage() {
+  const { allPublicCirclesList } = useSelector((store) => store.circles);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -16,15 +14,13 @@ function MyCirclesPage() {
   const [circleDescription, setCircleDescription] = useState("");
 
   useEffect(() => {
-
     dispatch({
       type: "FETCH_ALL_PUBLIC_CIRCLES",
-
     });
   }, [dispatch]);
 
   const handleSearch = () => {
-    history.push(`/search-joined-cirlces?term=${searchTerm}`);
+    history.push(`/search-circles/allPublicCirclesList?term=${searchTerm}`);
   };
 
   //the "Enter" key (keyCode 13)
@@ -54,16 +50,15 @@ function MyCirclesPage() {
     <main className="content-main">
       <h1>PUBLIC CIRCLES</h1>
 
-
       <input
         type="text"
-        className="search-joined-circles"
+        className="search-joinable-circles"
         placeholder="Search by name"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <button className="search-btn-joined-circle" onClick={handleSearch}>
+      <button className="search-btn-joinable-circle" onClick={handleSearch}>
         search!
       </button>
       <p>JOINABLE CIRCLES BELOW</p>
@@ -83,10 +78,8 @@ function MyCirclesPage() {
           ))}
         </tbody>
       </table>
-
-
-        </main>
+    </main>
   );
 }
 
-export default MyCirclesPage;
+export default BrowserCirclePage;
