@@ -1,7 +1,10 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import notificationsObject from "../utils/notifications";
 
 function NotificationActionsPage() {
+    const dispatch = useDispatch();
+
     // CIRCLE DUMMY DATA
     const circle = {
         id: 1,
@@ -10,95 +13,36 @@ function NotificationActionsPage() {
         owner_id: 1,
     };
 
-    const [notifications, setNotifications] = useState([]);
+    const notifications = useSelector((store) => store.notifications);
 
     useEffect(() => {
-        getNotifications();
+        dispatch({ type: "FETCH_NOTIFICATIONS" });
     }, []);
 
-    const getNotifications = () => {
-        axios
-            .get("/api/notification")
-            .then((result) => {
-                setNotifications(result.data);
-            })
-            .catch((error) => {
-                console.log("Error getting notifications", error);
-            });
-    };
-
-    // BUTTON
     const RequestToJoin = () => {
-        const params = {
-            circle_id: circle.id,
-            type: "request to join - leader action",
-            recipient_id: circle.owner_id,
-            new_nomination: null, // new_nomination
-            // existing_nomination_id:
-        };
-
-        axios
-            .post("/api/notification/new", params)
-            .then(() => {
-                getNotifications();
-            })
-            .catch((error) => {
-                console.log("Error with RequestToJoin", error);
-            });
+        dispatch({
+            type: "CREATE_NEW_NOTIFICATION",
+            payload: {
+                circle_id: circle.id,
+                recipient_id: circle.owner_id, // DUMMY DATA FROM UP ABOVE
+                type: "request to join - leader action",
+            },
+        });
     };
 
-    const MemberNomination = () => {
-        const params = {
-            circle_id: circle.id,
-            type: "member nomination - leader action",
-            recipient_id: circle.owner_id,
-            nomination: 2, // from new user search (id)
-        };
+    const MemberNomination = () => {};
 
-        axios
-            .post("/api/notification/new", params)
-            .then(() => {
-                getNotifications();
-            })
-            .catch((error) => {
-                console.log("Error with RequestToJoin", error);
-            });
-    };
+    const LeaderAddMember = () => {};
 
-    const LeaderAddMember = () => {
-        const params = {
-            circle_id: circle.id,
-            type: "leader invite member - user action",
-            recipient_id: 3, // from new user search (id)
-            nomination: null,
-        };
+    const LeaderNominateLeader = () => {};
 
-        axios
-            .post("/api/notification/new", params)
-            .then(() => {
-                getNotifications();
-            })
-            .catch((error) => {
-                console.log("Error with RequestToJoin", error);
-            });
-    };
-
-    const LeaderNominateLeader = () => {
-        const params = {
-            circle_id: circle.id,
-            type: "leader nominate leader - user action",
-            recipient_id: 4, // from member management card (id)
-            nomination: null,
-        };
-
-        axios
-            .post("/api/notification/new", params)
-            .then(() => {
-                getNotifications();
-            })
-            .catch((error) => {
-                console.log("Error with RequestToJoin", error);
-            });
+    const executeNextActions = (buttonType, notification) => {
+        // dispatch all actions of the array for the given type
+        notificationsObject[notification.type].next_actions[
+            buttonType
+        ].dispatch_actions.map((paramConstructor) => {
+            dispatch(paramConstructor(notification));
+        });
     };
 
     return (
@@ -118,8 +62,56 @@ function NotificationActionsPage() {
                 </button>
             </div>
             <div>
-                {notifications.map((n, i) => {
-                    return <p key={i}>{JSON.stringify(n)}</p>;
+                {notifications.map((notification) => {
+                    const attributes = notificationsObject[notification.type];
+
+                    return (
+                        <div key={notification.notification_id}>
+                            <p>{attributes.messageConstructor(notification)}</p>
+                            {attributes.next_actions ? (
+                                <div>
+                                    <button
+                                        onClick={() =>
+                                            executeNextActions(
+                                                "accept",
+                                                notification
+                                            )
+                                        }
+                                    >
+                                        {
+                                            attributes.next_actions.accept
+                                                .button_text
+                                        }
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            executeNextActions(
+                                                "reject",
+                                                notification
+                                            )
+                                        }
+                                    >
+                                        {
+                                            attributes.next_actions.reject
+                                                .button_text
+                                        }
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() =>
+                                        dispatch({
+                                            type: "COMPLETE_NOTIFICATION",
+                                            payload:
+                                                notification.notification_id,
+                                        })
+                                    }
+                                >
+                                    Delete
+                                </button>
+                            )}
+                        </div>
+                    );
                 })}
             </div>
         </main>
