@@ -19,11 +19,6 @@ function ReadingListPage() {
     });
   }, []);
 
-  const goToManuscript = () => {
-    history.push('/manuscript-read')
-  };
-
-
   return (
     <main className="content-main">
       <h1>Reading List Page</h1>
@@ -38,7 +33,6 @@ function ReadingListPage() {
           </div>
         );
       })}
-      <button onClick={goToManuscript}>Manuscript</button>
     </main>
   );
 }
