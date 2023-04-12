@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ManuscriptListItem from "../../../../components/ManuscriptListItem";
 
 function WritersDeskPage() {
@@ -7,6 +8,8 @@ function WritersDeskPage() {
   const writersDeskManuscriptList = useSelector(
     (store) => store.writersDeskManuscriptList
   );
+
+  const history = useHistory();
   const dispatch = useDispatch();
   const currentPage = "WritersDeskPage";
 
@@ -38,8 +41,22 @@ function WritersDeskPage() {
     setNewBody("");
   };
 
+
+  const handleEdit = (manuscript) => {
+    dispatch({
+      type: "SET_MANUSCRIPT",
+      payload: manuscript,
+    });
+    history.push("/manuscript-write");
+  }
+
   const handleDelete = (id) => {
     console.log("clicked delete on", id);
+
+    dispatch({
+      type: "REMOVE_MANUSCRIPT",
+      payload: id,
+    });
   };
 
   return (
@@ -76,17 +93,17 @@ function WritersDeskPage() {
 
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
+          <div key={manuscript.id}>
+            <br></br>
+            <ManuscriptListItem
+              currentPage={currentPage}
+              manuscript={manuscript}
+            />
 
-            <div key={manuscript.id}>
-              <br></br>
-              <ManuscriptListItem
-                currentPage={currentPage}
-                manuscript={manuscript}
-              />
-              <button onClick={() => handleDelete(manuscript.id)}>
-                Delete
-              </button>
-            </div>
+            <button onClick={() => handleEdit(manuscript)}>Edit</button>
+
+            <button onClick={() => handleDelete(manuscript.id)}>Delete</button>
+          </div>
         );
       })}
     </main>

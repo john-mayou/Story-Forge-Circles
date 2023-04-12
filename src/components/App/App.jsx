@@ -21,6 +21,7 @@ import Header from "../../layout/Header/Header";
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
 import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
+import WriteManuscriptPage from "../../pages/User/WritersDesk/WriteManuscriptPage/WriteManuscriptPage";
 
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
@@ -60,6 +61,10 @@ function App() {
 
                     <ProtectedRoute exact path="/writers-desk">
                         <WritersDeskPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/manuscript-write">
+                        <WriteManuscriptPage/>
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/circles">
