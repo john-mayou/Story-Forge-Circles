@@ -48,6 +48,21 @@ router.get("/created", async (req, res) => {
 });
 
 /**
+ * GET all public circles
+ */
+router.get("/public", async (req, res) => {
+  try {
+    const circles = await pool.query(
+      `SELECT * FROM "circles"`
+    );
+    res.json(circles.rows);
+  } catch (error) {
+    console.error("Error fetching all public circles:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
  * POST - create a new circle
  */
 router.post("/", async (req, res) => {

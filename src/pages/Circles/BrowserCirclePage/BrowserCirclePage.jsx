@@ -66,7 +66,7 @@ function MyCirclesPage() {
       <button className="search-btn-joined-circle" onClick={handleSearch}>
         search!
       </button>
-      <p>JOINED CIRCLES BELOW</p>
+      <p>JOINABLE CIRCLES BELOW</p>
       <table>
         <thead>
           <tr>
