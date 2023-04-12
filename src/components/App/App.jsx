@@ -10,8 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
+// Notification Actions (REMOVE LATER)
+import NotificationActionsPage from "../../utils/NotificationActionsPage";
+
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
+import Header from "../../layout/Header/Header";
 
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
@@ -22,8 +26,7 @@ import WriteManuscriptPage from "../../pages/User/WritersDesk/WriteManuscriptPag
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
-import SearchJoinedCirclesPage from "../../pages/Search/SearchJoinedCirclesPage/SearchJoinedCirclesPage";
-
+import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -44,6 +47,7 @@ function App() {
         <Router>
             <div>
                 {user.id && <Sidebar />}
+                {user.id && <Header />}
                 <Switch>
                     <Redirect exact from="/" to="/reading-list" />
 
@@ -52,7 +56,7 @@ function App() {
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/manuscript-read">
-                        <ReadManuscriptPage/>
+                        <ReadManuscriptPage />
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/writers-desk">
@@ -67,12 +71,17 @@ function App() {
                         <MyCirclesPage />
                     </ProtectedRoute>
 
+                    {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
+                    <ProtectedRoute exact path="/notification-actions">
+                        <NotificationActionsPage />
+                    </ProtectedRoute>
+
                     <ProtectedRoute exact path="/circles-browser">
                         <BrowserCirclePage />
                     </ProtectedRoute>
-                    
-                    <ProtectedRoute exact path="/search-joined-cirlces">
-                        <SearchJoinedCirclesPage />
+
+                    <ProtectedRoute exact path="/search-circles/:type">
+                        <SearchCirclesPage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">

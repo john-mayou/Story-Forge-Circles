@@ -1,7 +1,7 @@
 const initialState = {
   myJoinedCircleList: [],
   myCreatedCircleList: [],
-  allCirclesList: [],
+  allPublicCirclesList: [],
 };
 
 const circles = (state = initialState, action) => {
@@ -23,6 +23,11 @@ const circles = (state = initialState, action) => {
         ...state,
         myCreatedCircleList: action.payload,
       };
+      case "SET_PUBLIC_CIRCLES_LIST":
+        return {
+          ...state,
+          allPublicCirclesList: action.payload,
+        };
     default:
       return state;
   }

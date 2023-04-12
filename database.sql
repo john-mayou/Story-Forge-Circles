@@ -118,11 +118,24 @@ CREATE TABLE "comments_likes" (
 
 CREATE TABLE "notifications" (
 	"id" serial NOT NULL,
-	"user_id" int NOT NULL,
 	"circle_id" int NOT NULL,
+	"recipient_id" int NOT NULL,
+	"actor_id" int NOT NULL,
+	"nomination_id" int,
 	"type" varchar(255) NOT NULL,
-	"is_accepted" BOOLEAN,
+	"completed" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT "notifications_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "nominations" (
+	"id" serial NOT NULL,
+	"nominated_by_id" int NOT NULL,
+	"nominated_id" int NOT NULL,
+	CONSTRAINT "nominations_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -156,8 +169,14 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_fk2" FOREIGN KEY ("parent_id") R
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk1" FOREIGN KEY ("comment_id") REFERENCES "comments"("id");
 
-ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
-ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("recipient_id") REFERENCES "user"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk2" FOREIGN KEY ("actor_id") REFERENCES "user"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk3" FOREIGN KEY ("nomination_id") REFERENCES "nominations"("id");
+
+ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk0" FOREIGN KEY ("nominated_by_id") REFERENCES "user"("id");
+ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk1" FOREIGN KEY ("nominated_id") REFERENCES "user"("id");
+
 
 
 

@@ -28,7 +28,7 @@ else {
     pool = new pg.Pool({
         host: "localhost",
         port: 5432,
-        database: "story_forge_circles", // 	💥 Change this to the name of your database!
+        database: "Story-Forge-Notifications", // 	💥 Change this to the name of your database!
     });
 }
 

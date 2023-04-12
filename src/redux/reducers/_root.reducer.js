@@ -2,10 +2,10 @@ import { combineReducers } from "redux";
 import errors from "./errors.reducer";
 import user from "./user.reducer";
 import manuscript from "./manuscript";
+import notifications from "./notification.reducer";
 import publicManuscriptList from "./manuscript.public.reducer";
 import writersDeskManuscriptList from "./manuscript.writersdesk.reducer";
 import circles from "./circles.reducer";
-
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
     publicManuscriptList,
     writersDeskManuscriptList,
     circles,
-    
+    notifications,
 });
 
 export default rootReducer;
