@@ -1,7 +1,4 @@
-import { useDispatch } from "react-redux";
-const dispatch = useDispatch();
-
-const notifications = {
+export default {
     // REQUEST TO JOIN
     "request to join - leader action": {
         messageConstructor: ({ circle_name, actor_name }) =>
@@ -9,37 +6,41 @@ const notifications = {
         next_actions: {
             accept: {
                 button_text: "Accept",
-                next_notification_params: ({ actor_id }) => [
-                    {
-                        type: "request to join - leader accepted",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({ actor_id, notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "request to join - leader accepted",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ actor_id, circle_id }) => ({
                         type: "ADD_USER_TO_CIRCLE",
-                        payload: actor_id,
-                    });
-                    dispatch({
+                        payload: { user_id: actor_id, circle_id },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
             reject: {
                 button_text: "Decline",
-                next_notification_params: ({ actor_id }) => [
-                    {
-                        type: "request to join - leader rejection",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "request to join - leader rejection",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
         },
     },
@@ -63,41 +64,39 @@ const notifications = {
         next_actions: {
             accept: {
                 button_text: "Send Invite",
-                next_notification_params: ({
-                    nominated_id,
-                    existing_nomination_id,
-                }) => [
-                    {
-                        type: "member nomination - user action",
-                        recipient_id: nominated_id,
-                        existing_nomination_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ nominated_id, existing_nomination_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user action",
+                            recipient_id: nominated_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
             reject: {
                 button_text: "Decline",
-                next_notification_params: ({
-                    nominated_by_id,
-                    existing_nomination_id,
-                }) => [
-                    {
-                        type: "member nomination - leader rejection",
-                        recipient_id: nominated_by_id,
-                        existing_nomination_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ nominated_id, existing_nomination_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user action",
+                            recipient_id: nominated_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
         },
     },
@@ -114,57 +113,69 @@ const notifications = {
         next_actions: {
             accept: {
                 button_text: "Join",
-                next_notification_params: ({
-                    actor_id,
-                    nominated_by_id,
-                    existing_nomination_id,
-                }) => [
-                    {
-                        type: "member nomination - user accepted",
-                        recipient_id: actor_id,
+                dispatch_actions: [
+                    ({ actor_id, existing_nomination_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user accepted",
+                            recipient_id: actor_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({
+                        nominated_by_id,
                         existing_nomination_id,
-                    },
-                    {
-                        type: "member nomination - user accepted",
-                        recipient_id: nominated_by_id,
-                        existing_nomination_id,
-                    },
-                ],
-                dispatch_actions: ({ recipient_id, notification_id }) => {
-                    dispatch({
+                        circle_id,
+                    }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user accepted",
+                            recipient_id: nominated_by_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({ recipient_id, circle_id }) => ({
                         type: "ADD_USER_TO_CIRCLE",
-                        payload: recipient_id,
-                    });
-                    dispatch({
+                        payload: { user_id: recipient_id, circle_id },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
             reject: {
                 button_text: "Decline",
-                next_notification_params: ({
-                    actor_id,
-                    nominated_by_id,
-                    existing_nomination_id,
-                }) => [
-                    {
-                        type: "member nomination - user rejection",
-                        recipient_id: actor_id,
+                dispatch_actions: [
+                    ({ actor_id, existing_nomination_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user rejected",
+                            recipient_id: actor_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({
+                        nominated_by_id,
                         existing_nomination_id,
-                    },
-                    {
-                        type: "member nomination - user rejection",
-                        recipient_id: nominated_by_id,
-                        existing_nomination_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                        circle_id,
+                    }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "member nomination - user rejected",
+                            recipient_id: nominated_by_id,
+                            circle_id,
+                            existing_nomination_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
         },
     },
@@ -188,37 +199,41 @@ const notifications = {
         next_actions: {
             accept: {
                 button_text: "Join",
-                next_notification_params: ({ actor_id }) => [
-                    {
-                        type: "leader invite member - user accepted",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({ recipient_id, notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "leader invite member - user accepted",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ recipient_id, circle_id }) => ({
                         type: "ADD_USER_TO_CIRCLE",
-                        payload: recipient_id,
-                    });
-                    dispatch({
+                        payload: { user_id: recipient_id, circle_id },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
             reject: {
                 button_text: "Decline",
-                next_notification_params: ({}) => [
-                    {
-                        type: "leader invite member - user rejection",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "leader invite member - user rejection",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
         },
     },
@@ -242,44 +257,44 @@ const notifications = {
         next_actions: {
             accept: {
                 button_text: "Accept",
-                next_notification_params: ({ actor_id }) => [
-                    {
-                        type: "leader invite member - user rejection",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({
-                    recipient_id,
-                    circle_id,
-                    notification_id,
-                }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "leader invite member - user rejection",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ recipient_id, circle_id }) => ({
                         type: "UPDATE_NEW_CIRCLE_LEADER",
                         payload: {
-                            newLeader: recipient_id,
-                            circleId: circle_id,
+                            new_leader: recipient_id,
+                            circle_id,
                         },
-                    });
-                    dispatch({
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
             reject: {
                 button_text: "Decline",
-                next_notification_params: ({ actor_id }) => [
-                    {
-                        type: "leader invite member - user rejection",
-                        recipient_id: actor_id,
-                    },
-                ],
-                dispatch_actions: ({ notification_id }) => {
-                    dispatch({
+                dispatch_actions: [
+                    ({ actor_id, circle_id }) => ({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                            type: "leader invite member - user rejection",
+                            recipient_id: actor_id,
+                            circle_id,
+                        },
+                    }),
+                    ({ notification_id }) => ({
                         type: "COMPLETE_NOTIFICATION",
                         payload: notification_id,
-                    });
-                },
+                    }),
+                ],
             },
         },
     },
@@ -312,5 +327,3 @@ const notifications = {
 // "nominated_by_id" int NOT NULL,
 // "nominated_id" int NOT NULL,
 // );
-
-module.exports = { notifications };
