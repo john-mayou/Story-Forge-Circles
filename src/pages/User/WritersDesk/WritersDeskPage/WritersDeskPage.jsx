@@ -32,7 +32,7 @@ function WritersDeskPage() {
     dispatch({
       type: "ADD_MANUSCRIPT",
       payload: newManuscript,
-    });
+    })
 
     setNewTitle("");
     setNewBody("");
@@ -40,6 +40,12 @@ function WritersDeskPage() {
 
   const handleDelete = (id) => {
     console.log("clicked delete on", id);
+
+    dispatch({
+      type: "REMOVE_MANUSCRIPT",
+      payload : id
+    })
+
   };
 
   return (

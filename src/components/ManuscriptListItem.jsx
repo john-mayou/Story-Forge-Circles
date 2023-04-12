@@ -9,6 +9,7 @@ import { useHistory, Link } from "react-router-dom";
  */
 function ManuscriptListItem(props) {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   let preview = props.manuscript.body;
 
@@ -23,10 +24,20 @@ function ManuscriptListItem(props) {
 
     switch (props.currentPage) {
       case "WritersDeskPage":
-        history.push("/reading-list");
+        dispatch({
+          type: "SET_MANUSCRIPT",
+          payload: props.manuscript
+        });
+        history.push("/manuscript-read");
+
         break;
       case "ReadingListPage":
-        history.push("/writers-desk");
+        dispatch({
+          type: "SET_MANUSCRIPT",
+          payload: props.manuscript
+        });
+
+        history.push("/manuscript-read");
         break;
     }
   };

@@ -36,10 +36,20 @@ function* addManuscript(action) {
 
 }
 
+function* removeManuscript(action) {
+    try {
+        yield axios.delete(`/manuscript/${action.payload}`);
+        yield put({ type: "FETCH_WRITERS_DESK_LIST" });
+    } catch (error) {
+        console.log('remove manuscript error in saga', error);
+    }
+}
+
 function* publicManuscriptListSaga() {
     yield takeLatest('FETCH_PUBLIC_MANUSCRIPT_LIST', fetchPublicManuscriptList);
     yield takeLatest('FETCH_WRITERS_DESK_LIST', fetchWritersDeskList);
     yield takeLatest('ADD_MANUSCRIPT', addManuscript)
+    yield takeLatest('REMOVE_MANUSCRIPT', removeManuscript)
 }
 
 export default publicManuscriptListSaga;

@@ -111,4 +111,47 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
     });
 });
 
+router.delete("/:id", rejectUnauthenticated, async (req, res) => {
+  const userId = req.user.id;
+  const manuscriptId = req.params.id;
+
+  console.log('userID', req.user.id);
+  console.log('manuscriptId', req.params.id);
+
+  console.log('in delete');
+
+  const connection = await pool.connect();
+
+  try {
+    await connection.query("BEGIN");
+
+    const deleteManuscriptShelvesQueryText = `
+    DELETE FROM "manuscript_shelf" 
+    USING "user" 
+    WHERE "manuscript_shelf".manuscript_id = $1 AND "user".id = $2;`;
+
+    await connection.query(deleteManuscriptShelvesQueryText, [manuscriptId, userId]);
+
+    const deleteManuscriptQueryText = `
+    DELETE FROM "manuscripts" 
+    USING "user" 
+    WHERE "manuscripts".id = $1 AND "user".id = $2;
+    `;
+
+    await connection.query(deleteManuscriptQueryText, [manuscriptId, userId]);
+
+    await connection.query("COMMIT");
+    res.sendStatus(201);
+  } catch (error) {
+    await connection.query("ROLLBACK");
+    console.log(`Transaction Error - Rolling back transfer`, error);
+    res.sendStatus(500);
+  } finally {
+    // Always runs - both after successful try & after catch
+    // Put the client connection back in the pool
+    // This is super important!
+    connection.release();
+  }
+});
+
 module.exports = router;
