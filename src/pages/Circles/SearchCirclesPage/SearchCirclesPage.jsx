@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import CircleTableView from "../../../components/CircleTableView";
+import CircleTableView from "../CircleTableView";
+import SearchCircleForm from "../SearchCircleForm";
 
 export default function SearchCirclesPage() {
   // Get the 'type' parameter from the URL
@@ -18,8 +19,7 @@ export default function SearchCirclesPage() {
     "term"
   );
 
-  // Set up state for the search input and search term
-  const [searchInput, setSearchInput] = useState("");
+  // Set up state for the search term
   const [searchTerm, setSearchTerm] = useState(searchedTermFromQuery);
 
   // Filter the circle list based on the search term
@@ -28,18 +28,6 @@ export default function SearchCirclesPage() {
       ? true
       : circle.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Handle the search button click event
-  const handleSearch = () => {
-    setSearchTerm(searchInput);
-  };
-
-  // Handle the search input key press event
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      setSearchTerm(searchInput);
-    }
-  };
 
   // Fetch the circle data if it hasn't already been fetched
   useEffect(() => {
@@ -62,24 +50,15 @@ export default function SearchCirclesPage() {
   // Determine the type of the circle list based on the URL parameter.
   const circleListType = type === "myJoinedCircleList" ? "Joined" : "Public";
 
+  const handleSearch = (searchTerm) => {
+    setSearchTerm(searchTerm);
+  };
+
   return (
     <main className="content-main">
       <h1>Search {circleListType} Circles</h1>
 
-      {/* Search input */}
-      <input
-        type="text"
-        className="search-input"
-        placeholder="Search by circle name"
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-        onKeyPress={handleKeyPress}
-      />
-
-      {/* Search button */}
-      <button className="search-btn" onClick={handleSearch}>
-        Search
-      </button>
+      <SearchCircleForm onSearch={handleSearch} />
 
       {/* Search results */}
       <h2>Search Results for "{searchTerm}"</h2>

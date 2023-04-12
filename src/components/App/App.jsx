@@ -21,7 +21,7 @@ import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
-import SearchCirclesPage from "../../pages/Search/SearchCirclesPage/SearchCirclesPage";
+import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
 
 
 // Login Pages

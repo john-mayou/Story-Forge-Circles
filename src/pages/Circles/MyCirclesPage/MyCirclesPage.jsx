@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import CircleTableView from "../../../components/CircleTableView";
+import CircleTableView from "../CircleTableView";
+import SearchCircleForm from "../SearchCircleForm";
 
 function MyCirclesPage() {
   const { id, username } = useSelector((store) => store.user);
@@ -12,7 +13,6 @@ function MyCirclesPage() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [circleName, setCircleName] = useState("");
   const [circleDescription, setCircleDescription] = useState("");
@@ -29,15 +29,8 @@ function MyCirclesPage() {
     });
   }, [id, dispatch]);
 
-  const handleSearch = () => {
+  const handleSearch = (searchTerm) => {
     history.push(`/search-circles/myJoinedCircleList?term=${searchTerm}`);
-  };
-
-  //the "Enter" key (keyCode 13)
-  const handleKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      handleSearch();
-    }
   };
 
   const handleCreateCircle = () => {
@@ -67,17 +60,7 @@ function MyCirclesPage() {
       >
         Browser Circle
       </button>
-      <input
-        type="text"
-        className="search-joined-circles"
-        placeholder="Search by name"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <button className="search-btn-joined-circle" onClick={handleSearch}>
-        search!
-      </button>
+      <SearchCircleForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
       <CircleTableView circlelist={myJoinedCircleList} />
