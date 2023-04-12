@@ -42,7 +42,16 @@ function NotificationActionsPage() {
         });
     };
 
-    const LeaderAddMember = () => {};
+    const LeaderAddMember = () => {
+        dispatch({
+            type: "CREATE_NEW_NOTIFICATION",
+            payload: {
+                circle_id: circle.id,
+                recipient_id: 3,
+                type: "leader invite member - user action",
+            },
+        });
+    };
 
     const LeaderNominateLeader = () => {};
 
@@ -75,7 +84,6 @@ function NotificationActionsPage() {
             <div>
                 {notifications.map((notification) => {
                     const attributes = notificationsObject[notification.type];
-                    console.log("notification", notification);
 
                     return (
                         <div key={notification.notification_id}>
