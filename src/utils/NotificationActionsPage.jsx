@@ -47,13 +47,22 @@ function NotificationActionsPage() {
             type: "CREATE_NEW_NOTIFICATION",
             payload: {
                 circle_id: circle.id,
-                recipient_id: 3,
+                recipient_id: 3, // DUMMY DATA HARDCODED
                 type: "leader invite member - user action",
             },
         });
     };
 
-    const LeaderNominateLeader = () => {};
+    const LeaderNominateLeader = () => {
+        dispatch({
+            type: "CREATE_NEW_NOTIFICATION",
+            payload: {
+                circle_id: circle.id,
+                recipient_id: 3, // DUMMY DATA HARDCODED
+                type: "leader nominate leader - user action",
+            },
+        });
+    };
 
     const executeNextActions = (buttonType, notification) => {
         // dispatch all actions of the array for the given type

@@ -269,7 +269,7 @@ export default {
                     ({ actor_id, circle_id }) => ({
                         type: "CREATE_NEW_NOTIFICATION",
                         payload: {
-                            type: "leader invite member - user rejection",
+                            type: "leader nominate leader - user accepted",
                             recipient_id: actor_id,
                             circle_id,
                         },
@@ -293,7 +293,7 @@ export default {
                     ({ actor_id, circle_id }) => ({
                         type: "CREATE_NEW_NOTIFICATION",
                         payload: {
-                            type: "leader invite member - user rejection",
+                            type: "leader nominate leader - user rejection",
                             recipient_id: actor_id,
                             circle_id,
                         },
