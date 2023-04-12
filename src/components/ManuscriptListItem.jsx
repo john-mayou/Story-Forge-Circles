@@ -28,7 +28,7 @@ function ManuscriptListItem(props) {
           type: "SET_MANUSCRIPT",
           payload: props.manuscript
         });
-        history.push("/manuscript-read");
+        history.push("/manuscript-write");
 
         break;
       case "ReadingListPage":
