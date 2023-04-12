@@ -59,8 +59,12 @@ export default {
 
     // MEMBER NOMINATION
     "member nomination - leader action": {
-        messageConstructor: ({ circle_name, actor_name, nominated_by_name }) =>
-            `${nominated_by_name} has nominated ${actor_name} to be a part of ${circle_name}!`,
+        messageConstructor: ({
+            circle_name,
+            nominated_name,
+            nominated_by_name,
+        }) =>
+            `${nominated_by_name} has nominated ${nominated_name} to be a part of ${circle_name}!`,
         next_actions: {
             accept: {
                 button_text: "Send Invite",
@@ -83,11 +87,15 @@ export default {
             reject: {
                 button_text: "Decline",
                 dispatch_actions: [
-                    ({ nominated_id, existing_nomination_id, circle_id }) => ({
+                    ({
+                        nominated_by_id,
+                        existing_nomination_id,
+                        circle_id,
+                    }) => ({
                         type: "CREATE_NEW_NOTIFICATION",
                         payload: {
-                            type: "member nomination - user action",
-                            recipient_id: nominated_id,
+                            type: "member nomination - leader rejection",
+                            recipient_id: nominated_by_id,
                             circle_id,
                             existing_nomination_id,
                         },
@@ -152,7 +160,7 @@ export default {
                     ({ actor_id, existing_nomination_id, circle_id }) => ({
                         type: "CREATE_NEW_NOTIFICATION",
                         payload: {
-                            type: "member nomination - user rejected",
+                            type: "member nomination - user rejection",
                             recipient_id: actor_id,
                             circle_id,
                             existing_nomination_id,
@@ -165,7 +173,7 @@ export default {
                     }) => ({
                         type: "CREATE_NEW_NOTIFICATION",
                         payload: {
-                            type: "member nomination - user rejected",
+                            type: "member nomination - user rejection",
                             recipient_id: nominated_by_id,
                             circle_id,
                             existing_nomination_id,

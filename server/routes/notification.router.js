@@ -36,6 +36,7 @@ router.get("/", (req, res) => {
         n.actor_id,
         u.username AS "actor_name",
         n.recipient_id,
+        n.nomination_id AS "existing_nomination_id",
         u4.username,
         n.nomination_id,
         nom.nominated_by_id,
@@ -84,11 +85,11 @@ router.post("/new", async (req, res) => {
         if (req.body.new_nomination) {
             nominationResult = await pool.query(nominationInsertion, [
                 req.user.id,
-                req.body.nomination,
+                req.body.new_nomination,
             ]);
-            nomination_id = nominationResult?.rows[0].id;
-        } else if (req.body.existing_nomination) {
-            nomination_id = req.body.existing_nomination;
+            nomination_id = nominationResult.rows[0].id;
+        } else if (req.body.existing_nomination_id) {
+            nomination_id = req.body.existing_nomination_id;
         }
 
         // Second: insert notification into table
@@ -101,7 +102,7 @@ router.post("/new", async (req, res) => {
             circle_id,
             recipient_id,
             req.user.id, // actor_id
-            nomination_id || null, // null OR id
+            nomination_id, // null OR id
             type,
         ]);
 

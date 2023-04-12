@@ -30,7 +30,17 @@ function NotificationActionsPage() {
         });
     };
 
-    const MemberNomination = () => {};
+    const MemberNomination = () => {
+        dispatch({
+            type: "CREATE_NEW_NOTIFICATION",
+            payload: {
+                circle_id: circle.id,
+                recipient_id: circle.owner_id,
+                type: "member nomination - leader action",
+                new_nomination: 4, // DUMMY DATA HARDCODED
+            },
+        });
+    };
 
     const LeaderAddMember = () => {};
 
@@ -41,6 +51,7 @@ function NotificationActionsPage() {
         notificationsObject[notification.type].next_actions[
             buttonType
         ].dispatch_actions.map((paramConstructor) => {
+            console.log("param constructor", paramConstructor);
             dispatch(paramConstructor(notification));
         });
     };
@@ -64,10 +75,13 @@ function NotificationActionsPage() {
             <div>
                 {notifications.map((notification) => {
                     const attributes = notificationsObject[notification.type];
+                    console.log("notification", notification);
 
                     return (
                         <div key={notification.notification_id}>
-                            <p>{attributes.messageConstructor(notification)}</p>
+                            <p>
+                                {attributes?.messageConstructor(notification)}
+                            </p>
                             {attributes.next_actions ? (
                                 <div>
                                     <button
