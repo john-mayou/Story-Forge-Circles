@@ -47,10 +47,22 @@ function* createNewCircle(action) {
   }
 }
 
+function* fetchAllPublicCirclesList(action) {
+    try {
+        const response = yield axios.get(`api/circles/public`);
+        yield put({ type: "SET_PUBLIC_CIRCLES_LIST", payload: response.data });
+      } catch (error) {
+        console.log("Get all public cirlces list request failed in Saga", error);
+      }
+}
+
+
+
 function* circlesSaga() {
   yield takeLatest("FETCH_MY_JOINED_CIRCLES", fetchMyJoinedCirclesList);
   yield takeLatest("FETCH_MY_CREATED_CIRCLES", fetchMyCreatedCirclesList);
   yield takeLatest('CREATE_NEW_CIRCLE', createNewCircle);
+  yield takeLatest('FETCH_ALL_PUBLIC_CIRCLES', fetchAllPublicCirclesList)
 }
 
 export default circlesSaga;
