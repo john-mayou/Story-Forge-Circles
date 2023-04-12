@@ -5,14 +5,6 @@ import notificationsObject from "../utils/notifications";
 function NotificationActionsPage() {
     const dispatch = useDispatch();
 
-    // CIRCLE DUMMY DATA
-    const circle = {
-        id: 1,
-        name: "CircleTestName",
-        description: "CircleTestDescription",
-        owner_id: 1,
-    };
-
     const notifications = useSelector((store) => store.notifications);
 
     useEffect(() => {

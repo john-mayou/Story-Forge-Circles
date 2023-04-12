@@ -3,30 +3,6 @@ const pool = require("../modules/pool");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-    // get all notifications
-    // WHERE recipient_id = req.user.id
-
-    // FROM DATABASE
-    // circle_id
-    // circle_name
-    // type
-    // actor_id
-    // actor_name
-    // nomination_id
-    // nominated_by_id
-    // nominated_by_name
-    // nominated_id
-    // nominated_name
-
-    // THINGS TO SEND BACK
-    // message:string
-    // action_required:boolean
-    // action_button_names:JSON
-    // type
-    //
-
-    // need recipient id
-    // need notification id
     const notificationsQuery = `
     SELECT 
         n.id AS "notification_id",
@@ -65,13 +41,6 @@ router.get("/", (req, res) => {
 router.post("/new", async (req, res) => {
     const connection = await pool.connect();
     const { circle_id, recipient_id, type } = req.body;
-    // req.body = {
-    //    circle: (circle object),
-    //    recipient_id: 2,
-    //    type: "request to join.....",
-    //    new_nomination: null | id,
-    //    existing_nomination: null | id
-    // }
 
     try {
         await connection.query("BEGIN");
@@ -102,7 +71,7 @@ router.post("/new", async (req, res) => {
             circle_id,
             recipient_id,
             req.user.id, // actor_id
-            nomination_id, // null OR id
+            nomination_id, // null OR integer
             type,
         ]);
 
