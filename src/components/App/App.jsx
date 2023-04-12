@@ -20,7 +20,12 @@ import Header from "../../layout/Header/Header";
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
-import MyCirclesPage from "../../pages/User/MyCircles/MyCirclesPage/MyCirclesPage";
+import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
+
+// Circles Pages
+import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
+import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
+import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -49,6 +54,10 @@ function App() {
                         <ReadingListPage />
                     </ProtectedRoute>
 
+                    <ProtectedRoute exact path="/manuscript-read">
+                        <ReadManuscriptPage />
+                    </ProtectedRoute>
+
                     <ProtectedRoute exact path="/writers-desk">
                         <WritersDeskPage />
                     </ProtectedRoute>
@@ -57,8 +66,17 @@ function App() {
                         <MyCirclesPage />
                     </ProtectedRoute>
 
+                    {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
                     <ProtectedRoute exact path="/notification-actions">
                         <NotificationActionsPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/circles-browser">
+                        <BrowserCirclePage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/search-circles/:type">
+                        <SearchCirclesPage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
