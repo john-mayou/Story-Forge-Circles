@@ -3,6 +3,11 @@ import axios from "axios";
 
 function* fetchNotifications() {
     try {
+        const notificationsResult = yield axios.get("/api/notification");
+        yield put({
+            type: "SET_NOTIFICATIONS",
+            payload: notificationsResult.data,
+        });
     } catch (error) {
         console.log("Error fetching notifications", error);
     }
@@ -10,6 +15,9 @@ function* fetchNotifications() {
 
 function* createNewNotification(action) {
     try {
+        console.log("CREATE NEW NOTIFICATION", action.payload);
+        yield axios.post("api/notification/new", action.payload);
+        yield console.log("Successfully created new notification");
     } catch (error) {
         console.log("Error creating new notification", error);
     }
@@ -17,6 +25,9 @@ function* createNewNotification(action) {
 
 function* addUserToCircle(action) {
     try {
+        console.log("ADD USER TO CIRCLE", action.payload);
+        yield axios.post("/api/notification/add-member", action.payload);
+        yield console.log("Successfully added member");
     } catch (error) {
         console.log("Error completing notification", error);
     }
@@ -24,6 +35,8 @@ function* addUserToCircle(action) {
 
 function* updateNewCircleLeader(action) {
     try {
+        yield axios.put("api/notification/new-leader", action.payload);
+        yield console.log("Successfully updated circle leader");
     } catch (error) {
         console.log("Error adding user to circle", error);
     }
@@ -31,6 +44,9 @@ function* updateNewCircleLeader(action) {
 
 function* completeNotification(action) {
     try {
+        console.log("COMPLETING NOTIFICATION", action.payload);
+        yield axios.put(`/api/notification/complete/${action.payload}`);
+        yield put({ type: "FETCH_NOTIFICATIONS" });
     } catch (error) {
         console.log("Error update new circle leader", error);
     }
