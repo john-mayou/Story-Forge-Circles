@@ -33,7 +33,8 @@ function NotificationActionsPage() {
             circle_id: circle.id,
             type: "request to join - leader action",
             recipient_id: circle.owner_id,
-            nomination: null,
+            new_nomination: null, // new_nomination
+            // existing_nomination_id:
         };
 
         axios

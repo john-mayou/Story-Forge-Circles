@@ -25,6 +25,8 @@ router.get("/", (req, res) => {
     // type
     //
 
+    // need recipient id
+    // need notification id
     const notificationsQuery = `
         SELECT 
             c.id AS "circle_id",
@@ -56,12 +58,13 @@ router.get("/", (req, res) => {
 
 router.post("/new", async (req, res) => {
     const connection = await pool.connect();
-    const { circle_id, nomination, recipient_id, type } = req.body;
+    const { circle_id, recipient_id, type } = req.body;
     // req.body = {
     //    circle: (circle object),
     //    recipient_id: 2,
     //    type: "request to join.....",
-    //    nomination: null | id,
+    //    new_nomination: null | id,
+    //    existing_nomination: null | id
     // }
 
     try {
@@ -72,12 +75,15 @@ router.post("/new", async (req, res) => {
             VALUES ($1, $2) RETURNING id;
         `;
 
-        let nominationResult;
-        if (nomination) {
+        let nomination_id;
+        if (req.body.new_nomination) {
             nominationResult = await pool.query(nominationInsertion, [
                 req.user.id,
-                nomination,
+                req.body.nomination,
             ]);
+            nomination_id = nominationResult?.rows[0].id;
+        } else if (req.body.existing_nomination) {
+            nomination_id = req.body.existing_nomination;
         }
 
         // Second: insert notification into table
@@ -90,7 +96,7 @@ router.post("/new", async (req, res) => {
             circle_id,
             recipient_id,
             req.user.id, // actor_id
-            nominationResult?.rows[0].id || null, // null OR id
+            nomination_id || null, // null OR id
             type,
         ]);
 
