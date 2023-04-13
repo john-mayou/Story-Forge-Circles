@@ -10,14 +10,18 @@ function WriteManuscriptPage() {
   const params = useParams();
 
   useEffect(() => {
+    console.log('in use effect')
     dispatch({
       type: "FETCH_MANUSCRIPT",
       payload: params.id,
     });
-  }, []);
 
-  const [newTitle, setNewTitle] = useState(manuscript.title);
-  const [newBody, setNewBody] = useState(manuscript.body);
+    setNewTitle(manuscript.title);
+    setNewBody(manuscript.body);
+  }, [manuscript]);
+
+  const [newTitle, setNewTitle] = useState('');
+  const [newBody, setNewBody] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (e) => {

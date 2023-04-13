@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ManuscriptListItem from "../../../../components/ManuscriptListItem";
+import { useHistory } from "react-router-dom";
+
 
 function ReadingListPage() {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const publicManuscriptList = useSelector(
     (store) => store.publicManuscriptList
@@ -31,6 +34,9 @@ function ReadingListPage() {
           </div>
         );
       })}
+
+      <h2>Explore</h2>
+      <button onClick={() => {history.push(`/circles`)}}>My Circles</button>
     </main>
   );
 }
