@@ -34,8 +34,6 @@ function WritersDeskPage() {
       public: isChecked,
     };
 
-    console.log("newManuscript", newManuscript);
-
     dispatch({
       type: "ADD_MANUSCRIPT",
       payload: newManuscript,
@@ -52,7 +50,6 @@ function WritersDeskPage() {
 
   //Deletes Manuscript from Database
   const handleDelete = (id) => {
-    console.log("clicked delete on", id);
 
     dispatch({
       type: "REMOVE_MANUSCRIPT",

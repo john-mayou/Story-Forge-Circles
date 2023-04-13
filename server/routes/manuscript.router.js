@@ -51,13 +51,11 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
     });
 });
 
-
 /**
  * GET Single  Manuscripts route
  */
 router.get("/:id", (req, res) => {
-
-  const id = req.params.id
+  const id = req.params.id;
 
   const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username FROM "manuscripts"
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
@@ -81,9 +79,9 @@ router.get("/:id", (req, res) => {
  * POST Manuscript route
  */
 router.post("/", rejectUnauthenticated, async (req, res) => {
-  title = req.body.title;
-  body = req.body.body;
-  public = req.body.public;
+  const title = req.body.title;
+  const body = req.body.body;
+  const public = req.body.public;
 
   const connection = await pool.connect();
   try {
@@ -98,7 +96,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     const manuscriptResult = await connection.query(manuscriptInsertQueryText, [
       title,
       body,
-      public
+      public,
     ]);
     const newManuscriptId = manuscriptResult.rows[0].id;
 
@@ -141,18 +139,40 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
  * PUT Manuscript route
  */
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  // const userId = req.user.id;
+
   const manuscriptId = req.params.id;
   const title = req.body.payload.title;
   const body = req.body.payload.body;
   const public = req.body.payload.public;
 
-  const userId = req.user.id;
+  const userParamId = req.user.id;
 
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
+    //Check to make sure content to be updated exists and belongs to the currently authenticated user.
+    const isManuscriptOwnerQueryText = `
+    SELECT EXISTS (
+      SELECT * FROM "user" AS u
+      JOIN "shelves" AS s ON u.id = s.user_id
+      JOIN "manuscript_shelf" AS ms ON ms.shelf_id = s.id
+      JOIN "manuscripts" AS m ON m.id = ms.manuscript_id
+      WHERE u.id = $1 AND m.id = $2
+    ) AS is_manuscript_owner;
+    `;
+
+    const isOwnerResult = await connection.query(isManuscriptOwnerQueryText, [
+      userParamId,
+      manuscriptId,
+    ]);
+    const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
+
+    //If the content does not exist or does not belong to the user, we send 403 status forbidden and break.
+    if (!isOwner) {
+      res.sendStatus(403);
+      return;
+    }
     //NOT SECURE FROM POSTMAN NEED TO UPDATE TO INCLUDE USER ID
     const manuscriptUpdateQueryText = `UPDATE "manuscripts"
     SET title = $1, body = $2, public = $3
@@ -191,26 +211,44 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   try {
     await connection.query("BEGIN");
 
+    //Check to make sure content to be deleted exists and belongs to the currently authenticated user.
+    const isManuscriptOwnerQueryText = `
+    SELECT EXISTS (
+      SELECT * FROM "user" AS u
+      JOIN "shelves" AS s ON u.id = s.user_id
+      JOIN "manuscript_shelf" AS ms ON ms.shelf_id = s.id
+      JOIN "manuscripts" AS m ON m.id = ms.manuscript_id
+      WHERE u.id = $1 AND m.id = $2
+    ) AS is_manuscript_owner;
+    `;
+
+    const isOwnerResult = await connection.query(isManuscriptOwnerQueryText, [
+      userId,
+      manuscriptId,
+    ]);
+    const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
+
+    //If the content does not exist or does not belong to the user, we send status 403 forbidden and break.
+    if (!isOwner) {
+      res.sendStatus(403);
+      return;
+    }
+
     const deleteManuscriptShelvesQueryText = `
     DELETE FROM "manuscript_shelf" 
-    USING "user" 
-    WHERE "manuscript_shelf".manuscript_id = $1 AND "user".id = $2;`;
+    WHERE "manuscript_shelf".manuscript_id = $1`;
 
-    await connection.query(deleteManuscriptShelvesQueryText, [
-      manuscriptId,
-      userId,
-    ]);
+    await connection.query(deleteManuscriptShelvesQueryText, [manuscriptId]);
 
     const deleteManuscriptQueryText = `
     DELETE FROM "manuscripts" 
-    USING "user" 
-    WHERE "manuscripts".id = $1 AND "user".id = $2;
+    WHERE "manuscripts".id = $1;
     `;
 
-    await connection.query(deleteManuscriptQueryText, [manuscriptId, userId]);
+    await connection.query(deleteManuscriptQueryText, [manuscriptId]);
 
     await connection.query("COMMIT");
-    res.sendStatus(201);
+    res.sendStatus(204);
   } catch (error) {
     await connection.query("ROLLBACK");
     console.log(`Transaction Error - Rolling back transfer`, error);
