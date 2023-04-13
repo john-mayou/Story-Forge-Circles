@@ -51,7 +51,7 @@ function* fetchCircleManuscriptsList(action) {
   console.log('action.payload}', action.payload)
   try {
     const id = action.payload;
-    const response = yield axios.get(`api/circles/manuscript?id=${id}`);
+    const response = yield axios.get(`/api/circles/manuscript?id=${id}`);
     yield put({ type: "SET_CIRCLE_MANUSCRIPTS_LIST", payload: response.data });
   } catch (error) {
     console.log("Get circle manuscripts list request failed in Saga", error);
@@ -62,7 +62,7 @@ function* fetchUserManuscriptsNotInCircle(action) {
   console.log('action.payload}', action.payload)
   try {
     const id = action.payload;
-    const response = yield axios.get(`api/circles/userManuscriptNotInCircle?id=${id}`);
+    const response = yield axios.get(`/api/circles/userManuscriptNotInCircle?id=${id}`);
     const manuscripts = response.data;
     yield put({ type: "SET_USER_MANUSCRIPTS_NOT_IN_CIRCLE", payload: response.data });
     if (action.callback) {

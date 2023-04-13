@@ -3,6 +3,9 @@ const pool = require("../modules/pool");
 const { restart } = require("nodemon");
 const router = express.Router();
 
+/**
+ * POST - create circle manuscript 
+ */
 router.post("/createCircleManuscript", async (req, res) => {
   const { selectedManuscriptsId, circle_id } = req.body;
 
@@ -127,20 +130,25 @@ router.post("/", async (req, res) => {
 router.get("/manuscript", async (req, res) => {
   try {
     const { id } = req.query;
+  
     const circleManuscriptsList = await pool.query(
-      `SELECT manuscripts.*
-       FROM manuscripts
-       JOIN circle_manuscript
-         ON manuscripts.id = circle_manuscript.manuscript_id
-       WHERE circle_manuscript.circle_id = $1`,
-      [id]
-    );
-    res.json(circleManuscriptsList.rows);
+      
+      `
+      SELECT manuscripts.title, manuscripts.body, circle_manuscript.circle_id
+      FROM manuscripts
+      INNER JOIN circle_manuscript
+      ON manuscripts.id = circle_manuscript.manuscript_id
+      WHERE circle_manuscript.id = $1
+    `,
+    [id]
+  );
+  res.json(circleManuscriptsList.rows[0]);
   } catch (error) {
-    console.error("Error fetching all public circles:", error);
+    console.error("Error fetching all manuscripts in circle:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 /**
  * GET all user's manuscript list 

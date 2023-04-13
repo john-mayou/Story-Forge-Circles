@@ -12,11 +12,11 @@ export default function CircleDashboard() {
     (store) => store.circles
   );
 
-  console.log('userManuscriptNotInCircle', userManuscriptNotInCircle)
+  console.log("userManuscriptNotInCircle", userManuscriptNotInCircle);
 
   const [sharedManuscripts, setSharedManuscripts] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
-  
+
   const handleSearch = () => {
     console.log("here search in circledashboard");
   };
@@ -44,17 +44,17 @@ export default function CircleDashboard() {
   };
 
   const handleShareManuscript = (selectedManuscriptsId) => {
-    console.log('selectedManuscriptsId', selectedManuscriptsId)
-    setShowShareModal(false)
+    console.log("selectedManuscriptsId", selectedManuscriptsId);
+    setShowShareModal(false);
     const payload = {
       selectedManuscriptsId,
-      circle_id
-    }
+      circle_id,
+    };
     dispatch({
       type: "CREATE_CIRCLE_MANUSCRIPT",
       payload,
-    })
-  }
+    });
+  };
 
   return (
     <main className="content-main">
@@ -73,14 +73,24 @@ export default function CircleDashboard() {
         </button>
         <h3>SHARED MANUSCRIPTS LIST</h3>
         {/* <ul>
-          {sharedManuscripts.map((manuscript) => (
+          {circleManuscriptsList.map((manuscript) => (
             <li key={manuscript.id}>{manuscript.title}</li>
           ))}
         </ul> */}
+
+        {/* <ul>
+          {Array.isArray(circleManuscriptsList) &&
+            circleManuscriptsList.map((manuscript) => (
+              <li key={manuscript.id}>{manuscript.title}</li>
+            ))}
+        </ul> */}
+        
       </div>
 
       <div>
-        <button onClick={() => getUserAllManuscriptList()}>Share Manuscript</button>
+        <button onClick={() => getUserAllManuscriptList()}>
+          Share Manuscript
+        </button>
       </div>
 
       <div>
@@ -96,10 +106,11 @@ export default function CircleDashboard() {
           manuscripts={userManuscriptNotInCircle}
           circleId={circle_id}
           closeModal={() => setShowShareModal(false)}
-          onShare={(selectedManuscriptsId) => handleShareManuscript(selectedManuscriptsId)}
+          onShare={(selectedManuscriptsId) =>
+            handleShareManuscript(selectedManuscriptsId)
+          }
         />
       )}
-
     </main>
   );
 }
