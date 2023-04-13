@@ -75,6 +75,7 @@ function* fetchUserManuscriptsNotInCircle(action) {
 
 
 function* createCircleManuscript(action) {
+  console.log('action.payload====', action.payload)
   try {
     const data = JSON.stringify(action.payload); // convert to string
     yield axios.post("/api/circles/createCircleManuscript", data, {
@@ -82,10 +83,10 @@ function* createCircleManuscript(action) {
           "Content-Type": "application/json", //Setting the Content-Type header to "application/json" is important as it tells the server that the request payload is in JSON format and it needs to be parsed accordingly. Without this header, the server may try to parse the data in a different format and may result in errors.
         },
     });
-    // yield put({
-    //   type: "FETCH_MY_CREATED_CIRCLES",
-    //   payload: action.payload.ownerId,
-    // });
+    yield put({
+      type: "FETCH_CIRCLE_MANUSCRIPTS_LIST",
+      payload: action.payload.circle_id,
+    });
   } catch (error) {
     console.log("Create new circle manuscript request failed in saga", error);
   }
