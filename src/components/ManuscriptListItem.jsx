@@ -19,11 +19,7 @@ function ManuscriptListItem(props) {
   }
 
   const handleManuscriptClick = () => {
-        dispatch({
-          type: "SET_MANUSCRIPT",
-          payload: props.manuscript,
-        });
-        history.push("/manuscript-read");
+        history.push(`/manuscript-read/${props.manuscript.id}`);
   };
 
   return (

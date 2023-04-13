@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function WriteManuscriptPage() {
   const history = useHistory();
   const manuscript = useSelector((store) => store.manuscript);
   const dispatch = useDispatch();
+  const params = useParams();
+
+  useEffect(() => {
+    dispatch({
+      type: "FETCH_MANUSCRIPT",
+      payload: params.id,
+    });
+  }, []);
 
   const [newTitle, setNewTitle] = useState(manuscript.title);
   const [newBody, setNewBody] = useState(manuscript.body);
@@ -44,7 +53,7 @@ function WriteManuscriptPage() {
           <br></br>
           <br></br>
           <textarea
-            classname="manuscript-text-area"
+            className="manuscript-text-area"
             rows="25"
             cols="75"
             value={newBody}

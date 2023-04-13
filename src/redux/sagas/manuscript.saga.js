@@ -24,6 +24,16 @@ function* fetchWritersDeskList() {
   }
 }
 
+function* fetchManuscript(action) {
+    try {
+        // console.log('in list of teams');
+        const response = yield axios.get(`/manuscript/${action.payload}`);
+        yield put({ type: "SET_MANUSCRIPT", payload: response.data[0] });
+      } catch (error) {
+        console.log("Get Manuscript by ID request failed in Saga", error);
+      }
+}
+
 function* addManuscript(action) {
   try {
     yield axios.post("/manuscript", action.payload);
@@ -56,6 +66,7 @@ function* updateManuscript(action) {
 function* publicManuscriptListSaga() {
   yield takeLatest("FETCH_PUBLIC_MANUSCRIPT_LIST", fetchPublicManuscriptList);
   yield takeLatest("FETCH_WRITERS_DESK_LIST", fetchWritersDeskList);
+  yield takeLatest("FETCH_MANUSCRIPT", fetchManuscript);
   yield takeLatest("ADD_MANUSCRIPT", addManuscript);
   yield takeLatest("REMOVE_MANUSCRIPT", removeManuscript);
   yield takeLatest("UPDATE_MANUSCRIPT", updateManuscript);

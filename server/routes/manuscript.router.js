@@ -51,6 +51,35 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
     });
 });
 
+
+/**
+ * GET Single  Manuscripts route
+ */
+router.get("/:id", (req, res) => {
+
+  const id = req.params.id
+  console.log('id', id)
+
+  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
+    JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
+    JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
+    JOIN "user" ON "user".id = "shelves".user_id
+    WHERE "manuscripts".id = $1
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
+
+  pool
+    .query(query, [id])
+    .then((result) => {
+
+      console.log('result rows', result.rows[0]);
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log("ERROR: Get Manuscript by id failed", err);
+      res.sendStatus(500);
+    });
+});
+
 /**
  * POST Manuscript route
  */
@@ -120,6 +149,8 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const title = req.body.payload.title;
   const body = req.body.payload.body;
   const public = req.body.payload.public;
+
+  const userId = req.user.id;
 
   const connection = await pool.connect();
   try {

@@ -47,11 +47,7 @@ function WritersDeskPage() {
 
   //Sets the Manuscript Reducer to currently clicked manusscript then sends user to writemanuscript page on cLick
   const handleEdit = (manuscript) => {
-    dispatch({
-      type: "SET_MANUSCRIPT",
-      payload: manuscript,
-    });
-    history.push("/manuscript-write");
+    history.push(`/manuscript-write/${manuscript.id}`);
   };
 
   //Deletes Manuscript from Database

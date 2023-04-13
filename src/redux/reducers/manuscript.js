@@ -3,7 +3,7 @@ const manuscript = (state = {}, action) => {
       case "SET_MANUSCRIPT":
         return action.payload;
       case "CLEAR_MANUSCRIPT":
-        return [];
+        return {};
       default:
         return state;
     }

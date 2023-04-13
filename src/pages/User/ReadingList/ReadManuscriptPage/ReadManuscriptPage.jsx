@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function ReadManuscriptPage() {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const params = useParams();
 
-  //fetches Manuscript from Reducer to be displayed on page. Does not populate on Refresh.
   const manuscript = useSelector((store) => store.manuscript);
+
+  useEffect(() => {
+    dispatch({
+        type: "FETCH_MANUSCRIPT",
+        payload: params.id,
+      })
+}, []);
 
   return (
     <main className="content-main">

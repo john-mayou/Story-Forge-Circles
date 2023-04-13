@@ -55,7 +55,7 @@ function App() {
                         <ReadingListPage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/manuscript-read">
+                    <ProtectedRoute exact path="/manuscript-read/:id">
                         <ReadManuscriptPage />
                     </ProtectedRoute>
 
@@ -63,7 +63,7 @@ function App() {
                         <WritersDeskPage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/manuscript-write">
+                    <ProtectedRoute exact path="/manuscript-write/:id">
                         <WriteManuscriptPage/>
                     </ProtectedRoute>
 
