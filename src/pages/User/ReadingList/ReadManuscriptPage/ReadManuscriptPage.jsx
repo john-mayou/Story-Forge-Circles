@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 
 function ReadManuscriptPage() {
   const history = useHistory();
+
+  //fetches Manuscript from Reducer to be displayed on page. Does not populate on Refresh.
   const manuscript = useSelector((store) => store.manuscript);
 
   return (

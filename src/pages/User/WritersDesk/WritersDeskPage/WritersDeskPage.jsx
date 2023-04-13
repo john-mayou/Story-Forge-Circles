@@ -11,7 +11,6 @@ function WritersDeskPage() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const currentPage = "WritersDeskPage";
 
   useEffect(() => {
     dispatch({
@@ -19,9 +18,12 @@ function WritersDeskPage() {
     });
   }, []);
 
+  //Stores Values of Title and Body inputs
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
 
+
+  // Creates Manuscript Object with Title and Body and sends it to the database
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -41,15 +43,16 @@ function WritersDeskPage() {
     setNewBody("");
   };
 
-
+  //Sets the Manuscript Reducer to currently clicked manusscript then sends user to writemanuscript page on cLick
   const handleEdit = (manuscript) => {
     dispatch({
       type: "SET_MANUSCRIPT",
       payload: manuscript,
     });
     history.push("/manuscript-write");
-  }
+  };
 
+  //Deletes Manuscript from Database
   const handleDelete = (id) => {
     console.log("clicked delete on", id);
 
@@ -67,6 +70,7 @@ function WritersDeskPage() {
 
       <br></br>
 
+      {/* Manuscript Create Form */}
       <h2>New Manuscript:</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
@@ -91,14 +95,12 @@ function WritersDeskPage() {
 
       <br></br>
 
+      {/* List of Manuscripts Created by User */}
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
             <br></br>
-            <ManuscriptListItem
-              currentPage={currentPage}
-              manuscript={manuscript}
-            />
+            <ManuscriptListItem manuscript={manuscript} />
 
             <button onClick={() => handleEdit(manuscript)}>Edit</button>
 
