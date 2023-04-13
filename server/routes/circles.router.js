@@ -52,9 +52,7 @@ router.get("/created", async (req, res) => {
  */
 router.get("/public", async (req, res) => {
   try {
-    const circles = await pool.query(
-      `SELECT * FROM "circles"`
-    );
+    const circles = await pool.query(`SELECT * FROM "circles"`);
     res.json(circles.rows);
   } catch (error) {
     console.error("Error fetching all public circles:", error);
@@ -84,5 +82,11 @@ router.post("/", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+router.get("/:id/members", (req, res) => {});
+
+router.post("/:id/members", (req, res) => {});
+
+router.delete("/:id/members", (req, res) => {});
 
 module.exports = router;
