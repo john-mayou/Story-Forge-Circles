@@ -76,7 +76,7 @@ export default function CircleDashboard() {
         <table>
           <thead>
             <tr>
-              {/* <th>Author</th> */}
+              <th>Author</th>
               <th>Title</th>
               <th>Preview</th>
             </tr>
@@ -84,7 +84,7 @@ export default function CircleDashboard() {
           <tbody>
             {circleManuscriptsList.map((manuscript) => (
               <tr key={manuscript?.id}>
-                {/* <td>{user's id or author's username}</td> */}
+                <td>{manuscript?.author}</td>
                 <td>{manuscript?.title}</td>
                 <td>{manuscript?.body}</td>
               </tr>

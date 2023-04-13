@@ -128,12 +128,23 @@ router.get("/manuscript", async (req, res) => {
   try {
     const { id } = req.query;
 
+
+
     const circleManuscriptsList = await pool.query(
-      `SELECT manuscripts.*
-  FROM manuscripts
-  JOIN circle_manuscript
-    ON manuscripts.id = circle_manuscript.manuscript_id
-  WHERE circle_manuscript.circle_id = $1`,
+      // `
+      // SELECT manuscripts.*
+      // FROM manuscripts
+      // JOIN circle_manuscript
+      // ON manuscripts.id = circle_manuscript.manuscript_id
+      // WHERE circle_manuscript.circle_id = $1`,
+      // [id]
+
+      `SELECT manuscripts.*, "user".username AS author
+      FROM manuscripts
+      JOIN circle_manuscript ON manuscripts.id = circle_manuscript.manuscript_id
+      LEFT JOIN "user" ON manuscripts.user_id = "user".id
+      WHERE circle_manuscript.circle_id = $1
+      `,
       [id]
     );
     res.json(circleManuscriptsList.rows);
