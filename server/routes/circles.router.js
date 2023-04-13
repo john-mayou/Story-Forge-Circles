@@ -128,26 +128,33 @@ router.get("/manuscript", async (req, res) => {
   try {
     const { id } = req.query;
 
-
-
     const circleManuscriptsList = await pool.query(
-      // `
-      // SELECT manuscripts.*
-      // FROM manuscripts
-      // JOIN circle_manuscript
-      // ON manuscripts.id = circle_manuscript.manuscript_id
-      // WHERE circle_manuscript.circle_id = $1`,
-      // [id]
-
-      `SELECT manuscripts.*, "user".username AS author
-      FROM manuscripts
-      JOIN circle_manuscript ON manuscripts.id = circle_manuscript.manuscript_id
-      LEFT JOIN "user" ON manuscripts.user_id = "user".id
+    
+      `SELECT circle_manuscript.*, manuscriptTables.title, manuscriptTables.body, manuscriptTables.username AS author
+      FROM circle_manuscript
+      JOIN (
+        SELECT manuscripts.title, manuscripts.body, manuscriptShelvesTable.* FROM manuscripts 
+        INNER JOIN (
+          SELECT shelvesTable.username, manuscript_shelf.manuscript_id FROM manuscript_shelf 
+          INNER JOIN (
+            SELECT userTables.username, shelves.id FROM shelves 
+            INNER JOIN (
+              SELECT * FROM "user"
+            ) AS userTables 
+            On shelves.user_id = userTables.id
+          ) shelvesTable 
+          ON manuscript_shelf.shelf_id = shelvesTable.id
+        ) manuscriptShelvesTable 
+        ON manuscripts.id = manuscriptShelvesTable.manuscript_id
+      ) manuscriptTables 
+      ON manuscriptTables.manuscript_id = circle_manuscript.manuscript_id
       WHERE circle_manuscript.circle_id = $1
       `,
       [id]
     );
     res.json(circleManuscriptsList.rows);
+
+    console.log('circleManuscriptsList', circleManuscriptsList)
   } catch (error) {
     console.error("Error fetching all manuscripts in circle:", error);
     res.status(500).json({ message: "Internal server error" });
