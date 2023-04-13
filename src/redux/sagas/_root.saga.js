@@ -5,7 +5,6 @@ import userSaga from "./user.saga";
 import notificationSaga from "./notification.saga";
 import publicManuscriptListSaga from "./manuscript.saga";
 import circlesSaga from "./circles.saga";
-import sharedManuscriptListSaga from "./manuscript.circle";
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -22,6 +21,5 @@ export default function* rootSaga() {
         notificationSaga(),
         publicManuscriptListSaga(),
         circlesSaga(),
-        sharedManuscriptListSaga(),
     ]);
 }

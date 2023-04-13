@@ -8,7 +8,7 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
   const history = useHistory();
 
   const navigateToCircleDashboard = (circle_id) => {
-    history.push(`/circle-dashboard?circle_id=${circle_id}`);
+    history.push(`/circle-dashboard/${circle_id}`);
   }
   return (
     <table>

@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
 export default function CircleDashboard() {
+  const dispatch = useDispatch();
+  const { circle_id } = useParams();
+  const { id } = useSelector((store) => store.user);
 
-    const dispatch = useDispatch();
+  const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
+    (store) => store.circles
+  );
 
+  console.log('userManuscriptNotInCircle', userManuscriptNotInCircle)
 
-    const [sharedManuscripts, setSharedManuscripts] = useState([]);
+  const [sharedManuscripts, setSharedManuscripts] = useState([]);
   const handleSearch = () => {
-    console.log('here search in circledashboard')
+    console.log("here search in circledashboard");
   };
 
   const handleKeyPress = (e) => {
@@ -19,9 +26,15 @@ export default function CircleDashboard() {
 
   useEffect(() => {
     // Dispatch action to saga to get list of manuscripts shared to that specific circle
-    dispatch({ type: "FETCH_SHARED_MANUSCRIPTS", payload: { circleId: 1} });
+    dispatch({ type: "FETCH_CIRCLE_MANUSCRIPTS_LIST", payload: circle_id });
   }, [dispatch]);
 
+  const getUserAllManuscriptList = () => {
+    dispatch({
+      type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
+      payload: id
+    });
+  }
 
   return (
     <main className="content-main">
@@ -47,7 +60,7 @@ export default function CircleDashboard() {
       </div>
 
       <div>
-        <button>Share Manuscript</button>
+        <button onClick={() => getUserAllManuscriptList()}>Share Manuscript</button>
       </div>
 
       <div>

@@ -85,4 +85,55 @@ router.post("/", async (req, res) => {
   }
 });
 
+/**
+ * GET circle Manuscripts list route
+ */
+router.get("/manuscript", async (req, res) => {
+  try {
+    const { id } = req.query;
+    const circleManuscriptsList = await pool.query(
+      `SELECT manuscripts.*
+       FROM manuscripts
+       JOIN circle_manuscript
+         ON manuscripts.id = circle_manuscript.manuscript_id
+       WHERE circle_manuscript.circle_id = $1`,
+      [id]
+    );
+    res.json(circleManuscriptsList.rows);
+  } catch (error) {
+    console.error("Error fetching all public circles:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
+ * GET all user's manuscript list 
+ */
+router.get("/userManuscriptNotInCircle", async (req, res) => {
+  try {
+    const { id } = req.query;
+    const userManuscripts = await pool.query(`
+      SELECT *
+      FROM "manuscripts"
+      WHERE id NOT IN (
+        SELECT manuscript_id
+        FROM "circle_manuscript"
+      )
+      AND id IN (
+        SELECT manuscript_id
+        FROM "manuscript_shelf"
+        WHERE shelf_id IN (
+          SELECT id
+          FROM "shelves"
+          WHERE user_id = $1
+        )
+      )
+    `, [id]);
+    res.json(userManuscripts.rows)
+  } catch (error) {
+    console.error("Error fetching all public circles:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router;

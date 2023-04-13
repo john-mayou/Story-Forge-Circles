@@ -1,9 +1,6 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
-/**
- * Fetches List of User's cirlces
- */
 function* fetchMyJoinedCirclesList(action) {
   try {
     const id = action.payload;
@@ -14,9 +11,6 @@ function* fetchMyJoinedCirclesList(action) {
   }
 }
 
-/**
- * Fetches List of User's created circles
- */
 function* fetchMyCreatedCirclesList(action) {
   try {
     const id = action.payload;
@@ -27,9 +21,6 @@ function* fetchMyCreatedCirclesList(action) {
   }
 }
 
-/**
- * Create User's new circle
- */
 function* createNewCircle(action) {
   try {
     const data = JSON.stringify(action.payload); // convert to string
@@ -56,13 +47,37 @@ function* fetchAllPublicCirclesList(action) {
       }
 }
 
+function* fetchCircleManuscriptsList(action) {
+  console.log('action.payload}', action.payload)
+  try {
+    const id = action.payload;
+    const response = yield axios.get(`api/circles/manuscript?id=${id}`);
+    yield put({ type: "SET_CIRCLE_MANUSCRIPTS_LIST", payload: response.data });
+  } catch (error) {
+    console.log("Get circle manuscripts list request failed in Saga", error);
+  }
+}
 
+function* fetchUserManuscriptsNotInCircle(action) {
+  console.log('action.payload}', action.payload)
+  try {
+    const id = action.payload;
+    const response = yield axios.get(`api/circles/userManuscriptNotInCircle?id=${id}`);
+    yield put({ type: "SET_USER_MANUSCRIPTS_NOT_IN_CIRCLE", payload: response.data });
+  } catch (error) {
+    console.log("Get all of user's manuscripts list in circle request failed in Saga", error);
+  }
+}
 
 function* circlesSaga() {
   yield takeLatest("FETCH_MY_JOINED_CIRCLES", fetchMyJoinedCirclesList);
   yield takeLatest("FETCH_MY_CREATED_CIRCLES", fetchMyCreatedCirclesList);
   yield takeLatest('CREATE_NEW_CIRCLE', createNewCircle);
   yield takeLatest('FETCH_ALL_PUBLIC_CIRCLES', fetchAllPublicCirclesList)
+  yield takeLatest('FETCH_CIRCLE_MANUSCRIPTS_LIST', fetchCircleManuscriptsList);
+  yield takeLatest('FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE', fetchUserManuscriptsNotInCircle);
+
+
 }
 
 export default circlesSaga;
