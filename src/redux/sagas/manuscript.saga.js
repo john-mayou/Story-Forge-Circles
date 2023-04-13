@@ -6,7 +6,6 @@ import axios from "axios";
  */
 function* fetchPublicManuscriptList() {
   try {
-    // console.log('in list of teams');
     const response = yield axios.get(`/manuscript`);
     yield put({ type: "SET_PUBLIC_MANUSCRIPT_LIST", payload: response.data });
   } catch (error) {
@@ -16,7 +15,6 @@ function* fetchPublicManuscriptList() {
 
 function* fetchWritersDeskList() {
   try {
-    // console.log('in list of teams');
     const response = yield axios.get(`/manuscript/writersdesk`);
     yield put({ type: "SET_WRITERS_DESK_LIST", payload: response.data });
   } catch (error) {
@@ -26,7 +24,6 @@ function* fetchWritersDeskList() {
 
 function* fetchManuscript(action) {
     try {
-        // console.log('in list of teams');
         const response = yield axios.get(`/manuscript/${action.payload}`);
 
         console.log('response.data in saga', response.data);

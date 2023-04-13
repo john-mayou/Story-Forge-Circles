@@ -139,9 +139,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
  * PUT Manuscript route
  */
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  // const userId = req.user.id;
-
-  console.log("req", req);
 
   const manuscriptId = req.params.id;
   const title = req.body.payload.title;
@@ -170,7 +167,6 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
       manuscriptId,
     ]);
     const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
-    console.log("isOwnerBool", isOwner);
 
     //If the content does not exist or does not belong to the user, we send 403 status forbidden and break.
     if (!isOwner) {
@@ -231,7 +227,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
       manuscriptId,
     ]);
     const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
-    console.log("isOwnerBool", isOwner);
 
     //If the content does not exist or does not belong to the user, we send status 403 forbidden and break.
     if (!isOwner) {
