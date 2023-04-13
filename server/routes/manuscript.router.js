@@ -60,12 +60,12 @@ router.get("/:id", (req, res) => {
   const id = req.params.id
   console.log('id', id)
 
-  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
+  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username FROM "manuscripts"
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
     JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
     JOIN "user" ON "user".id = "shelves".user_id
     WHERE "manuscripts".id = $1
-    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username;`;
 
   pool
     .query(query, [id])

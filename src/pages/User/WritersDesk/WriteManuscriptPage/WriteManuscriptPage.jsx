@@ -2,23 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function WriteManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector((store) => store.manuscripts.manuscriptDetails);
+  const manuscript = useSelector(
+    (store) => store.manuscripts.manuscriptDetails
+  );
   const dispatch = useDispatch();
-  const params = useParams();
+  const {id : manuscriptId} = useParams();
 
   useEffect(() => {
-    console.log('in use effect')
-    dispatch({
-      type: "FETCH_MANUSCRIPT",
-      payload: params.id,
-    });
+    fetchManuscriptDetails();
+  }, []);
 
-    setNewTitle(manuscript.title);
-    setNewBody(manuscript.body);
-  }, [manuscript]);
+  const fetchManuscriptDetails = async () => {
+    const response = await axios.get(`/manuscript/${manuscriptId}`);
+    console.log("response.data", response.data);
+
+    setNewTitle(response.data[0].title);
+    setNewBody(response.data[0].body);
+    setIsChecked(response.data[0].public);
+  };
 
   const [newTitle, setNewTitle] = useState('');
   const [newBody, setNewBody] = useState('');
@@ -27,12 +32,14 @@ function WriteManuscriptPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newManuscript = {
-      id: manuscript.id,
-      title: newTitle,
-      body: newBody,
-      public: isChecked,
-    };
+
+    const newManuscript =
+      {
+        id : manuscriptId,
+        title : newTitle,
+        body : newBody,
+        public : isChecked,
+      }
 
     console.log("newManuscript", newManuscript);
 
