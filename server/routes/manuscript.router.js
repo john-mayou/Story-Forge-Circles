@@ -58,7 +58,6 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
 router.get("/:id", (req, res) => {
 
   const id = req.params.id
-  console.log('id', id)
 
   const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username FROM "manuscripts"
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
@@ -70,8 +69,6 @@ router.get("/:id", (req, res) => {
   pool
     .query(query, [id])
     .then((result) => {
-
-      console.log('result rows', result.rows[0]);
       res.send(result.rows);
     })
     .catch((err) => {
@@ -189,12 +186,6 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   const userId = req.user.id;
   const manuscriptId = req.params.id;
-
-  console.log("userID", req.user.id);
-  console.log("manuscriptId", req.params.id);
-
-  console.log("in delete");
-
   const connection = await pool.connect();
 
   try {

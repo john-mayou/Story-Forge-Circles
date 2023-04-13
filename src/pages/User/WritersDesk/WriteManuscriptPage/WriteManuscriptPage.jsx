@@ -18,7 +18,6 @@ function WriteManuscriptPage() {
 
   const fetchManuscriptDetails = async () => {
     const response = await axios.get(`/manuscript/${manuscriptId}`);
-    console.log("response.data", response.data);
 
     setNewTitle(response.data[0].title);
     setNewBody(response.data[0].body);
@@ -32,7 +31,6 @@ function WriteManuscriptPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
     const newManuscript =
       {
         id : manuscriptId,
@@ -40,8 +38,6 @@ function WriteManuscriptPage() {
         body : newBody,
         public : isChecked,
       }
-
-    console.log("newManuscript", newManuscript);
 
     dispatch({
       type: "UPDATE_MANUSCRIPT",
