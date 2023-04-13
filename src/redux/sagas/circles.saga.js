@@ -63,7 +63,11 @@ function* fetchUserManuscriptsNotInCircle(action) {
   try {
     const id = action.payload;
     const response = yield axios.get(`api/circles/userManuscriptNotInCircle?id=${id}`);
+    const manuscripts = response.data;
     yield put({ type: "SET_USER_MANUSCRIPTS_NOT_IN_CIRCLE", payload: response.data });
+    if (action.callback) {
+      action.callback(manuscripts);
+    }
   } catch (error) {
     console.log("Get all of user's manuscripts list in circle request failed in Saga", error);
   }
