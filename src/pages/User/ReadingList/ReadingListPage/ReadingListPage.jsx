@@ -10,7 +10,7 @@ function ReadingListPage() {
   const history = useHistory();
 
   const publicManuscriptList = useSelector(
-    (store) => store.publicManuscriptList
+    (store) => store.manuscripts.publicManuscriptList
   );
 
   useEffect(() => {
@@ -35,8 +35,6 @@ function ReadingListPage() {
         );
       })}
 
-      <h2>Explore</h2>
-      <button onClick={() => {history.push(`/circles`)}}>My Circles</button>
     </main>
   );
 }

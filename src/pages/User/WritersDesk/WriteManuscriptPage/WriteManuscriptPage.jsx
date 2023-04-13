@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 function WriteManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector((store) => store.manuscript);
+  const manuscript = useSelector((store) => store.manuscripts.manuscriptDetails);
   const dispatch = useDispatch();
   const params = useParams();
 

@@ -8,7 +8,7 @@ function ReadManuscriptPage() {
   const dispatch = useDispatch();
   const params = useParams();
 
-  const manuscript = useSelector((store) => store.manuscript);
+  const manuscript = useSelector((store) => store.manuscripts.manuscriptDetails);
 
   useEffect(() => {
     dispatch({

@@ -1,10 +1,8 @@
 import { combineReducers } from "redux";
 import errors from "./errors.reducer";
 import user from "./user.reducer";
-import manuscript from "./manuscript";
+import manuscripts from "./manuscript";
 import notifications from "./notification.reducer";
-import publicManuscriptList from "./manuscript.public.reducer";
-import writersDeskManuscriptList from "./manuscript.writersdesk.reducer";
 import circles from "./circles.reducer";
 
 // rootReducer is the primary reducer for our entire project
@@ -16,9 +14,7 @@ import circles from "./circles.reducer";
 const rootReducer = combineReducers({
     errors, // contains registrationMessage and loginMessage
     user, // will have an id and username if someone is logged in
-    manuscript,
-    publicManuscriptList,
-    writersDeskManuscriptList,
+    manuscripts,
     circles,
     notifications,
 });

@@ -6,7 +6,7 @@ import ManuscriptListItem from "../../../../components/ManuscriptListItem";
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
   const writersDeskManuscriptList = useSelector(
-    (store) => store.writersDeskManuscriptList
+    (store) => store.manuscripts.writersDeskManuscriptList
   );
 
   const history = useHistory();
