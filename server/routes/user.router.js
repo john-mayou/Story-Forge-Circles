@@ -17,25 +17,49 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post("/register", (req, res, next) => {
+router.post("/register", async (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
-  // First Creates the user in the database
-  const queryText = `INSERT INTO "user" (username, password)
+  const connection = await pool.connect();
+  try {
+    await connection.query("BEGIN");
+
+    // First Query Creates the user in the database
+    const userQueryText = `INSERT INTO "user" (username, password)
     VALUES ($1, $2) RETURNING id`;
 
-  //Returns UserId to create shelf tied to user.
+    //Returns UserId to create shelf tied to user.
+    const userResult = await connection.query(userQueryText, [
+      username,
+      password,
+    ]);
+    const userID = userResult.rows[0].id;
 
-  pool
-    .query(queryText, [username, password])
-    .then(() => res.sendStatus(201))
-    .catch((err) => {
-      console.log("User registration failed: ", err);
-      res.sendStatus(500);
-    });
+    //creates shelf name by concatinating username with shelf
+    const shelfName = username + "_shelf";
 
+    //Second query creates a shelf with a shelf name and a foreign key pointing to previously created user ID 
+    const newShelfQueryText = `
+      INSERT INTO "shelves" ("user_id", "name")
+      VALUES ($1, $2);
+      `;
 
+    //Database call to create shelf
+    await connection.query(newShelfQueryText, [userID, shelfName]);
+
+    await connection.query("COMMIT");
+    res.sendStatus(201);
+  } catch (error) {
+    await connection.query("ROLLBACK");
+    console.log(`Transaction Error - Rolling back transfer`, error);
+    res.sendStatus(500);
+  } finally {
+    // Always runs - both after successful try & after catch
+    // Put the client connection back in the pool
+    // This is super important!
+    connection.release();
+  }
 });
 
 // Handles login form authenticate/login POST
