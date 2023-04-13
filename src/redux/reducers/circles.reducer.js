@@ -31,7 +31,7 @@ const circles = (state = initialState, action) => {
         allPublicCirclesList: action.payload,
       };
     case "SET_CIRCLE_MANUSCRIPTS_LIST":
-      return { ...state, circleManuscriptsList: action.payload };
+      return { ...state, circleManuscriptsList: action.payload};
     case "SET_USER_MANUSCRIPTS_NOT_IN_CIRCLE":
       return { ...state, userManuscriptNotInCircle: action.payload };
     default:

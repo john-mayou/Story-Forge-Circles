@@ -12,9 +12,9 @@ export default function CircleDashboard() {
     (store) => store.circles
   );
 
-  console.log("userManuscriptNotInCircle", userManuscriptNotInCircle);
+  // user's list of shareable manuscripts
+  const [shareManuscripts, setshareManuscripts] = useState([]);
 
-  const [sharedManuscripts, setSharedManuscripts] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false);
 
   const handleSearch = () => {
@@ -37,7 +37,7 @@ export default function CircleDashboard() {
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
       payload: id,
       callback: (manuscripts) => {
-        setSharedManuscripts(manuscripts);
+        setshareManuscripts(manuscripts);
         setShowShareModal(true);
       },
     });
@@ -72,19 +72,25 @@ export default function CircleDashboard() {
           Search
         </button>
         <h3>SHARED MANUSCRIPTS LIST</h3>
-        {/* <ul>
-          {circleManuscriptsList.map((manuscript) => (
-            <li key={manuscript.id}>{manuscript.title}</li>
-          ))}
-        </ul> */}
 
-        {/* <ul>
-          {Array.isArray(circleManuscriptsList) &&
-            circleManuscriptsList.map((manuscript) => (
-              <li key={manuscript.id}>{manuscript.title}</li>
+        <table>
+          <thead>
+            <tr>
+              {/* <th>Author</th> */}
+              <th>Title</th>
+              <th>Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            {circleManuscriptsList.map((manuscript) => (
+              <tr key={manuscript?.id}>
+                {/* <td>{user's id or author's username}</td> */}
+                <td>{manuscript?.title}</td>
+                <td>{manuscript?.body}</td>
+              </tr>
             ))}
-        </ul> */}
-        
+          </tbody>
+        </table>
       </div>
 
       <div>

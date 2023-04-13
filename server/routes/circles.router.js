@@ -4,17 +4,16 @@ const { restart } = require("nodemon");
 const router = express.Router();
 
 /**
- * POST - create circle manuscript 
+ * POST - create circle manuscript
  */
 router.post("/createCircleManuscript", async (req, res) => {
   const { selectedManuscriptsId, circle_id } = req.body;
 
   try {
     // check if circle exists
-    const circle = await pool.query(
-      "SELECT * FROM circles WHERE id = $1",
-      [circle_id]
-    );
+    const circle = await pool.query("SELECT * FROM circles WHERE id = $1", [
+      circle_id,
+    ]);
     if (circle.rows.length === 0) {
       return res.status(404).json({ message: "Circle not found" });
     }
@@ -91,9 +90,7 @@ router.get("/created", async (req, res) => {
  */
 router.get("/public", async (req, res) => {
   try {
-    const circles = await pool.query(
-      `SELECT * FROM "circles"`
-    );
+    const circles = await pool.query(`SELECT * FROM "circles"`);
     res.json(circles.rows);
   } catch (error) {
     console.error("Error fetching all public circles:", error);
@@ -130,33 +127,30 @@ router.post("/", async (req, res) => {
 router.get("/manuscript", async (req, res) => {
   try {
     const { id } = req.query;
-  
+
     const circleManuscriptsList = await pool.query(
-      
-      `
-      SELECT manuscripts.title, manuscripts.body, circle_manuscript.circle_id
-      FROM manuscripts
-      INNER JOIN circle_manuscript
-      ON manuscripts.id = circle_manuscript.manuscript_id
-      WHERE circle_manuscript.id = $1
-    `,
-    [id]
-  );
-  res.json(circleManuscriptsList.rows[0]);
+      `SELECT manuscripts.*
+  FROM manuscripts
+  JOIN circle_manuscript
+    ON manuscripts.id = circle_manuscript.manuscript_id
+  WHERE circle_manuscript.circle_id = $1`,
+      [id]
+    );
+    res.json(circleManuscriptsList.rows);
   } catch (error) {
     console.error("Error fetching all manuscripts in circle:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-
 /**
- * GET all user's manuscript list 
+ * GET all user's manuscript list
  */
 router.get("/userManuscriptNotInCircle", async (req, res) => {
   try {
     const { id } = req.query;
-    const userManuscripts = await pool.query(`
+    const userManuscripts = await pool.query(
+      `
       SELECT *
       FROM "manuscripts"
       WHERE id NOT IN (
@@ -172,8 +166,10 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
           WHERE user_id = $1
         )
       )
-    `, [id]);
-    res.json(userManuscripts.rows)
+    `,
+      [id]
+    );
+    res.json(userManuscripts.rows);
   } catch (error) {
     console.error("Error fetching all public circles:", error);
     res.status(500).json({ message: "Internal server error" });
