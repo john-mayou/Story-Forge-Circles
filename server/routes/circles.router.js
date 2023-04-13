@@ -108,6 +108,45 @@ router.get("/:id/members", (req, res) => {
 
 router.post("/:id/members", (req, res) => {});
 
-router.delete("/:id/members", (req, res) => {});
+router.delete("/:id/members", async (req, res) => {
+  const circle_id = req.params.id;
+  const user_id = req.user.id;
+  const member_to_delete_id = req.body.user;
+
+  try {
+    // First: check if the user is the owner of the circle
+    const isCircleOwnerQuery = `
+      SELECT EXISTS (
+        SELECT *
+        FROM "circles" AS c
+        WHERE c.id = $1 AND c.owner_id = $2
+      ) AS "is_circle_owner";
+    `;
+
+    const isOwnerResult = await pool.query(isCircleOwnerQuery, [
+      circle_id,
+      user_id,
+    ]);
+
+    // If not owner, return unauthorized and stop endpoint execution
+    if (!isOwnerResult.rows[0].is_circle_owner) {
+      res.sendStatus(304);
+      return;
+    }
+
+    // Second: remove user from circle
+    const memberDeletionQuery = `
+      DELETE FROM "circle_user" AS cu
+      WHERE cu.circle_id = $1 AND cu.user_id = $2;
+    `;
+
+    await pool.query(memberDeletionQuery, [circle_id, member_to_delete_id]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.log(`Error deleting member from a circle`, error);
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;

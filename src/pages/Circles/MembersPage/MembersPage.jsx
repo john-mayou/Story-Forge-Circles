@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 function MembersPage() {
+  const dispatch = useDispatch();
   const { id: circleId } = useParams();
   const user = useSelector((store) => store.user);
 
@@ -17,12 +18,19 @@ function MembersPage() {
   };
 
   useEffect(() => {
-    fetchCircles();
+    fetchMembers();
   }, []);
 
-  const fetchCircles = async () => {
+  const fetchMembers = async () => {
     const circlesResponse = await axios.get(`/api/circles/${circleId}/members`);
     setCircleMembers(circlesResponse.data);
+  };
+
+  const removeMember = async (memberId) => {
+    await axios.delete(`/api/circles/${fakeCircle.id}/members`, {
+      data: { user: memberId },
+    });
+    fetchMembers();
   };
 
   return (
@@ -51,6 +59,12 @@ function MembersPage() {
             <p>{member.id}</p>
             <p>{member.username}</p>
             <p>{member.avatar_image || "null image"}</p>
+            {user.id === fakeCircle.owner_id && (
+              <>
+                <button onClick={() => removeMember(member.id)}>Remove</button>
+                <button>Promote To Leader</button>
+              </>
+            )}
           </div>
         );
       })}
