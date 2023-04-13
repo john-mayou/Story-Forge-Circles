@@ -15,6 +15,7 @@ function ManuscriptListItem(props) {
 
   if (props.manuscript.body.length > 100) {
     preview = props.manuscript.body.substring(0, 100);
+    preview = preview + '...';
   }
 
   const handleManuscriptClick = () => {
@@ -30,7 +31,7 @@ function ManuscriptListItem(props) {
       <div className="ManuscriptListItem" onClick={handleManuscriptClick}>
         <h1>Title: {props.manuscript.title}</h1>
         <h3>Author: {props.manuscript.username}</h3>
-        <p>Preview: {preview}...</p>
+        <p>Preview: {preview}</p>
       </div>
     </>
   );

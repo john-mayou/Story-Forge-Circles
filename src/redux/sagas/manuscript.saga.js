@@ -45,7 +45,7 @@ function* removeManuscript(action) {
 function* updateManuscript(action) {
   try {
     yield axios.put(`/manuscript/${action.payload.id}`, {
-      payload: { title: action.payload.title, body: action.payload.body },
+      payload: { title: action.payload.title, body: action.payload.body, public: action.payload.public },
     });
     //yield put({ type: "FETCH_MANUSCRIPT" });
   } catch (error) {

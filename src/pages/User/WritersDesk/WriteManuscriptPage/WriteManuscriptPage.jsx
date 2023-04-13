@@ -9,6 +9,7 @@ function WriteManuscriptPage() {
 
   const [newTitle, setNewTitle] = useState(manuscript.title);
   const [newBody, setNewBody] = useState(manuscript.body);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +18,7 @@ function WriteManuscriptPage() {
       id: manuscript.id,
       title: newTitle,
       body: newBody,
+      public: isChecked,
     };
 
     console.log("newManuscript", newManuscript);
@@ -26,7 +28,7 @@ function WriteManuscriptPage() {
       payload: newManuscript,
     });
 
-    history.push('/writers-desk')
+    history.push("/writers-desk");
   };
 
   return (
@@ -49,6 +51,18 @@ function WriteManuscriptPage() {
             onChange={(e) => setNewBody(e.target.value)}
           ></textarea>
           <br></br>
+
+          <label> Public</label>
+          <input
+            onChange={(e) => setIsChecked(!isChecked)}
+            type="checkbox"
+            id="public"
+            name="public"
+            value="public"
+            checked={isChecked}
+          />
+          <br></br>
+
           <input className="submit-button" type="submit" />
         </form>
 

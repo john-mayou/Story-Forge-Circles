@@ -12,6 +12,7 @@ function WritersDeskPage() {
   const history = useHistory();
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     dispatch({
       type: "FETCH_WRITERS_DESK_LIST",
@@ -21,7 +22,7 @@ function WritersDeskPage() {
   //Stores Values of Title and Body inputs
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
-
+  const [isChecked, setIsChecked] = useState(false);
 
   // Creates Manuscript Object with Title and Body and sends it to the database
   const handleSubmit = (e) => {
@@ -30,6 +31,7 @@ function WritersDeskPage() {
     const newManuscript = {
       title: newTitle,
       body: newBody,
+      public: isChecked,
     };
 
     console.log("newManuscript", newManuscript);
@@ -88,6 +90,16 @@ function WritersDeskPage() {
           placeholder="Body..."
           value={newBody}
           onChange={(e) => setNewBody(e.target.value)}
+        />
+
+        <label> Public</label>
+        <input
+          onChange={(e) => setIsChecked(!isChecked)}
+          type="checkbox"
+          id="public"
+          name="public"
+          value="public"
+          checked={isChecked}
         />
 
         <input className="submit-button" type="submit" />

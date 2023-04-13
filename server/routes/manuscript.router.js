@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
     JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
     JOIN "user" ON "user".id = "shelves".user_id
+    WHERE "manuscripts".public = true
     GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
 
   pool
@@ -56,20 +57,22 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
 router.post("/", rejectUnauthenticated, async (req, res) => {
   title = req.body.title;
   body = req.body.body;
+  public = req.body.public;
 
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
     const manuscriptInsertQueryText = `
-    INSERT INTO "manuscripts" ("title", "body")
-    VALUES ($1, $2) 
+    INSERT INTO "manuscripts" ("title", "body", "public")
+    VALUES ($1, $2, $3) 
     RETURNING "id";
     `;
 
     const manuscriptResult = await connection.query(manuscriptInsertQueryText, [
       title,
       body,
+      public
     ]);
     const newManuscriptId = manuscriptResult.rows[0].id;
 
@@ -116,10 +119,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const manuscriptId = req.params.id;
   const title = req.body.payload.title;
   const body = req.body.payload.body;
-
-  console.log('manuscriptId', req.params.id);
-  console.log('title', title);
-  console.log('body', body);
+  const public = req.body.payload.public;
 
   const connection = await pool.connect();
   try {
@@ -127,13 +127,14 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
 
     //NOT SECURE FROM POSTMAN NEED TO UPDATE TO INCLUDE USER ID
     const manuscriptUpdateQueryText = `UPDATE "manuscripts"
-    SET title = $1, body = $2
-    WHERE "manuscripts".id = $3;
+    SET title = $1, body = $2, public = $3
+    WHERE "manuscripts".id = $4;
     `;
 
     await connection.query(manuscriptUpdateQueryText, [
       title,
       body,
+      public,
       manuscriptId,
     ]);
 
