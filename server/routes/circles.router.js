@@ -83,7 +83,28 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id/members", (req, res) => {});
+router.get("/:id/members", (req, res) => {
+  const circleMembersQuery = `
+    SELECT 
+      u.id,
+      u.username,
+      u.avatar_image
+    FROM "circles" AS c
+    LEFT JOIN "circle_user" AS cu ON cu.circle_id = c.id
+    JOIN "user" AS u ON u.id = cu.user_id
+    WHERE c.id = $1;
+  `;
+
+  pool
+    .query(circleMembersQuery, [req.params.id])
+    .then((result) => {
+      res.send(result.rows).status(200);
+    })
+    .catch(() => {
+      console.log(`Error making query: ${circleMembersQuery}`, error);
+      res.sendStatus(500);
+    });
+});
 
 router.post("/:id/members", (req, res) => {});
 
