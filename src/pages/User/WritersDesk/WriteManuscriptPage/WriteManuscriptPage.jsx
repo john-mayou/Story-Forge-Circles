@@ -1,32 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function WriteManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector((store) => store.manuscript);
+  const manuscript = useSelector(
+    (store) => store.manuscripts.manuscriptDetails
+  );
   const dispatch = useDispatch();
+  const {id : manuscriptId} = useParams();
 
-  const [newTitle, setNewTitle] = useState(manuscript.title);
-  const [newBody, setNewBody] = useState(manuscript.body);
+  useEffect(() => {
+    fetchManuscriptDetails();
+  }, []);
+
+  const fetchManuscriptDetails = async () => {
+    const response = await axios.get(`/manuscript/${manuscriptId}`);
+
+    setNewTitle(response.data[0].title);
+    setNewBody(response.data[0].body);
+    setIsChecked(response.data[0].public);
+  };
+
+  const [newTitle, setNewTitle] = useState('');
+  const [newBody, setNewBody] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newManuscript = {
-      id: manuscript.id,
-      title: newTitle,
-      body: newBody,
-    };
-
-    console.log("newManuscript", newManuscript);
+    const newManuscript =
+      {
+        id : manuscriptId,
+        title : newTitle,
+        body : newBody,
+        public : isChecked,
+      }
 
     dispatch({
       type: "UPDATE_MANUSCRIPT",
       payload: newManuscript,
     });
 
-    history.push('/writers-desk')
+    history.push("/writers-desk");
   };
 
   return (
@@ -42,13 +60,25 @@ function WriteManuscriptPage() {
           <br></br>
           <br></br>
           <textarea
-            classname="manuscript-text-area"
+            className="manuscript-text-area"
             rows="25"
             cols="75"
             value={newBody}
             onChange={(e) => setNewBody(e.target.value)}
           ></textarea>
           <br></br>
+
+          <label> Public</label>
+          <input
+            onChange={(e) => setIsChecked(!isChecked)}
+            type="checkbox"
+            id="public"
+            name="public"
+            value="public"
+            checked={isChecked}
+          />
+          <br></br>
+
           <input className="submit-button" type="submit" />
         </form>
 

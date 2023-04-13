@@ -1,10 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 function ReadManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector((store) => store.manuscript);
+  const dispatch = useDispatch();
+  const params = useParams();
+
+  const manuscript = useSelector((store) => store.manuscripts.manuscriptDetails);
+
+  useEffect(() => {
+    dispatch({
+        type: "FETCH_MANUSCRIPT",
+        payload: params.id,
+      })
+}, []);
 
   return (
     <main className="content-main">

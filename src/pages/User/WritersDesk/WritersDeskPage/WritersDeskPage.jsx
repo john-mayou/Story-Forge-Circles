@@ -6,12 +6,12 @@ import ManuscriptListItem from "../../../../components/ManuscriptListItem";
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
   const writersDeskManuscriptList = useSelector(
-    (store) => store.writersDeskManuscriptList
+    (store) => store.manuscripts.writersDeskManuscriptList
   );
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const currentPage = "WritersDeskPage";
+
 
   useEffect(() => {
     dispatch({
@@ -19,15 +19,19 @@ function WritersDeskPage() {
     });
   }, []);
 
+  //Stores Values of Title and Body inputs
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
 
+  // Creates Manuscript Object with Title and Body and sends it to the database
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newManuscript = {
       title: newTitle,
       body: newBody,
+      public: isChecked,
     };
 
     console.log("newManuscript", newManuscript);
@@ -41,15 +45,12 @@ function WritersDeskPage() {
     setNewBody("");
   };
 
-
+  //Sets the Manuscript Reducer to currently clicked manusscript then sends user to writemanuscript page on cLick
   const handleEdit = (manuscript) => {
-    dispatch({
-      type: "SET_MANUSCRIPT",
-      payload: manuscript,
-    });
-    history.push("/manuscript-write");
-  }
+    history.push(`/manuscript-write/${manuscript.id}`);
+  };
 
+  //Deletes Manuscript from Database
   const handleDelete = (id) => {
     console.log("clicked delete on", id);
 
@@ -67,6 +68,7 @@ function WritersDeskPage() {
 
       <br></br>
 
+      {/* Manuscript Create Form */}
       <h2>New Manuscript:</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
@@ -86,19 +88,27 @@ function WritersDeskPage() {
           onChange={(e) => setNewBody(e.target.value)}
         />
 
+        <label> Public</label>
+        <input
+          onChange={(e) => setIsChecked(!isChecked)}
+          type="checkbox"
+          id="public"
+          name="public"
+          value="public"
+          checked={isChecked}
+        />
+
         <input className="submit-button" type="submit" />
       </form>
 
       <br></br>
 
+      {/* List of Manuscripts Created by User */}
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
             <br></br>
-            <ManuscriptListItem
-              currentPage={currentPage}
-              manuscript={manuscript}
-            />
+            <ManuscriptListItem manuscript={manuscript} />
 
             <button onClick={() => handleEdit(manuscript)}>Edit</button>
 
