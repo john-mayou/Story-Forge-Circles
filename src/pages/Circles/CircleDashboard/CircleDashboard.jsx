@@ -43,8 +43,17 @@ export default function CircleDashboard() {
     });
   };
 
-  const handleShareManuscript = (selectedManuscripts) => {
-    console.log('selectedManuscripts', selectedManuscripts)
+  const handleShareManuscript = (selectedManuscriptsId) => {
+    console.log('selectedManuscriptsId', selectedManuscriptsId)
+    setShowShareModal(false)
+    const payload = {
+      selectedManuscriptsId,
+      circle_id
+    }
+    dispatch({
+      type: "CREATE_CIRCLE_MANUSCRIPT",
+      payload,
+    })
   }
 
   return (
@@ -87,7 +96,7 @@ export default function CircleDashboard() {
           manuscripts={userManuscriptNotInCircle}
           circleId={circle_id}
           closeModal={() => setShowShareModal(false)}
-          onShare={(selectedManuscripts) => handleShareManuscript(selectedManuscripts)}
+          onShare={(selectedManuscriptsId) => handleShareManuscript(selectedManuscriptsId)}
         />
       )}
 

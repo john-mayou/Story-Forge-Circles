@@ -3,6 +3,42 @@ const pool = require("../modules/pool");
 const { restart } = require("nodemon");
 const router = express.Router();
 
+router.post("/createCircleManuscript", async (req, res) => {
+  const { selectedManuscriptsId, circle_id } = req.body;
+
+  try {
+    // check if circle exists
+    const circle = await pool.query(
+      "SELECT * FROM circles WHERE id = $1",
+      [circle_id]
+    );
+    if (circle.rows.length === 0) {
+      return res.status(404).json({ message: "Circle not found" });
+    }
+
+    // check if user has permission to add manuscripts to circle
+    const user_id = req.user.id;
+    const isOwner = circle.rows[0].owner_id === user_id;
+    if (!isOwner) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    // create circle manuscripts
+    for (let i = 0; i < selectedManuscriptsId.length; i++) {
+      const manuscript_id = selectedManuscriptsId[i];
+      await pool.query(
+        "INSERT INTO circle_manuscript (manuscript_id, circle_id) VALUES ($1, $2)",
+        [manuscript_id, circle_id]
+      );
+    }
+
+    res.status(200).json({ message: "Manuscripts added to circle" });
+  } catch (error) {
+    console.error("Error adding manuscripts to circle:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 /**
  * GET all joined circles
  */

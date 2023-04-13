@@ -73,6 +73,24 @@ function* fetchUserManuscriptsNotInCircle(action) {
   }
 }
 
+
+function* createCircleManuscript(action) {
+  try {
+    const data = JSON.stringify(action.payload); // convert to string
+    yield axios.post("/api/circles/createCircleManuscript", data, {
+        headers: {
+          "Content-Type": "application/json", //Setting the Content-Type header to "application/json" is important as it tells the server that the request payload is in JSON format and it needs to be parsed accordingly. Without this header, the server may try to parse the data in a different format and may result in errors.
+        },
+    });
+    // yield put({
+    //   type: "FETCH_MY_CREATED_CIRCLES",
+    //   payload: action.payload.ownerId,
+    // });
+  } catch (error) {
+    console.log("Create new circle manuscript request failed in saga", error);
+  }
+}
+
 function* circlesSaga() {
   yield takeLatest("FETCH_MY_JOINED_CIRCLES", fetchMyJoinedCirclesList);
   yield takeLatest("FETCH_MY_CREATED_CIRCLES", fetchMyCreatedCirclesList);
@@ -80,6 +98,7 @@ function* circlesSaga() {
   yield takeLatest('FETCH_ALL_PUBLIC_CIRCLES', fetchAllPublicCirclesList)
   yield takeLatest('FETCH_CIRCLE_MANUSCRIPTS_LIST', fetchCircleManuscriptsList);
   yield takeLatest('FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE', fetchUserManuscriptsNotInCircle);
+  yield takeLatest('CREATE_CIRCLE_MANUSCRIPT', createCircleManuscript);
 
 
 }

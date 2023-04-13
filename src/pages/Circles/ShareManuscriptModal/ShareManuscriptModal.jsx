@@ -5,21 +5,21 @@ export default function ShareManuscriptModal({
   closeModal,
   onShare,
 }) {
-  const [selectedManuscripts, setSelectedManuscripts] = useState([]);
+  const [selectedManuscriptsId, setSelectedManuscriptsId] = useState([]);
 
   const handleCheckboxChange = (e) => {
     const manuscriptId = e.target.id.split("-")[1];
     if (e.target.checked) {
-      setSelectedManuscripts((prevState) => [...prevState, manuscriptId]);
+      setSelectedManuscriptsId((prevState) => [...prevState, manuscriptId]);
     } else {
-      setSelectedManuscripts((prevState) =>
+      setSelectedManuscriptsId((prevState) =>
         prevState.filter((id) => id !== manuscriptId)
       );
     }
   };
 
   const handleShareClick = () => {
-    onShare(selectedManuscripts);
+    onShare(selectedManuscriptsId);
   };
 
   return (
