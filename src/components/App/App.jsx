@@ -80,7 +80,7 @@ function App() {
                         <SearchCirclesPage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/circle-dashboard">
+                    <ProtectedRoute exact path="/circle-dashboard/:circle_id">
                         <CircleDashboard />
                     </ProtectedRoute>
 
