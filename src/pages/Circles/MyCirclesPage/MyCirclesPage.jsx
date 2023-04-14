@@ -5,7 +5,7 @@ import CircleTableView from "../CircleTableView";
 import SearchCircleForm from "../SearchCircleForm";
 
 function MyCirclesPage() {
-  const { id, username } = useSelector((store) => store.user);
+  const { id } = useSelector((store) => store.user);
   const { myJoinedCircleList, myCreatedCircleList } = useSelector(
     (store) => store.circles
   );
@@ -65,7 +65,6 @@ function MyCirclesPage() {
 
       <CircleTableView circlelist={myJoinedCircleList} />
 
-      <div>
         <button
           className="create-btn-new-circle"
           onClick={() => setShowModal(true)}
@@ -76,7 +75,6 @@ function MyCirclesPage() {
         <p>CIRCLES I OWN / MY CIRCLES</p>
 
         <CircleTableView circlelist={myCreatedCircleList} />
-      </div>
 
       {showModal && (
         <div className="modal-overlay">

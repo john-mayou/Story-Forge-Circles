@@ -261,4 +261,29 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
   }
 });
 
+
+/**
+ * GET shared Manuscripts route
+ */
+router.get("/circle/:id", rejectUnauthenticated, (req, res) => {
+  const circleID = req.params.id;
+
+  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
+    JOIN "circle_manuscript" ON "circle_manuscript".manuscript_id = "manuscripts".id
+    JOIN "circles" ON "circles".id = "circle_manuscript".circle_id
+    JOIN "user" ON "user".id = "circles".owner_id
+    WHERE "circles".id = $1
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
+
+  pool
+    .query(query, [circleID])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log("ERROR: Get shared manuscripts", err);
+      res.sendStatus(500);
+    });
+});
+
 module.exports = router;
