@@ -82,20 +82,22 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   const title = req.body.title;
   const body = req.body.body;
   const public = req.body.public;
+  const user_id = req.user.id
 
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
     const manuscriptInsertQueryText = `
-    INSERT INTO "manuscripts" ("title", "body", "public")
-    VALUES ($1, $2, $3) 
+    INSERT INTO "manuscripts" ("title", "body", "user_id", "public")
+    VALUES ($1, $2, $3, $4) 
     RETURNING "id";
     `;
 
     const manuscriptResult = await connection.query(manuscriptInsertQueryText, [
       title,
       body,
+      user_id,
       public,
     ]);
     const newManuscriptId = manuscriptResult.rows[0].id;
@@ -144,6 +146,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
   const title = req.body.payload.title;
   const body = req.body.payload.body;
   const public = req.body.payload.public;
+  const user_id = req.user.id;
 
   const userParamId = req.user.id;
 
@@ -176,7 +179,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
     //NOT SECURE FROM POSTMAN NEED TO UPDATE TO INCLUDE USER ID
     const manuscriptUpdateQueryText = `UPDATE "manuscripts"
     SET title = $1, body = $2, public = $3
-    WHERE "manuscripts".id = $4;
+    WHERE "manuscripts".id = $4 AND "manuscripts".user_id = $5;
     `;
 
     await connection.query(manuscriptUpdateQueryText, [
@@ -184,6 +187,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
       body,
       public,
       manuscriptId,
+      user_id
     ]);
 
     await connection.query("COMMIT");
@@ -204,7 +208,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
  * DELETE Manuscript route
  */
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = req.user.id;
+  const user_Id = req.user.id;
   const manuscriptId = req.params.id;
   const connection = await pool.connect();
 
@@ -223,7 +227,7 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     `;
 
     const isOwnerResult = await connection.query(isManuscriptOwnerQueryText, [
-      userId,
+      user_Id,
       manuscriptId,
     ]);
     const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
@@ -234,6 +238,8 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
       return;
     }
 
+
+
     const deleteManuscriptShelvesQueryText = `
     DELETE FROM "manuscript_shelf" 
     WHERE "manuscript_shelf".manuscript_id = $1`;
@@ -242,10 +248,12 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
 
     const deleteManuscriptQueryText = `
     DELETE FROM "manuscripts" 
-    WHERE "manuscripts".id = $1;
+    WHERE "manuscripts".id = $1 AND "manuscripts".user_id = $2;
     `;
 
-    await connection.query(deleteManuscriptQueryText, [manuscriptId]);
+    await connection.query(deleteManuscriptQueryText, [manuscriptId, user_Id]);
+
+
 
     await connection.query("COMMIT");
     res.sendStatus(204);
