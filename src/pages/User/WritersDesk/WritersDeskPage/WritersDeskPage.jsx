@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import ManuscriptListItem from "../../../../components/ManuscriptListItem";
+import ManuscriptListItem from "../../ManuscriptListItem";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
