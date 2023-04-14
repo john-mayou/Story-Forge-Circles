@@ -16,9 +16,13 @@ import Sidebar from "../../layout/Sidebar/Sidebar";
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
-import MyCirclesPage from "../../pages/User/MyCircles/MyCirclesPage/MyCirclesPage";
 import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
-import MessageBoard from "../../pages/User/MyCircles/MessageBoard/MessageBoard";
+
+// Circles Pages
+import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
+import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
+import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
+import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -60,6 +64,14 @@ function App() {
 
                     <ProtectedRoute exact path="/message-board">
                         <MessageBoard />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/message-board-form">
+                        <MessageBoardForm />
+                    </ProtectedRoute>
+                    
+                    <ProtectedRoute exact path="/circles-browser">
+                        <BrowserCirclePage />
                     </ProtectedRoute>
 
                     <Route exact path="/login">
