@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
@@ -23,9 +23,7 @@ function BrowserCirclePage() {
   return (
     <main className="content-main">
       <h1>PUBLIC CIRCLES</h1>
-
       <SearchCircleForm onSearch={handleSearch} />
-
       <p>JOINABLE CIRCLES BELOW</p>
       <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
     </main>

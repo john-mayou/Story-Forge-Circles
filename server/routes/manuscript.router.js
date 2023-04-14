@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
     JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
     JOIN "user" ON "user".id = "shelves".user_id
+    WHERE "manuscripts".public = true
     GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
 
   pool
@@ -51,25 +52,53 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
 });
 
 /**
+ * GET Single  Manuscripts route
+ */
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username FROM "manuscripts"
+    JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
+    JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
+    JOIN "user" ON "user".id = "shelves".user_id
+    WHERE "manuscripts".id = $1
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "manuscripts".public, "user".username;`;
+
+  pool
+    .query(query, [id])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log("ERROR: Get Manuscript by id failed", err);
+      res.sendStatus(500);
+    });
+});
+
+/**
  * POST Manuscript route
  */
 router.post("/", rejectUnauthenticated, async (req, res) => {
-  title = req.body.title;
-  body = req.body.body;
+  const title = req.body.title;
+  const body = req.body.body;
+  const public = req.body.public;
+  const user_id = req.user.id
 
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
     const manuscriptInsertQueryText = `
-    INSERT INTO "manuscripts" ("title", "body")
-    VALUES ($1, $2) 
+    INSERT INTO "manuscripts" ("title", "body", "user_id", "public")
+    VALUES ($1, $2, $3, $4) 
     RETURNING "id";
     `;
 
     const manuscriptResult = await connection.query(manuscriptInsertQueryText, [
       title,
       body,
+      user_id,
+      public,
     ]);
     const newManuscriptId = manuscriptResult.rows[0].id;
 
@@ -112,29 +141,53 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
  * PUT Manuscript route
  */
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-  // const userId = req.user.id;
+
   const manuscriptId = req.params.id;
   const title = req.body.payload.title;
   const body = req.body.payload.body;
+  const public = req.body.payload.public;
+  const user_id = req.user.id;
 
-  console.log('manuscriptId', req.params.id);
-  console.log('title', title);
-  console.log('body', body);
+  const userParamId = req.user.id;
 
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
+    //Check to make sure content to be updated exists and belongs to the currently authenticated user.
+    const isManuscriptOwnerQueryText = `
+    SELECT EXISTS (
+      SELECT * FROM "user" AS u
+      JOIN "shelves" AS s ON u.id = s.user_id
+      JOIN "manuscript_shelf" AS ms ON ms.shelf_id = s.id
+      JOIN "manuscripts" AS m ON m.id = ms.manuscript_id
+      WHERE u.id = $1 AND m.id = $2
+    ) AS is_manuscript_owner;
+    `;
+
+    const isOwnerResult = await connection.query(isManuscriptOwnerQueryText, [
+      userParamId,
+      manuscriptId,
+    ]);
+    const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
+
+    //If the content does not exist or does not belong to the user, we send 403 status forbidden and break.
+    if (!isOwner) {
+      res.sendStatus(403);
+      return;
+    }
     //NOT SECURE FROM POSTMAN NEED TO UPDATE TO INCLUDE USER ID
     const manuscriptUpdateQueryText = `UPDATE "manuscripts"
-    SET title = $1, body = $2
-    WHERE "manuscripts".id = $3;
+    SET title = $1, body = $2, public = $3
+    WHERE "manuscripts".id = $4 AND "manuscripts".user_id = $5;
     `;
 
     await connection.query(manuscriptUpdateQueryText, [
       title,
       body,
+      public,
       manuscriptId,
+      user_id
     ]);
 
     await connection.query("COMMIT");
@@ -155,39 +208,55 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
  * DELETE Manuscript route
  */
 router.delete("/:id", rejectUnauthenticated, async (req, res) => {
-  const userId = req.user.id;
+  const user_Id = req.user.id;
   const manuscriptId = req.params.id;
-
-  console.log("userID", req.user.id);
-  console.log("manuscriptId", req.params.id);
-
-  console.log("in delete");
-
   const connection = await pool.connect();
 
   try {
     await connection.query("BEGIN");
 
+    //Check to make sure content to be deleted exists and belongs to the currently authenticated user.
+    const isManuscriptOwnerQueryText = `
+    SELECT EXISTS (
+      SELECT * FROM "user" AS u
+      JOIN "shelves" AS s ON u.id = s.user_id
+      JOIN "manuscript_shelf" AS ms ON ms.shelf_id = s.id
+      JOIN "manuscripts" AS m ON m.id = ms.manuscript_id
+      WHERE u.id = $1 AND m.id = $2
+    ) AS is_manuscript_owner;
+    `;
+
+    const isOwnerResult = await connection.query(isManuscriptOwnerQueryText, [
+      user_Id,
+      manuscriptId,
+    ]);
+    const isOwner = isOwnerResult.rows[0].is_manuscript_owner;
+
+    //If the content does not exist or does not belong to the user, we send status 403 forbidden and break.
+    if (!isOwner) {
+      res.sendStatus(403);
+      return;
+    }
+
+
+
     const deleteManuscriptShelvesQueryText = `
     DELETE FROM "manuscript_shelf" 
-    USING "user" 
-    WHERE "manuscript_shelf".manuscript_id = $1 AND "user".id = $2;`;
+    WHERE "manuscript_shelf".manuscript_id = $1`;
 
-    await connection.query(deleteManuscriptShelvesQueryText, [
-      manuscriptId,
-      userId,
-    ]);
+    await connection.query(deleteManuscriptShelvesQueryText, [manuscriptId]);
 
     const deleteManuscriptQueryText = `
     DELETE FROM "manuscripts" 
-    USING "user" 
-    WHERE "manuscripts".id = $1 AND "user".id = $2;
+    WHERE "manuscripts".id = $1 AND "manuscripts".user_id = $2;
     `;
 
-    await connection.query(deleteManuscriptQueryText, [manuscriptId, userId]);
+    await connection.query(deleteManuscriptQueryText, [manuscriptId, user_Id]);
+
+
 
     await connection.query("COMMIT");
-    res.sendStatus(201);
+    res.sendStatus(204);
   } catch (error) {
     await connection.query("ROLLBACK");
     console.log(`Transaction Error - Rolling back transfer`, error);
@@ -198,6 +267,31 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     // This is super important!
     connection.release();
   }
+});
+
+
+/**
+ * GET shared Manuscripts route
+ */
+router.get("/circle/:id", rejectUnauthenticated, (req, res) => {
+  const circleID = req.params.id;
+
+  const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
+    JOIN "circle_manuscript" ON "circle_manuscript".manuscript_id = "manuscripts".id
+    JOIN "circles" ON "circles".id = "circle_manuscript".circle_id
+    JOIN "user" ON "user".id = "circles".owner_id
+    WHERE "circles".id = $1
+    GROUP BY "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username;`;
+
+  pool
+    .query(query, [circleID])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log("ERROR: Get shared manuscripts", err);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;

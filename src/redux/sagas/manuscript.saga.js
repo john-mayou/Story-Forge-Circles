@@ -6,7 +6,6 @@ import axios from "axios";
  */
 function* fetchPublicManuscriptList() {
   try {
-    // console.log('in list of teams');
     const response = yield axios.get(`/manuscript`);
     yield put({ type: "SET_PUBLIC_MANUSCRIPT_LIST", payload: response.data });
   } catch (error) {
@@ -16,12 +15,22 @@ function* fetchPublicManuscriptList() {
 
 function* fetchWritersDeskList() {
   try {
-    // console.log('in list of teams');
     const response = yield axios.get(`/manuscript/writersdesk`);
     yield put({ type: "SET_WRITERS_DESK_LIST", payload: response.data });
   } catch (error) {
     console.log("Get Manuscript List request failed in Saga", error);
   }
+}
+
+function* fetchManuscript(action) {
+    try {
+        const response = yield axios.get(`/manuscript/${action.payload}`);
+
+        console.log('response.data in saga', response.data);
+        yield put({ type: "SET_MANUSCRIPT", payload: response.data[0] });
+      } catch (error) {
+        console.log("Get Manuscript by ID request failed in Saga", error);
+      }
 }
 
 function* addManuscript(action) {
@@ -45,7 +54,7 @@ function* removeManuscript(action) {
 function* updateManuscript(action) {
   try {
     yield axios.put(`/manuscript/${action.payload.id}`, {
-      payload: { title: action.payload.title, body: action.payload.body },
+      payload: { title: action.payload.title, body: action.payload.body, public: action.payload.public },
     });
     //yield put({ type: "FETCH_MANUSCRIPT" });
   } catch (error) {
@@ -56,6 +65,7 @@ function* updateManuscript(action) {
 function* publicManuscriptListSaga() {
   yield takeLatest("FETCH_PUBLIC_MANUSCRIPT_LIST", fetchPublicManuscriptList);
   yield takeLatest("FETCH_WRITERS_DESK_LIST", fetchWritersDeskList);
+  yield takeLatest("FETCH_MANUSCRIPT", fetchManuscript);
   yield takeLatest("ADD_MANUSCRIPT", addManuscript);
   yield takeLatest("REMOVE_MANUSCRIPT", removeManuscript);
   yield takeLatest("UPDATE_MANUSCRIPT", updateManuscript);

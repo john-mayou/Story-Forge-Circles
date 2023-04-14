@@ -28,6 +28,7 @@ import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
 import MembersPage from "../../pages/Circles/MembersPage/MembersPage";
+import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -56,7 +57,7 @@ function App() {
             <ReadingListPage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/manuscript-read">
+          <ProtectedRoute exact path="/manuscript-read/:id">
             <ReadManuscriptPage />
           </ProtectedRoute>
 
@@ -64,7 +65,7 @@ function App() {
             <WritersDeskPage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/manuscript-write">
+          <ProtectedRoute exact path="/manuscript-write/:id">
             <WriteManuscriptPage />
           </ProtectedRoute>
 
@@ -88,6 +89,19 @@ function App() {
           <ProtectedRoute exact path="/search-circles/:type">
             <SearchCirclesPage />
           </ProtectedRoute>
+          <ProtectedRoute exact path="/circle-dashboard/:circle_id">
+            <CircleDashboard />
+          </ProtectedRoute>
+
+          <Route exact path="/login">
+            {user.id ? (
+              // If the user is already logged in
+              <Redirect to="/reading-list" />
+            ) : (
+              // Otherwise, show the login page
+              <LoginPage />
+            )}
+          </Route>
 
           <Route exact path="/login">
             {user.id ? (

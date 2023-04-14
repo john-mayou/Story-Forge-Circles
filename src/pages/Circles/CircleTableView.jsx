@@ -1,10 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   // Get the current user's ID from the Redux store
   const { id } = useSelector((store) => store.user);
+  const history = useHistory();
 
+  const navigateToCircleDashboard = (circle_id) => {
+    history.push(`/circle-dashboard/${circle_id}`);
+  }
   return (
     <table>
       <thead>
@@ -19,7 +24,7 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
           let shouldShowJoinButton = isJoined && id !== circle.owner_id;
           return (
             <tr key={circle.id}>
-              <td>
+              <td onClick={() => navigateToCircleDashboard(circle.id)}>
                 {circle.name}
                 {shouldShowJoinButton && <button>JOIN</button>}
               </td>
