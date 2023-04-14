@@ -9,7 +9,7 @@ import CircleTableManuscriptView from "../CircleTableManuscriptView";
 export default function CircleDashboard() {
   const dispatch = useDispatch();
   const { circle_id } = useParams();
-  const { id } = useSelector((store) => store.user);
+  const { id: userId } = useSelector((store) => store.user);
   const history = useHistory();
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
     (store) => store.circles
@@ -23,7 +23,7 @@ export default function CircleDashboard() {
   const getUserAllManuscriptList = () => {
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
-      payload: id,
+      payload: userId,
       callback: (manuscripts) => {
         setShowShareModal(true);
       },
@@ -49,6 +49,9 @@ export default function CircleDashboard() {
   const goToMessageBoard = () => {
     history.push(`/message-board/${circle_id}`)
   }
+  const handleManuscriptClick = (manuscriptId) => {
+    history.push(`/manuscript-read/${manuscriptId}`);
+  };
 
   return (
     <main className="content-main">
@@ -56,7 +59,10 @@ export default function CircleDashboard() {
       <h2>Circle Manuscripts</h2>
       <SearchCircleForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
-      <CircleTableManuscriptView manuscriptlist={circleManuscriptsList} />
+      <CircleTableManuscriptView
+        manuscriptlist={circleManuscriptsList}
+        onManuscriptClick={handleManuscriptClick}
+      />
 
       <button onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
