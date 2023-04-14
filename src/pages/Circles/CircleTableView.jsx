@@ -20,7 +20,6 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
       </thead>
       <tbody>
         {circlelist.map((circle) => {
-          console.log("circle", circle);
           // Determine whether to show the "JOIN" button for this circle
           let shouldShowJoinButton = isJoined && id !== circle.owner_id;
           return (

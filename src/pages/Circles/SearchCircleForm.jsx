@@ -18,7 +18,7 @@ export default function SearchCircleForm({ onSearch }) {
       <input
         type="text"
         className="search-input"
-        placeholder="Search by name"
+        placeholder="Search"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         onKeyPress={handleKeyPress}
