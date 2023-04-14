@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ShareManuscriptModal from "../ShareManuscriptModal/ShareManuscriptModal";
+import SearchCircleForm from "../SearchCircleForm";
+import { useHistory } from "react-router-dom";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
   const { circle_id } = useParams();
   const { id } = useSelector((store) => store.user);
-
+  const history = useHistory();
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
     (store) => store.circles
   );
@@ -17,15 +19,7 @@ export default function CircleDashboard() {
 
   const [showShareModal, setShowShareModal] = useState(false);
 
-  const handleSearch = () => {
-    console.log("here search in circledashboard");
-  };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
 
   useEffect(() => {
     // Dispatch action to saga to get list of manuscripts shared to that specific circle
@@ -56,12 +50,18 @@ export default function CircleDashboard() {
     });
   };
 
+  const handleSearch = (searchTerm) => {
+    history.push(`/search-circles/circleManuscriptsList?term=${searchTerm}`);
+  };
+
   return (
     <main className="content-main">
       <h1>Circle Dashboard</h1>
       <h2>Circle Manuscripts</h2>
       <div>
-        <input
+      <SearchCircleForm onSearch={handleSearch} />
+
+        {/* <input
           type="text"
           className="search-input"
           placeholder="Search manuscript"
@@ -70,7 +70,7 @@ export default function CircleDashboard() {
         />
         <button className="search-btn" onClick={handleSearch}>
           Search
-        </button>
+        </button> */}
         <h3>SHARED MANUSCRIPTS LIST</h3>
 
         <table>
