@@ -1,7 +1,7 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const encryptLib = require('../modules/encryption');
-const pool = require('../modules/pool');
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const encryptLib = require("../modules/encryption");
+const pool = require("../modules/pool");
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -9,7 +9,19 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   pool
-    .query('SELECT * FROM "user" WHERE id = $1', [id])
+    .query(
+      `SELECT 
+        u.id,
+        u.username,
+        u.password,
+        u.avatar_image,
+        ARRAY_AGG(c.id) AS owned_circles
+      FROM "user" AS u 
+        JOIN "circles" AS c ON c.owner_id = u.id
+      WHERE u.id = $1
+      GROUP BY u.id, u.username, u.password, u.avatar_image;`,
+      [id]
+    )
     .then((result) => {
       // Handle Errors
       const user = result && result.rows && result.rows[0];
@@ -27,7 +39,7 @@ passport.deserializeUser((id, done) => {
       }
     })
     .catch((error) => {
-      console.log('Error with query during deserializing user ', error);
+      console.log("Error with query during deserializing user ", error);
       // done takes an error (we have one) and a user (null in this case)
       // this will result in the server returning a 500 status code
       done(error, null);
@@ -36,7 +48,7 @@ passport.deserializeUser((id, done) => {
 
 // Does actual work of logging in
 passport.use(
-  'local',
+  "local",
   new LocalStrategy((username, password, done) => {
     pool
       .query('SELECT * FROM "user" WHERE username = $1', [username])
@@ -54,7 +66,7 @@ passport.use(
         }
       })
       .catch((error) => {
-        console.log('Error with query for user ', error);
+        console.log("Error with query for user ", error);
         // done takes an error (we have one) and a user (null in this case)
         // this will result in the server returning a 500 status code
         done(error, null);
