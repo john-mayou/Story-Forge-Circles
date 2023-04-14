@@ -10,16 +10,21 @@ function MembersPage() {
 
   // Local State
   const [circleMembers, setCircleMembers] = useState([]);
-  const fakeCircle = {
-    id: 1,
-    name: "circleName",
-    description: "description",
-    owner_id: 1,
-  };
+  const [newMember, setNewMember] = useState("");
+  const [userExitsError, setUserExistsError] = useState(false);
+  const [circleDetails, setCircleDetails] = useState([]);
 
   useEffect(() => {
     fetchMembers();
+    fetchCircleDetails();
   }, []);
+
+  const fetchCircleDetails = async () => {
+    const circleDetailsResult = await axios.get(
+      `api/circles/details/${circleId}`
+    );
+    setCircleDetails(circleDetailsResult.data[0]);
+  };
 
   const fetchMembers = async () => {
     const circlesResponse = await axios.get(`/api/circles/${circleId}/members`);
@@ -27,7 +32,7 @@ function MembersPage() {
   };
 
   const removeMember = async (memberId) => {
-    await axios.delete(`/api/circles/${fakeCircle.id}/members`, {
+    await axios.delete(`/api/circles/${circleDetails.id}/members`, {
       data: { user: memberId },
     });
     fetchMembers();
@@ -36,16 +41,86 @@ function MembersPage() {
   return (
     <main className="content-main">
       <h1>Members Page</h1>
+      {userExitsError && <p>User doesnt exist... Try again</p>}
       <h2>Circle Id: {circleId}</h2>
       <div>
         {/* if user is circle owner */}
-        {user.id === fakeCircle.owner_id ? (
-          <button>Add Member</button>
+        {user.id === circleDetails.owner_id ? (
+          <>
+            <button
+              onClick={async () => {
+                if (!newMember) {
+                  return;
+                }
+
+                const userExistsResult = await axios.get(
+                  `/api/notification/user-exists/${newMember}`
+                );
+
+                if (userExistsResult.data.length) {
+                  dispatch({
+                    type: "CREATE_NEW_NOTIFICATION",
+                    payload: {
+                      circle_id: circleDetails.id,
+                      recipient_id: userExistsResult.data[0].id,
+                      type: "leader invite member - user action",
+                    },
+                  });
+                } else {
+                  setUserExistsError(true);
+                }
+              }}
+            >
+              Add Member
+            </button>
+            <input
+              type="text"
+              value={newMember}
+              onChange={(e) => {
+                setNewMember(e.target.value);
+              }}
+            />
+          </>
         ) : (
-          <button>Invite Member</button>
+          <>
+            <button
+              onClick={async () => {
+                if (!newMember) {
+                  return;
+                }
+
+                const userExistsResult = await axios.get(
+                  `/api/notification/user-exists/${newMember}`
+                );
+
+                if (userExistsResult.data.length) {
+                  dispatch({
+                    type: "CREATE_NEW_NOTIFICATION",
+                    payload: {
+                      circle_id: circleDetails.id,
+                      recipient_id: circleDetails.owner_id,
+                      type: "member nomination - leader action",
+                      nomination: userExistsResult.data[0].id,
+                    },
+                  });
+                } else {
+                  setUserExistsError(true);
+                }
+              }}
+            >
+              Invite Member
+            </button>
+            <input
+              type="text"
+              value={newMember}
+              onChange={(e) => {
+                setNewMember(e.target.value);
+              }}
+            />
+          </>
         )}
         {/* if user circle owner */}
-        {user.id === fakeCircle.owner_id ? (
+        {user.id === circleDetails.owner_id ? (
           // and there are no members in the circle
           circleMembers.length === 0 && <button>Close Circle</button>
         ) : (
@@ -59,10 +134,23 @@ function MembersPage() {
             <p>{member.id}</p>
             <p>{member.username}</p>
             <p>{member.avatar_image || "null image"}</p>
-            {user.id === fakeCircle.owner_id && (
+            {user.id === circleDetails.owner_id && (
               <>
                 <button onClick={() => removeMember(member.id)}>Remove</button>
-                <button>Promote To Leader</button>
+                <button
+                  onClick={() =>
+                    dispatch({
+                      type: "CREATE_NEW_NOTIFICATION",
+                      payload: {
+                        circle_id: circleDetails.id,
+                        recipient_id: member.id,
+                        type: "leader nominate leader - user action",
+                      },
+                    })
+                  }
+                >
+                  Promote To Leader
+                </button>
               </>
             )}
           </div>

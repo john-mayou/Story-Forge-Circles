@@ -16,7 +16,7 @@ passport.deserializeUser((id, done) => {
         u.password,
         u.avatar_image,
         ARRAY_AGG(c.id) AS owned_circles,
-        ARRAY_AGG(cu.circle_id) AS circles_joined
+        ARRAY_AGG(cu.circle_id) AS joined_circles
       FROM "user" AS u 
         LEFT JOIN "circles" AS c ON c.owner_id = u.id
         LEFT JOIN "circle_user" AS cu ON cu.user_id = u.id
