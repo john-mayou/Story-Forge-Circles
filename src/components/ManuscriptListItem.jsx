@@ -9,26 +9,17 @@ import { useHistory, Link } from "react-router-dom";
  */
 function ManuscriptListItem(props) {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   let preview = props.manuscript.body;
 
   if (props.manuscript.body.length > 100) {
     preview = props.manuscript.body.substring(0, 100);
+    preview = preview + '...';
   }
 
   const handleManuscriptClick = () => {
-    console.log("in Handle Manuscript Click");
-    console.log("currentPage is", props.currentPage);
-    console.log("manuscript ID is", props.manuscript.id);
-
-    switch (props.currentPage) {
-      case "WritersDeskPage":
-        history.push("/reading-list");
-        break;
-      case "ReadingListPage":
-        history.push("/writers-desk");
-        break;
-    }
+        history.push(`/manuscript-read/${props.manuscript.id}`);
   };
 
   return (
@@ -36,7 +27,7 @@ function ManuscriptListItem(props) {
       <div className="ManuscriptListItem" onClick={handleManuscriptClick}>
         <h1>Title: {props.manuscript.title}</h1>
         <h3>Author: {props.manuscript.username}</h3>
-        <p>Preview: {preview}...</p>
+        <p>Preview: {preview}</p>
       </div>
     </>
   );

@@ -48,6 +48,7 @@ CREATE TABLE "manuscripts" (
 	"id" serial NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"body" TEXT NOT NULL,
+	"public" BOOLEAN NOT NULL,
 	CONSTRAINT "manuscripts_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -80,10 +81,10 @@ CREATE TABLE "shelves" (
 CREATE TABLE "messages" (
 	"id" serial NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
-	"manuscript_id" int NOT NULL,
+	"manuscript_id" int,
 	"circle_id" int NOT NULL,
 	"user_id" int NOT NULL,
-	"parent_id" int NOT NULL,
+	"parent_id" int,
 	"message" TEXT NOT NULL,
 	CONSTRAINT "messages_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -94,9 +95,10 @@ CREATE TABLE "messages" (
 
 CREATE TABLE "comments" (
 	"id" serial NOT NULL,
-	"manuscript_id" int NOT NULL,
+	"created_at" TIMESTAMP NOT NULL,
+	"manuscript_id" int,
 	"user_id" int NOT NULL,
-	"parent_id" int NOT NULL,
+	"parent_id" int,
 	"comment" TEXT NOT NULL,
 	CONSTRAINT "comments_pk" PRIMARY KEY ("id")
 ) WITH (
