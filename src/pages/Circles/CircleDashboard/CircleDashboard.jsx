@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import ShareManuscriptModal from "../ShareManuscriptModal/ShareManuscriptModal";
+import ShareManuscriptModal from "../ShareManuscriptModal";
 import SearchCircleForm from "../SearchCircleForm";
 import { useHistory } from "react-router-dom";
+import CircleTableManuscriptView from "../CircleTableManuscriptView";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -13,14 +14,7 @@ export default function CircleDashboard() {
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
     (store) => store.circles
   );
-
-  // user's list of shareable manuscripts
-  const [shareManuscripts, setshareManuscripts] = useState([]);
-
   const [showShareModal, setShowShareModal] = useState(false);
-
-
-
   useEffect(() => {
     // Dispatch action to saga to get list of manuscripts shared to that specific circle
     dispatch({ type: "FETCH_CIRCLE_MANUSCRIPTS_LIST", payload: circle_id });
@@ -31,14 +25,12 @@ export default function CircleDashboard() {
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
       payload: id,
       callback: (manuscripts) => {
-        setshareManuscripts(manuscripts);
         setShowShareModal(true);
       },
     });
   };
 
   const handleShareManuscript = (selectedManuscriptsId) => {
-    console.log("selectedManuscriptsId", selectedManuscriptsId);
     setShowShareModal(false);
     const payload = {
       selectedManuscriptsId,
@@ -58,54 +50,17 @@ export default function CircleDashboard() {
     <main className="content-main">
       <h1>Circle Dashboard</h1>
       <h2>Circle Manuscripts</h2>
-      <div>
       <SearchCircleForm onSearch={handleSearch} />
+      <h3>SHARED MANUSCRIPTS LIST</h3>
+      <CircleTableManuscriptView manuscriptlist={circleManuscriptsList} />
 
-        {/* <input
-          type="text"
-          className="search-input"
-          placeholder="Search manuscript"
-          onChange={(e) => e.target.value}
-          onKeyPress={handleKeyPress}
-        />
-        <button className="search-btn" onClick={handleSearch}>
-          Search
-        </button> */}
-        <h3>SHARED MANUSCRIPTS LIST</h3>
+      <button onClick={() => getUserAllManuscriptList()}>
+        Share Manuscript
+      </button>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Author</th>
-              <th>Title</th>
-              <th>Preview</th>
-            </tr>
-          </thead>
-          <tbody>
-            {circleManuscriptsList.map((manuscript) => (
-              <tr key={manuscript?.id}>
-                <td>{manuscript?.author}</td>
-                <td>{manuscript?.title}</td>
-                <td>{manuscript?.body}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <button>Members</button>
 
-      <div>
-        <button onClick={() => getUserAllManuscriptList()}>
-          Share Manuscript
-        </button>
-      </div>
-
-      <div>
-        <button>Members</button>
-      </div>
-
-      <div>
-        <button>Message Board</button>
-      </div>
+      <button>Message Board</button>
 
       {showShareModal && (
         <ShareManuscriptModal

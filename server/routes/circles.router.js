@@ -1,6 +1,5 @@
 const express = require("express");
 const pool = require("../modules/pool");
-const { restart } = require("nodemon");
 const router = express.Router();
 
 /**
@@ -129,7 +128,6 @@ router.get("/manuscript", async (req, res) => {
     const { id } = req.query;
 
     const circleManuscriptsList = await pool.query(
-    
       `SELECT circle_manuscript.*, manuscriptTables.title, manuscriptTables.body, manuscriptTables.username AS author
       FROM circle_manuscript
       JOIN (
@@ -153,8 +151,6 @@ router.get("/manuscript", async (req, res) => {
       [id]
     );
     res.json(circleManuscriptsList.rows);
-
-    console.log('circleManuscriptsList', circleManuscriptsList)
   } catch (error) {
     console.error("Error fetching all manuscripts in circle:", error);
     res.status(500).json({ message: "Internal server error" });

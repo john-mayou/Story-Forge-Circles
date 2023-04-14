@@ -38,7 +38,7 @@ function* createNewCircle(action) {
   }
 }
 
-function* fetchAllPublicCirclesList(action) {
+function* fetchAllPublicCirclesList() {
     try {
         const response = yield axios.get(`api/circles/public`);
         yield put({ type: "SET_PUBLIC_CIRCLES_LIST", payload: response.data });
@@ -48,7 +48,6 @@ function* fetchAllPublicCirclesList(action) {
 }
 
 function* fetchCircleManuscriptsList(action) {
-  console.log('action.payload}', action.payload)
   try {
     const id = action.payload;
     const response = yield axios.get(`/api/circles/manuscript?id=${id}`);
@@ -59,7 +58,6 @@ function* fetchCircleManuscriptsList(action) {
 }
 
 function* fetchUserManuscriptsNotInCircle(action) {
-  console.log('action.payload}', action.payload)
   try {
     const id = action.payload;
     const response = yield axios.get(`/api/circles/userManuscriptNotInCircle?id=${id}`);
@@ -75,7 +73,6 @@ function* fetchUserManuscriptsNotInCircle(action) {
 
 
 function* createCircleManuscript(action) {
-  console.log('action.payload====', action.payload)
   try {
     const data = JSON.stringify(action.payload); // convert to string
     yield axios.post("/api/circles/createCircleManuscript", data, {

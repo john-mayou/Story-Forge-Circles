@@ -2,10 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-export default function CircleTableManuscriptView({
-  manuscriptlist,
-  isJoined = false,
-}) {
+export default function CircleTableManuscriptView({ manuscriptlist }) {
   // Get the current user's ID from the Redux store
   const { id } = useSelector((store) => store.user);
   const history = useHistory();
