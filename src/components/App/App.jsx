@@ -74,7 +74,7 @@ function App() {
                         <MyCirclesPage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/message-board">
+                    <ProtectedRoute exact path="/message-board/:circle_id">
                         <MessageBoard />
                     </ProtectedRoute>
 

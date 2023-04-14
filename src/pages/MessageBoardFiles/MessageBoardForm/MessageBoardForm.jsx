@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 function MessageBoardForm() {
+  const { circle_id } = useParams();
+  console.log("circle_id", circle_id);
   const dispatch = useDispatch();
   const history = useHistory();
   const [comments, setComments] = useState('');
@@ -20,7 +22,7 @@ function MessageBoardForm() {
     e.preventDefault();
     dispatch({
       type: "POST_COMMENT",
-      payload: commentBody,
+      payload: {message : commentBody.comment, circle_id }
     });
     clearInput();
   };

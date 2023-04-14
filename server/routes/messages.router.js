@@ -21,6 +21,7 @@ router.get("/", (req, res) => {
 router.post("/", rejectUnauthenticated, async (req, res) => {
     // const { created_at, manuscript_id, circle_id, user_id, parent_id, message, id } = req.body;
     const { message, circle_id } = req.body;
+    console.log("in req.body", req.body);
     try {
         const result =  await pool.query(
             // `INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)

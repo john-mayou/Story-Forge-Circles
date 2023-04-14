@@ -54,7 +54,8 @@ function MessageBoard({ commentsList, comment }) {
         <button>Search</button>
         <div>
         <button onClick={handleAddThreadClick}>+Thread</button>
-        <button onClick={goToDashboard}>Dashboard</button>
+          <button onClick={goToDashboard}>Dashboard</button>
+          <MessageBoardForm/>
         </div>
         </div>
     </>
