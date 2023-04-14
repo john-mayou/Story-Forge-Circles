@@ -56,9 +56,6 @@ function ReadingListPage() {
 
       <SearchManuscriptForm onSearch={handleSearch} />
 
-      {/* Search results */}
-      <h2>Manuscript Results for "{searchTerm}"</h2>
-
       {/* Displays list of publically shared Manuscripts to page */}
       {filteredmanuscripts?.map((manuscript) => {
         return (
