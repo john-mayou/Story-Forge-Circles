@@ -9,6 +9,7 @@ const passport = require("./strategies/user.strategy");
 
 // Route includes
 const userRouter = require("./routes/user.router");
+const notificationRouter = require("./routes/notification.router");
 const manuscriptRouter = require("./routes/manuscript.router");
 const circlesRouter = require("./routes/circles.router");
 const commentsRouter = require("./routes/comments.router");
@@ -28,6 +29,8 @@ app.use(passport.session());
 /* Routes */
 app.use("/api/user", userRouter);
 app.use("/api/manuscript",  manuscriptRouter);
+app.use("/api/notification", notificationRouter);
+app.use("/manuscript", manuscriptRouter);
 app.use("/api/circles", circlesRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/messages", messagesRouter);

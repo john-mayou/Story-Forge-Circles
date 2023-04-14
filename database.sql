@@ -46,8 +46,10 @@ CREATE TABLE "manuscript_shelf" (
 
 CREATE TABLE "manuscripts" (
 	"id" serial NOT NULL,
+	"user_id" int NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"body" TEXT NOT NULL,
+	"public" BOOLEAN NOT NULL,
 	CONSTRAINT "manuscripts_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -80,10 +82,10 @@ CREATE TABLE "shelves" (
 CREATE TABLE "messages" (
 	"id" serial NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
-	"manuscript_id" int NOT NULL,
+	"manuscript_id" int,
 	"circle_id" int NOT NULL,
 	"user_id" int NOT NULL,
-	"parent_id" int NOT NULL,
+	"parent_id" int,
 	"message" TEXT NOT NULL,
 	CONSTRAINT "messages_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -94,9 +96,10 @@ CREATE TABLE "messages" (
 
 CREATE TABLE "comments" (
 	"id" serial NOT NULL,
-	"manuscript_id" int NOT NULL,
+	"created_at" TIMESTAMP NOT NULL,
+	"manuscript_id" int,
 	"user_id" int NOT NULL,
-	"parent_id" int NOT NULL,
+	"parent_id" int,
 	"comment" TEXT NOT NULL,
 	CONSTRAINT "comments_pk" PRIMARY KEY ("id")
 ) WITH (
@@ -118,11 +121,24 @@ CREATE TABLE "comments_likes" (
 
 CREATE TABLE "notifications" (
 	"id" serial NOT NULL,
-	"user_id" int NOT NULL,
 	"circle_id" int NOT NULL,
+	"recipient_id" int NOT NULL,
+	"actor_id" int NOT NULL,
+	"nomination_id" int,
 	"type" varchar(255) NOT NULL,
-	"is_accepted" BOOLEAN,
+	"completed" BOOLEAN NOT NULL DEFAULT 'false',
 	CONSTRAINT "notifications_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "nominations" (
+	"id" serial NOT NULL,
+	"nominated_by_id" int NOT NULL,
+	"nominated_id" int NOT NULL,
+	CONSTRAINT "nominations_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -138,6 +154,7 @@ ALTER TABLE "circles" ADD CONSTRAINT "circles_fk0" FOREIGN KEY ("owner_id") REFE
 ALTER TABLE "manuscript_shelf" ADD CONSTRAINT "manuscript_shelf_fk0" FOREIGN KEY ("shelf_id") REFERENCES "shelves"("id");
 ALTER TABLE "manuscript_shelf" ADD CONSTRAINT "manuscript_shelf_fk1" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
 
+ALTER TABLE "manuscripts" ADD CONSTRAINT "manuscripts_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 
 ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk0" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
 ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
@@ -156,8 +173,19 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_fk2" FOREIGN KEY ("parent_id") R
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk1" FOREIGN KEY ("comment_id") REFERENCES "comments"("id");
 
-ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
-ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("recipient_id") REFERENCES "user"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk2" FOREIGN KEY ("actor_id") REFERENCES "user"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk3" FOREIGN KEY ("nomination_id") REFERENCES "nominations"("id");
+
+ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk0" FOREIGN KEY ("nominated_by_id") REFERENCES "user"("id");
+ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk1" FOREIGN KEY ("nominated_id") REFERENCES "user"("id");
+
+
+
+
+
+
 
 
 

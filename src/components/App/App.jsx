@@ -10,19 +10,26 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
+// Notification Actions (REMOVE LATER)
+import NotificationActionsPage from "../../utils/NotificationActionsPage";
+
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
+import Header from "../../layout/Header/Header";
 
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
 import WritersDeskPage from "../../pages/User/WritersDesk/WritersDeskPage/WritersDeskPage";
 import ReadManuscriptPage from "../../pages/User/ReadingList/ReadManuscriptPage/ReadManuscriptPage";
+import WriteManuscriptPage from "../../pages/User/WritersDesk/WriteManuscriptPage/WriteManuscriptPage";
 
 // Circles Pages
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
 import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
+import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
+import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
 
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
@@ -43,6 +50,7 @@ function App() {
         <Router>
             <div>
                 {user.id && <Sidebar />}
+                {user.id && <Header />}
                 <Switch>
                     <Redirect exact from="/" to="/reading-list" />
 
@@ -50,12 +58,16 @@ function App() {
                         <ReadingListPage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/manuscript-read">
-                        <ReadManuscriptPage/>
+                    <ProtectedRoute exact path="/manuscript-read/:id">
+                        <ReadManuscriptPage />
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/writers-desk">
                         <WritersDeskPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/manuscript-write/:id">
+                        <WriteManuscriptPage/>
                     </ProtectedRoute>
 
                     <ProtectedRoute exact path="/circles">
@@ -70,8 +82,21 @@ function App() {
                         <MessageBoardForm />
                     </ProtectedRoute>
                     
+                    {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
+                    <ProtectedRoute exact path="/notification-actions">
+                        <NotificationActionsPage />
+                    </ProtectedRoute>
+
                     <ProtectedRoute exact path="/circles-browser">
                         <BrowserCirclePage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/search-circles/:type">
+                        <SearchCirclesPage />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute exact path="/circle-dashboard/:circle_id">
+                        <CircleDashboard />
                     </ProtectedRoute>
 
                     <Route exact path="/login">

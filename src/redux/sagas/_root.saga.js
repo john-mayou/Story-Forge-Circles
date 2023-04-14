@@ -2,7 +2,8 @@ import { all } from "redux-saga/effects";
 import loginSaga from "./login.saga";
 import registrationSaga from "./registration.saga";
 import userSaga from "./user.saga";
-import manuscriptListSaga from "./manuscript.saga";
+import notificationSaga from "./notification.saga";
+import publicManuscriptListSaga from "./manuscript.saga";
 import circlesSaga from "./circles.saga";
 import commentsSaga from "./comments.saga";
 // rootSaga is the primary saga.
@@ -17,7 +18,8 @@ export default function* rootSaga() {
     loginSaga(), // login saga is now registered
     registrationSaga(),
     userSaga(),
-    manuscriptListSaga(),
+    notificationSaga(),
+    publicManuscriptListSaga(),
     circlesSaga(),
     commentsSaga(),
   ]);
