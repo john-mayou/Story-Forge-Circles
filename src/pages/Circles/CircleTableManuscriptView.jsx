@@ -4,12 +4,17 @@ import { useHistory } from "react-router-dom";
 
 export default function CircleTableManuscriptView({ manuscriptlist }) {
   // Get the current user's ID from the Redux store
-  const { id } = useSelector((store) => store.user);
+  const { id: userId } = useSelector((store) => store.user);
   const history = useHistory();
+
+  const handleManuscriptClick = (manuscriptId) => {
+    history.push(`/manuscript-read/${manuscriptId}`);
+  };
 
   const navigateToCircleDashboard = (circle_id) => {
     history.push(`/circle-dashboard/${circle_id}`);
   };
+
   return (
     <table>
       <thead>
@@ -21,7 +26,7 @@ export default function CircleTableManuscriptView({ manuscriptlist }) {
       </thead>
       <tbody>
         {manuscriptlist?.map((manuscript) => (
-          <tr key={manuscript?.id}>
+          <tr key={manuscript?.id} onClick={() => handleManuscriptClick(manuscript?.id)}>
             <td>{manuscript?.author}</td>
             <td>{manuscript?.title}</td>
             <td>{manuscript?.body}</td>
