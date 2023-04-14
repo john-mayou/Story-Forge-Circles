@@ -45,6 +45,21 @@ router.post("/createCircleManuscript", async (req, res) => {
   }
 });
 
+router.get("/details/:id", async (req, res) => {
+  const { id: circle_id } = req.params;
+
+  try {
+    const circleDetailsResult = await pool.query(
+      `SELECT * FROM "circles" WHERE id = $1;`,
+      [circle_id]
+    );
+    res.send(circleDetailsResult.rows).status(200);
+  } catch (error) {
+    console.log(`Error making query`, error);
+    res.sendStatus(500);
+  }
+});
+
 /**
  * GET all joined circles
  */
@@ -107,21 +122,30 @@ router.get("/public", async (req, res) => {
  */
 router.post("/", async (req, res) => {
   const { name, description, ownerId } = req.body;
+  const connection = await pool.connect();
 
   try {
+    await connection.query("BEGIN");
+
+    // First: insert circle into circles table
     const newCircle = await pool.query(
-      `
-      INSERT INTO circles (name, description, owner_id)
-      VALUES ($1, $2, $3)
-      RETURNING *
-`,
+      `INSERT INTO circles (name, description, owner_id) VALUES ($1, $2, $3) RETURNING id`,
       [name, description, ownerId]
     );
 
+    await pool.query(
+      `INSERT INTO "circle_user" ("user_id", "circle_id") VALUES ($1, $2)`,
+      [req.user.id, newCircle.rows[0].id]
+    );
+
+    await connection.query("COMMIT");
     res.status(201).json(newCircle.rows[0]);
   } catch (error) {
+    await connection.query("ROLLBACK");
     console.error("Error creating new circle:", error);
     res.status(500).json({ message: "Internal server error" });
+  } finally {
+    connection.release();
   }
 });
 
