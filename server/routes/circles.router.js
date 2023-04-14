@@ -133,6 +133,7 @@ router.post("/", async (req, res) => {
       [name, description, ownerId]
     );
 
+    // Second: insert user into circle_user
     await pool.query(
       `INSERT INTO "circle_user" ("user_id", "circle_id") VALUES ($1, $2)`,
       [req.user.id, newCircle.rows[0].id]

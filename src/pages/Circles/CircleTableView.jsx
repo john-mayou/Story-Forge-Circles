@@ -1,15 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   // Get the current user's ID from the Redux store
-  const { id } = useSelector((store) => store.user);
-  const history = useHistory();
+  const { owned_circles, joined_circles } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
-  const navigateToCircleDashboard = (circle_id) => {
-    history.push(`/circle-dashboard/${circle_id}`);
-  }
   return (
     <table>
       <thead>
@@ -20,13 +17,27 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
       </thead>
       <tbody>
         {circlelist.map((circle) => {
-          // Determine whether to show the "JOIN" button for this circle
-          let shouldShowJoinButton = isJoined && id !== circle.owner_id;
           return (
             <tr key={circle.id}>
-              <td onClick={() => navigateToCircleDashboard(circle.id)}>
+              <td>
                 {circle.name}
-                {shouldShowJoinButton && <button>JOIN</button>}
+                {(owned_circles.includes(circle.id) ||
+                  joined_circles.includes(circle.id)) && (
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                          circle_id: circle.id,
+                          recipient_id: circle.owner_id,
+                          type: "request to join - leader action",
+                        },
+                      })
+                    }
+                  >
+                    JOIN
+                  </button>
+                )}
               </td>
 
               <td>{circle.description}</td>
