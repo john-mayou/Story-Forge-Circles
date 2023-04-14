@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ManuscriptListItem from "../../ManuscriptListItem";
+import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
+import { Button } from "@mui/material";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -11,7 +13,6 @@ function WritersDeskPage() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch({
@@ -23,6 +24,7 @@ function WritersDeskPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   // Creates Manuscript Object with Title and Body and sends it to the database
   const handleSubmit = (e) => {
@@ -50,7 +52,6 @@ function WritersDeskPage() {
 
   //Deletes Manuscript from Database
   const handleDelete = (id) => {
-
     dispatch({
       type: "REMOVE_MANUSCRIPT",
       payload: id,
@@ -109,7 +110,17 @@ function WritersDeskPage() {
 
             <button onClick={() => handleEdit(manuscript)}>Edit</button>
 
-            <button onClick={() => handleDelete(manuscript.id)}>Delete</button>
+            <Button onClick={() => setConfirmOpen(true)}>
+              Delete
+            </Button>
+              <ConfirmDialog
+                title="Delete Manuscript?"
+                open={confirmOpen}
+                setOpen={setConfirmOpen}
+                onConfirm={() => handleDelete(manuscript.id)}
+              >
+              </ConfirmDialog>
+
           </div>
         );
       })}
