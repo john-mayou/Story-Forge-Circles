@@ -46,6 +46,7 @@ CREATE TABLE "manuscript_shelf" (
 
 CREATE TABLE "manuscripts" (
 	"id" serial NOT NULL,
+	"user_id" int NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"body" TEXT NOT NULL,
 	"public" BOOLEAN NOT NULL,
@@ -153,6 +154,7 @@ ALTER TABLE "circles" ADD CONSTRAINT "circles_fk0" FOREIGN KEY ("owner_id") REFE
 ALTER TABLE "manuscript_shelf" ADD CONSTRAINT "manuscript_shelf_fk0" FOREIGN KEY ("shelf_id") REFERENCES "shelves"("id");
 ALTER TABLE "manuscript_shelf" ADD CONSTRAINT "manuscript_shelf_fk1" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
 
+ALTER TABLE "manuscripts" ADD CONSTRAINT "manuscripts_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 
 ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk0" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
 ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
@@ -178,6 +180,11 @@ ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk3" FOREIGN KEY ("nom
 
 ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk0" FOREIGN KEY ("nominated_by_id") REFERENCES "user"("id");
 ALTER TABLE "nominations" ADD CONSTRAINT "nominations_fk1" FOREIGN KEY ("nominated_id") REFERENCES "user"("id");
+
+
+
+
+
 
 
 
