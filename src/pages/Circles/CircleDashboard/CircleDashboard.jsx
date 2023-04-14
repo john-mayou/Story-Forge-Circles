@@ -9,7 +9,7 @@ import CircleTableManuscriptView from "../CircleTableManuscriptView";
 export default function CircleDashboard() {
   const dispatch = useDispatch();
   const { circle_id } = useParams();
-  const { id } = useSelector((store) => store.user);
+  const { id: userId } = useSelector((store) => store.user);
   const history = useHistory();
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
     (store) => store.circles
@@ -23,7 +23,7 @@ export default function CircleDashboard() {
   const getUserAllManuscriptList = () => {
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
-      payload: id,
+      payload: userId,
       callback: (manuscripts) => {
         setShowShareModal(true);
       },
