@@ -1,15 +1,17 @@
 import React from "react";
-import { 
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField
 } from "@mui/material";
 
 /**
- * 
- * @param {*} props 
+ *
+ * @param {*} props
  * @title - This is what will show as the dialog title
  * @children - This is what will show in the dialog content. This can be a string, or it can be another, more complex component.
  * @open - A boolean that shows the dialog if true.
@@ -25,12 +27,27 @@ const ConfirmDialog = (props) => {
       aria-labelledby="confirm-dialog"
     >
       <DialogTitle id="confirm-dialog">{title}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent>
+        <DialogContentText>{children}</DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="description"
+            type="text"
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="description"
+            label="description"
+            type="text"
+            fullWidth
+          />
+      </DialogContent>
       <DialogActions>
-        <Button
-          variant="contained"
-          onClick={() => setOpen(false)}
-        >
+        <Button variant="contained" onClick={() => setOpen(false)}>
           No
         </Button>
         <Button

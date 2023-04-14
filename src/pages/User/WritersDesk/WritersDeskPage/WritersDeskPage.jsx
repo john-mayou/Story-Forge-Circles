@@ -96,7 +96,7 @@ function WritersDeskPage() {
           checked={isChecked}
         />
 
-        <input className="submit-button" type="submit" />
+        <Button variant="outlined" className="submit-button" type="submit" >Submit</Button>
       </form>
 
       <br></br>
@@ -108,9 +108,9 @@ function WritersDeskPage() {
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <button onClick={() => handleEdit(manuscript)}>Edit</button>
+            <Button variant="outlined" onClick={() => handleEdit(manuscript)}>Edit</Button>
 
-            <Button onClick={() => setConfirmOpen(true)}>
+            <Button variant="outlined" onClick={() => setConfirmOpen(true)}>
               Delete
             </Button>
               <ConfirmDialog
