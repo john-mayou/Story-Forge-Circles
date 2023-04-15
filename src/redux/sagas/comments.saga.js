@@ -5,29 +5,30 @@ import axios from 'axios';
 function* fetchComments() {
   try {
       // ask for comment data from db
-      let commentsResponse = yield axios.get(`/api/messages`)
-      // once received, send to plantsReducer
+      let commentsResponse = yield axios.get(`/api/comments`)
+      // once received, send to comments Reducer
       yield put({ type: 'SET_COMMENTS', payload: commentsResponse.data })
   } catch (err) {
       console.error('Error in fetchComments comments saga', err);
   }
 }
 
-function* postComments(action) {
+// Post a message: fires on `POST_COMMENT`
+function* postComment(action) {
     try {
-        yield axios.post(`/api/messages`, action.payload);
+        yield axios.post(`/api/comments`, action.payload);
         yield put({
-          type: "FETCH_NEW_COMMENT",
+          type: "FETCH_COMMENTS",
         });
       } catch (error) {
-        console.log("Error in POST Saga:", error);
+        console.log("Error in POST comments Saga:", error);
       }
 
 }
 
 
 function* commentsSaga() {
-  yield takeEvery("POST_COMMENT", postComments);
+  yield takeEvery("POST_COMMENT", postComment);
   yield takeEvery("FETCH_COMMENTS", fetchComments);
 }
 

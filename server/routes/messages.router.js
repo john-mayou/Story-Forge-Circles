@@ -29,7 +29,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 
 
 /**
- * POST comments on circle message board
+ * POST messages on circle message board
  */
 router.post("/", rejectUnauthenticated, async (req, res) => {
   // extracting values from req.body

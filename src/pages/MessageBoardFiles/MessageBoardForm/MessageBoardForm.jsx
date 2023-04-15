@@ -9,7 +9,7 @@ function MessageBoardForm({ parent_id }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const history = useHistory();
-  const [comment, setComment] = useState({
+  const [message, setMessage] = useState({
     circle_id,
     parent_id,
     message: '',
@@ -18,27 +18,27 @@ function MessageBoardForm({ parent_id }) {
   const handleSubmitComment = (e) => {
     e.preventDefault();
     dispatch({
-      type: "POST_COMMENT",
-      payload: comment,
+      type: "POST_MESSAGE",
+      payload: message,
     });
     clearInput();
   };
 
   // clearing text input field
   const clearInput = () => {
-    // spreading comment object to preserve ids, clearing message input value
-    setComment({ ...comment, message: '' });
+    // spreading message object to preserve ids, clearing message input value
+    setMessage({ ...message, message: '' });
   };
 
   return (
     <>
-      <div className="comments-container" align="center">
+      <div className="messages-container" align="center">
         <form onSubmit={handleSubmitComment}>
           <input
             type="text"
-            value={comment.comment}
-            onChange={(e) => setComment({ ...comment, message: e.target.value })}
-            placeholder="add comment"
+            value={message.message}
+            onChange={(e) => setMessage({ ...message, message: e.target.value })}
+            placeholder="Add Comment"
             style={{ width: "80%", marginLeft: "5rem", marginRight: "0rem" }}
           />
           <button type="submit">Add Comment</button>

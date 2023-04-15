@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 
-function MessageBoard({ commentsList, comment }) {
+function MessageBoard() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [expand, setExpand] = useState(false);
+  const messageList = useSelector(store => store.messages);
 
   // fetch all comments on page load
   useEffect(() => {
     dispatch({
-      type: "FETCH_COMMENTS",
+      type: "FETCH_MESSAGES",
     });
   }, []);
 
@@ -41,11 +42,10 @@ function MessageBoard({ commentsList, comment }) {
           <button onClick={goToDashboard}>Dashboard</button>
           <div className="flex flex-col gap-4 mt-10">
           <ul>
-            {commentsList?.map((comment) => (
-              <li key={comment.id} className="border-[1px] border-zinc-500 rounded-md">
+            {messageList?.map((message) => (
+              <li key={message.id} className="border-[1px] border-zinc-500 rounded-md">
                 <div>
-                  {JSON.stringify(comment)}
-                  {/* <MessageBoardForm comment={comment} />  */}
+                  {JSON.stringify(message)}
                 </div>
               </li>
           ))}
