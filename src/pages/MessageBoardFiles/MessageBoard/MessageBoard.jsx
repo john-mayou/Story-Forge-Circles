@@ -6,12 +6,7 @@ import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 function MessageBoard({ commentsList, comment }) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [comments, setComments] = useState('');
-  const [commentBody, setCommentBody] = useState('');
-  const [newComment, setNewComment] = useState({ body: { commentBody } });
   const [expand, setExpand] = useState(false);
-  const [showMessageBoardForm, setShowMessageBoardForm] = useState(false);
-  
 
   // fetch all comments on page load
   useEffect(() => {
@@ -20,26 +15,15 @@ function MessageBoard({ commentsList, comment }) {
     });
   }, []);
 
-  // const onComment = () => {
-    // send input value to saga
-  //   dispatch({
-  //     type: "POST_COMMENT",
-  //     payload: input,
-  //   });
-  //   newComment
-  // };
-
-  // setComments((prev) => [newComment, ...prev]);
 
   const handleAddThreadClick = () => {
     setExpand(!expand);
-    setShowMessageBoardForm(true);
   };
 
   const goToDashboard = () => {
-    history.push('/circle-dashboard/:circle_id"')
+    history.push(`/circle-dashboard/${circle_id}`);
   };
-  
+
   return (
     <>
       <h3 align="center">Message Board</h3>
@@ -53,11 +37,23 @@ function MessageBoard({ commentsList, comment }) {
         />
         <button>Search</button>
         <div>
-        <button onClick={handleAddThreadClick}>+Thread</button>
+          <button onClick={handleAddThreadClick}>+Thread</button>
           <button onClick={goToDashboard}>Dashboard</button>
-          <MessageBoardForm/>
+          <div className="flex flex-col gap-4 mt-10">
+          <ul>
+            {commentsList?.map((comment) => (
+              <li key={comment.id} className="border-[1px] border-zinc-500 rounded-md">
+                <div>
+                  {JSON.stringify(comment)}
+                  {/* <MessageBoardForm comment={comment} />  */}
+                </div>
+              </li>
+          ))}
+            </ul>
+            <MessageBoardForm />
+          </div>
         </div>
-        </div>
+      </div>
     </>
   );
 }
