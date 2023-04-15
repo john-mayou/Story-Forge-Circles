@@ -14,7 +14,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     console.log('Getting all messages')
     const getAllMessagesQuery = `SELECT * FROM "messages"
     WHERE "user_id" = $1
-    ORDER BY "created_at" DESC
+    ORDER BY "created_at" ASC
     ;`;
     pool
       .query(getAllMessagesQuery, [req.user.id])
