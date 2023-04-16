@@ -2,17 +2,17 @@ const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
 const {
-    rejectUnauthenticated,
-} = require('../modules/authentication-middleware');
-const forbidden = new Error('User is not authenticated');
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
+const forbidden = new Error("User is not authenticated");
 forbidden.code = 403;
 
 /**
  * GET messages on circles
  */
 router.get("/", rejectUnauthenticated, (req, res) => {
-    console.log('Getting all messages')
-    const getAllMessagesQuery = `WITH RECURSIVE messages_cte (
+  console.log("Getting all messages");
+  const getAllMessagesQuery = `WITH RECURSIVE messages_cte (
       id,
       path,
       message,
@@ -56,33 +56,35 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     FROM
       messages_cte
     ;`;
-    pool
-      .query(getAllMessagesQuery)
-      .then((dbRes) => {
-        res.send(dbRes.rows);
-      })
-      .catch((err) => {
-        res.sendStatus(500);
-        console.error("GET all messages failed", err);
-      });
-  });
-
+  pool
+    .query(getAllMessagesQuery)
+    .then((dbRes) => {
+      res.send(dbRes.rows);
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+      console.error("GET all messages failed", err);
+    });
+});
 
 /**
  * POST messages on circle message board
  */
 router.post("/", rejectUnauthenticated, async (req, res) => {
   // extracting values from req.body
-    const { manuscript_id, circle_id, parent_id, message } = req.body;
-    console.log("in req.body", req.body);
-    try {
-        const result =  await pool.query(
-            `INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)
+  const { manuscript_id, circle_id, parent_id, message } = req.body;
+  console.log("in req.body", req.body);
+
+  const connection = await pool.connect();
+
+  try {
+    await connection.query('BEGIN');
+    const result = await connect.query(
+      `INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)
             VALUES ( NOW(), $1, $2, $3, $4, $5 ) RETURNING *;`,
-            [manuscript_id, circle_id, req.user.id, parent_id, message]
-        )
-      res.send(result.rows[0]);
-      let pathQuery = `WITH RECURSIVE messages_cte (
+      [manuscript_id, circle_id, req.user.id, parent_id, message]
+    );
+    let pathQuery = `WITH RECURSIVE messages_cte (
         id,
           path
         ) AS (
@@ -104,11 +106,18 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
           path
         FROM
           messages_cte
-        WHERE id = $1;`
-    } catch (error) {
-    console.log("error", error)
-        res.sendStatus(500).json({ message: "Error occurring with messages." });
-    }
+        WHERE id = $1;`;
+    await connection.query("COMMIT");
+    res.send(result.rows[0]);
+  } catch (err) {
+    await connection.query('ROLLBACK');
+    console.log(`Transaction Error - Rolling back transfer`, err);
+    res.sendStatus(500).json({ message: "Error occurring with messages." });
+  } finally {
+    connection.release();
+    res.end();
+  }
+  
 });
 
 module.exports = router;
