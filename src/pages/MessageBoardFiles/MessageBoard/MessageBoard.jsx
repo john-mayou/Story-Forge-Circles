@@ -49,6 +49,7 @@ function MessageBoard() {
               <li key={message.id} className="border-[1px] border-zinc-500 rounded-md">
                 <div>
                   <pre>{JSON.stringify(message)}</pre>
+                  <button onClick={() => (dispatch({type: 'FETCH_CHILDREN', payload: message.id}))}>Expand</button>
                   {`User ${message.user_id}: `}
                   {`${message.message} `}
                   {/* passing message.id as parent_id prop to form component */}

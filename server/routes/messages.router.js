@@ -12,9 +12,9 @@ forbidden.code = 403;
  */
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   console.log("Getting children comments");
-  const getChildrenQuery = `SELECT * FROM "messages" WHERE path <@ 'parent_id' ORDER BY ASC;`
+  const getChildrenQuery = `SELECT * FROM "messages" WHERE path <@ $1 ORDER BY created_at ASC;`
   pool
-    .query(getChildrenQuery)
+    .query(getChildrenQuery, [req.params.id])
     .then((dbRes) => {
       res.send(dbRes.rows);
     })
