@@ -12,10 +12,10 @@ function MessageBoard() {
   const [expand, setExpand] = useState(false);
   const [replyId, setReplyId] = useState(-1);
 
-  // fetch all comments on page load
+  // fetch all base messages on page load
   useEffect(() => {
     dispatch({
-      type: "FETCH_MESSAGES",
+      type: "FETCH_BASE_MESSAGES",
     });
   }, []);
 
