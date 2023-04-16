@@ -6,8 +6,9 @@ import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 function MessageBoard() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [expand, setExpand] = useState(false);
   const messageList = useSelector(store => store.messages);
+  const [expand, setExpand] = useState(false);
+  const [replyId, setReplyId] = useState(-1);
 
   // fetch all comments on page load
   useEffect(() => {
@@ -41,16 +42,21 @@ function MessageBoard() {
           <button onClick={handleAddThreadClick}>+Thread</button>
           <button onClick={goToDashboard}>Dashboard</button>
           <div className="flex flex-col gap-4 mt-10">
+          <MessageBoardForm />
           <ul>
             {messageList?.map((message) => (
               <li key={message.id} className="border-[1px] border-zinc-500 rounded-md">
                 <div>
-                  {JSON.stringify(message)}
+                  {/* {JSON.stringify(message)} */}
+                  {`User ${message.user_id}: `}
+                  {`${message.message} `}
+                  {replyId == message.id ? <MessageBoardForm parent_id={message.id} />
+                   : <button onClick={() => (setReplyId(message.id))}>Reply</button> 
+                  }
                 </div>
               </li>
           ))}
             </ul>
-            <MessageBoardForm />
           </div>
         </div>
       </div>
