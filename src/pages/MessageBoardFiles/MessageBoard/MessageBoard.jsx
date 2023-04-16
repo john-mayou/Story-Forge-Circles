@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 
 function MessageBoard() {
+  const { circle_id } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const messageList = useSelector(store => store.messages);
+  const [addThread, setAddThread] = useState(false);
   const [expand, setExpand] = useState(false);
   const [replyId, setReplyId] = useState(-1);
 
@@ -18,7 +20,7 @@ function MessageBoard() {
   }, []);
 
   const handleAddThreadClick = () => {
-    setExpand(!expand);
+    setAddThread(!addThread);
   };
 
   const goToDashboard = () => {
@@ -38,15 +40,15 @@ function MessageBoard() {
         />
         <button>Search</button>
         <div>
-          <button onClick={handleAddThreadClick}>+Thread</button>
+          <button onClick={handleAddThreadClick}>{!addThread ? '+Thread' : 'Cancel' }</button>
           <button onClick={goToDashboard}>Dashboard</button>
           <div className="flex flex-col gap-4 mt-10">
-          <MessageBoardForm />
+            { addThread ? <MessageBoardForm /> : ''}
           <ul>
             {messageList?.map((message) => (
               <li key={message.id} className="border-[1px] border-zinc-500 rounded-md">
                 <div>
-                  {/* {JSON.stringify(message)} */}
+                  <pre>{JSON.stringify(message)}</pre>
                   {`User ${message.user_id}: `}
                   {`${message.message} `}
                   {/* passing message.id as parent_id prop to form component */}

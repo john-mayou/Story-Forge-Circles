@@ -8,19 +8,36 @@ const forbidden = new Error("User is not authenticated");
 forbidden.code = 403;
 
 /**
- * GET messages on circles
+ * GET children comments by parent id
  */
-router.get("/", rejectUnauthenticated, (req, res) => {
-  console.log("Getting all messages");
-  const getAllMessagesQuery = `SELECT * FROM "messages" LIMIT 10;`
+router.get("/:id", rejectUnauthenticated, (req, res) => {
+  console.log("Getting children comments");
+  const getChildrenQuery = `SELECT * FROM "messages" WHERE path <@ 'parent_id' ORDER BY ASC;`
   pool
-    .query(getAllMessagesQuery)
+    .query(getChildrenQuery)
     .then((dbRes) => {
       res.send(dbRes.rows);
     })
     .catch((err) => {
       res.sendStatus(500);
-      console.error("GET all messages failed", err);
+      console.error("GET children comments failed", err);
+    });
+});
+
+/**
+ * GET threads (base/parent messages) on circles, limit 10
+ */
+router.get("/", rejectUnauthenticated, (req, res) => {
+  console.log("Getting all messages");
+  const getThreadsQuery = `SELECT * FROM "messages" WHERE path='' LIMIT 10;`
+  pool
+    .query(getThreadsQuery)
+    .then((dbRes) => {
+      res.send(dbRes.rows);
+    })
+    .catch((err) => {
+      res.sendStatus(500);
+      console.error("GET all threads failed", err);
     });
 });
 
@@ -41,7 +58,9 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
             VALUES ( NOW(), $1, $2, $3, $4, $5 ) RETURNING *;`,
       [manuscript_id, circle_id, req.user.id, parent_id, message]
     );
-    let pathQuery = `WITH RECURSIVE messages_cte (
+    // if parent id exists, update path
+    if (parent_id) {
+      let pathQuery = `WITH RECURSIVE messages_cte (
         id,
           path
         ) AS (
@@ -64,13 +83,13 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
         FROM
           messages_cte
         WHERE id = $1;`;
-    const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
-    const path = pathResponse.rows[0].path.substr(1);
-    console.log('path:', path);
-
-    const updateQuery = `UPDATE messages SET path = $1 WHERE id = $2;`;
-    const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
-
+      const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
+      const path = pathResponse.rows[0].path.substr(1);
+      console.log('path:', path);
+      // Making new query to set path (ltree type) for reply
+      const updateQuery = `UPDATE messages SET path = $1 WHERE id = $2;`;
+      const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
+    }
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {
