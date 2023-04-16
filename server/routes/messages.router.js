@@ -81,7 +81,30 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
             VALUES ( NOW(), $1, $2, $3, $4, $5 ) RETURNING *;`,
             [manuscript_id, circle_id, req.user.id, parent_id, message]
         )
-        res.send(result.rows[0]);
+      res.send(result.rows[0]);
+      let pathQuery = `WITH RECURSIVE messages_cte (
+        id,
+          path
+        ) AS (
+          SELECT
+          m.id,
+            ''
+          FROM
+            "messages" m
+          WHERE
+            parent_id IS NULL
+          UNION ALL
+          SELECT
+          r.id,
+            concat(path, '.', r.parent_id)
+          FROM "messages" r
+            JOIN messages_cte ON messages_cte.id = r.parent_id
+        )
+        SELECT
+          path
+        FROM
+          messages_cte
+        WHERE id = $1;`
     } catch (error) {
     console.log("error", error)
         res.sendStatus(500).json({ message: "Error occurring with messages." });
