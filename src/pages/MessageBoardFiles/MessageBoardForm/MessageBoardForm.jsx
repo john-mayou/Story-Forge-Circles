@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
-function MessageBoardForm({ parent_id }) {
+function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
   console.log("circle_id", circle_id);
   // getting user from store
@@ -38,10 +38,15 @@ function MessageBoardForm({ parent_id }) {
             type="text"
             value={message.message}
             onChange={(e) => setMessage({ ...message, message: e.target.value })}
-            placeholder="Add Comment"
+            placeholder={parent_id ? "Reply" : "Add Comment"}
             style={{ width: "80%", marginLeft: "5rem", marginRight: "0rem" }}
           />
-          <button type="submit">Add Comment</button>
+          <button type="submit">{parent_id ? "Reply" : "Add Comment"}</button>
+          {/* Conditionally rendering cancel button if parent id exists */}
+          {parent_id ?
+            <button onClick={() => (setReplyId(-1))}>Cancel</button>
+            : ''
+          }
         </form>
       </div>
     </>

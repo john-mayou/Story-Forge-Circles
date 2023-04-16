@@ -50,7 +50,8 @@ function MessageBoard() {
                   {/* {JSON.stringify(message)} */}
                   {`User ${message.user_id}: `}
                   {`${message.message} `}
-                  {replyId == message.id ? <MessageBoardForm parent_id={message.id} />
+                  {/* passing message.id as parent_id prop to form component */}
+                  {replyId == message.id ? <MessageBoardForm parent_id={message.id} setReplyId={setReplyId} />
                    : <button onClick={() => (setReplyId(message.id))}>Reply</button> 
                   }
                 </div>
