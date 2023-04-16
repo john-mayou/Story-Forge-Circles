@@ -12,50 +12,7 @@ forbidden.code = 403;
  */
 router.get("/", rejectUnauthenticated, (req, res) => {
   console.log("Getting all messages");
-  const getAllMessagesQuery = `WITH RECURSIVE messages_cte (
-      id,
-      path,
-      message,
-      user_id,
-      username,
-      circle_id,
-      manuscript_id,
-      created_at
-    ) AS (
-      SELECT
-        m.id,
-        '',
-        m.message,
-        m.user_id,
-        u.username,
-        m.circle_id,
-        m.manuscript_id,
-        m.created_at
-      FROM
-        "messages" m
-        JOIN "user" u ON user_id = u.id
-      WHERE
-        parent_id IS NULL
-      UNION ALL
-      SELECT
-        r.id,
-        concat(messages_cte.path, '/', r.parent_id),
-        r.message,
-        r.user_id,
-        u.username,
-        r.circle_id,
-        r.manuscript_id,
-        r.created_at
-      FROM
-        "messages" r
-        JOIN messages_cte ON messages_cte.id = r.parent_id
-        JOIN "user" u ON r.user_id = u.id
-    )
-    SELECT
-      *
-    FROM
-      messages_cte
-    ;`;
+  const getAllMessagesQuery = `SELECT * FROM "messages" LIMIT 10;`
   pool
     .query(getAllMessagesQuery)
     .then((dbRes) => {
@@ -110,6 +67,10 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
     const path = pathResponse.rows[0].path.substr(1);
     console.log('path:', path);
+
+    const updateQuery = `UPDATE messages SET path = $1 WHERE id = $2;`;
+    const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
+
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {
