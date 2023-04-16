@@ -12,12 +12,52 @@ forbidden.code = 403;
  */
 router.get("/", rejectUnauthenticated, (req, res) => {
     console.log('Getting all messages')
-    const getAllMessagesQuery = `SELECT * FROM "messages"
-    WHERE "user_id" = $1
-    ORDER BY "created_at" ASC
+    const getAllMessagesQuery = `WITH RECURSIVE messages_cte (
+      id,
+      path,
+      message,
+      user_id,
+      username,
+      circle_id,
+      manuscript_id,
+      created_at
+    ) AS (
+      SELECT
+        m.id,
+        '',
+        m.message,
+        m.user_id,
+        u.username,
+        m.circle_id,
+        m.manuscript_id,
+        m.created_at
+      FROM
+        "messages" m
+        JOIN "user" u ON user_id = u.id
+      WHERE
+        parent_id IS NULL
+      UNION ALL
+      SELECT
+        r.id,
+        concat(path, '/', r.parent_id),
+        r.message,
+        r.user_id,
+        u.username,
+        r.circle_id,
+        r.manuscript_id,
+        r.created_at
+      FROM
+        "messages" r
+        JOIN messages_cte ON messages_cte.id = r.parent_id
+        JOIN "user" u ON r.user_id = u.id
+    )
+    SELECT
+      *
+    FROM
+      messages_cte
     ;`;
     pool
-      .query(getAllMessagesQuery, [req.user.id])
+      .query(getAllMessagesQuery)
       .then((dbRes) => {
         res.send(dbRes.rows);
       })
