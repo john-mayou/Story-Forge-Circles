@@ -39,7 +39,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
       UNION ALL
       SELECT
         r.id,
-        concat(path, '/', r.parent_id),
+        concat(messages_cte.path, '/', r.parent_id),
         r.message,
         r.user_id,
         u.username,
@@ -79,7 +79,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
 
   try {
     await connection.query('BEGIN');
-    const result = await connect.query(
+    const result = await connection.query(
       `INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)
             VALUES ( NOW(), $1, $2, $3, $4, $5 ) RETURNING *;`,
       [manuscript_id, circle_id, req.user.id, parent_id, message]
@@ -98,7 +98,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
           UNION ALL
           SELECT
           r.id,
-            concat(path, '.', r.parent_id)
+            concat(messages_cte.path, '.', r.parent_id)
           FROM "messages" r
             JOIN messages_cte ON messages_cte.id = r.parent_id
         )
@@ -107,6 +107,9 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
         FROM
           messages_cte
         WHERE id = $1;`;
+    const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
+    const path = pathResponse.rows[0].path.substr(1);
+    console.log('path:', path);
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {
@@ -117,7 +120,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     connection.release();
     res.end();
   }
-  
 });
 
 module.exports = router;
