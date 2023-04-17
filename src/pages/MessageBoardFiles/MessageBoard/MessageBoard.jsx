@@ -45,11 +45,18 @@ function MessageBoard() {
         <div>
           <button onClick={handleAddThreadClick}>{!addThread ? '+Thread' : 'Cancel' }</button>
           <button onClick={goToDashboard}>Dashboard</button>
-          <div className="flex flex-col gap-4 mt-10">
+          <div className="thread-container">
             { addThread ? <MessageBoardForm /> : ''}
             <ul align="left" style={{ listStyle: "none", marginLeft: "5rem" }}>
             {messageList?.map((message) => (
-              <li key={message.id} className="border-[1px] border-zinc-500 rounded-md">
+              <li key={message.id}
+                style={message.parent_id ?
+                  { // Adding indentation based on path length
+                    marginLeft: `${4 * (message.path.includes('.') ?
+                      message.path.split('.').length : 1)}rem`
+                  }
+                  : {}
+                }>
                 <div>
                   <pre>{JSON.stringify(message)}</pre>
                   <button onClick={() => {
