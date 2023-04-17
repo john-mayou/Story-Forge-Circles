@@ -1,20 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
-  // Get the current user's ID and subscribed circles from the Redux store
-  const { id } = useSelector((store) => store.user);
-  const myJoinedCircleList = useSelector((store) => store.myJoinedCircleList);
-  const subscribedCircles = myJoinedCircleList ? myJoinedCircleList.map((circle) => circle.id) : [];
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const navigateToCircleDashboard = (circle) => {
-    if (circle.owner_id === id || subscribedCircles.includes(circle.id)) {
-      // Navigate to the circle dashboard if the user is subscribed to the circle, or if they own the circle
-      history.push(`/circle-dashboard/${circle.id}`);
+  const { owned_circles, joined_circles, id } = useSelector(
+    (store) => store.user
+  );
+
+  const navigateToCircleDashboard = ({ id }) => {
+    if (owned_circles.includes(id) || joined_circles.includes(id)) {
+      history.push(`/circle-dashboard/${id}`);
     } else {
-      // Alert the user to request to join the circle if they are not subscribed
       alert("You must be a subscriber to view this circle.");
     }
   };
@@ -25,24 +24,40 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
         <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Join</th>
+          <th>Go</th>
         </tr>
       </thead>
       <tbody>
         {circlelist.map((circle) => {
-          // Determine whether to show the "JOIN" button for this circle
-          let shouldShowJoinButton = isJoined && id !== circle.owner_id;
           return (
             <tr key={circle.id}>
-              <td onClick={() => navigateToCircleDashboard(circle)}>
-                {circle.name}
-                {shouldShowJoinButton && (
-                  <button disabled={subscribedCircles.includes(circle.id)}>
-                    {subscribedCircles.includes(circle.id) ? "Joined" : "JOIN"}
+              <td>{circle.name}</td>
+              <td>{circle.description}</td>
+              <td>
+                {!owned_circles.includes(circle.id) &&
+                !joined_circles.includes(circle.id) ? (
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "CREATE_NEW_NOTIFICATION",
+                        payload: {
+                          circle_id: circle.id,
+                          recipient_id: circle.owner_id,
+                          type: "request to join - leader action",
+                        },
+                      })
+                    }
+                  >
+                    Request to Join
                   </button>
+                ) : (
+                  <span>Joined</span>
                 )}
               </td>
-
-              <td>{circle.description}</td>
+              <td onClick={() => navigateToCircleDashboard(circle)}>
+                <button>Go</button>
+              </td>
             </tr>
           );
         })}

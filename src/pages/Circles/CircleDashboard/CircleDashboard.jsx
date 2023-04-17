@@ -27,7 +27,7 @@ export default function CircleDashboard() {
     const payload = {
       userId,
       circle_id,
-    }
+    };
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
       payload,
@@ -54,9 +54,8 @@ export default function CircleDashboard() {
   };
 
   const goToMessageBoard = () => {
-    history.push(`/message-board/${circle_id}`)
-  }
-
+    history.push(`/message-board/${circle_id}`);
+  };
 
   return (
     <main className="content-main">
@@ -73,13 +72,15 @@ export default function CircleDashboard() {
         Share Manuscript
       </Button>
 
-      <button>Members</button>
+      <button onClick={() => history.push(`/circles/${circle_id}/members`)}>
+        Members
+      </button>
 
       <button onClick={goToMessageBoard}>Message Board</button>
 
       <ShareManuscriptDialog
         manuscripts={userManuscriptNotInCircle}
-        open = {showShareModal}
+        open={showShareModal}
         setOpen={setShowShareModal}
         circleId={circle_id}
         onShare={(selectedManuscriptsId) =>

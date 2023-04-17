@@ -1,49 +1,93 @@
 #content-header {
-    display: flex;
-    position: sticky;
-    height: 50px;
+  display: flex;
+  position: sticky;
+  height: 50px;
 }
 
 .header-empty-div {
-    flex: 1;
+  flex: 1;
 }
 
 .header-title-box {
-    flex: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .header-title {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .header-notification-bell {
-    font-size: 2rem;
-    cursor: pointer;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .header-right-end-container {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 2rem;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
 }
 
 .header-profile-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
 }
 
 .header-avatar-image {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .header-username {
-    text-transform: uppercase;
-    font-weight: 600;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.notification-container {
+  margin: 5px 0;
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notification-text {
+}
+
+.complete-notification-btn {
+  cursor: pointer;
+}
+
+.notification-handle-actions-btn {
+  cursor: pointer;
+}
+
+.notification-action-text {
+  padding: 10px 0;
+}
+
+.notification-action-buttons-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.notification-accept-btn,
+.notification-reject-btn {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.notification-accept-btn {
+  background-color: lightgreen;
+}
+
+.notification-reject-btn {
+  background-color: rgb(255, 79, 79);
+  color: #f0f0f0;
 }
