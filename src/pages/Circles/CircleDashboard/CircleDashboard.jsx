@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ShareManuscriptModal from "../ShareManuscriptModal";
-import SearchCircleForm from "../SearchCircleForm";
 import { useHistory } from "react-router-dom";
-import CircleTableManuscriptView from "../CircleTableManuscriptView";
+import TableManuscriptView from "../../../components/TableManuscriptView";
+import SearchForm from "../../Search/SearchForm";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -21,9 +21,13 @@ export default function CircleDashboard() {
   }, [dispatch]);
 
   const getUserAllManuscriptList = () => {
+    const payload = {
+      userId,
+      circle_id,
+    }
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
-      payload: userId,
+      payload,
       callback: (manuscripts) => {
         setShowShareModal(true);
       },
@@ -43,25 +47,23 @@ export default function CircleDashboard() {
   };
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/circleManuscriptsList?term=${searchTerm}`);
+    history.push(`/search/circles/circleManuscriptsList?term=${searchTerm}`);
   };
 
   const goToMessageBoard = () => {
     history.push(`/message-board/${circle_id}`)
   }
-  const handleManuscriptClick = (manuscriptId) => {
-    history.push(`/manuscript-read/${manuscriptId}`);
-  };
+
 
   return (
     <main className="content-main">
       <h1>Circle Dashboard</h1>
       <h2>Circle Manuscripts</h2>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
-      <CircleTableManuscriptView
+      <TableManuscriptView
+        circle_id={circle_id}
         manuscriptlist={circleManuscriptsList}
-        onManuscriptClick={handleManuscriptClick}
       />
 
       <button onClick={() => getUserAllManuscriptList()}>

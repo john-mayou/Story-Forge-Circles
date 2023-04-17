@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ManuscriptListItem from "../../ManuscriptListItem";
+import SearchForm from "../../../Search/SearchForm";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -11,7 +12,6 @@ function WritersDeskPage() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch({
@@ -57,13 +57,17 @@ function WritersDeskPage() {
     });
   };
 
+  const handleSearch = (searchTerm) => {
+    history.push(`/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`);
+  };
+
   return (
     <main className="content-main">
       <h1>Writers Desk Page</h1>
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
-      <br></br>
+    <SearchForm onSearch={handleSearch}/>
 
       {/* Manuscript Create Form */}
       <h2>New Manuscript:</h2>

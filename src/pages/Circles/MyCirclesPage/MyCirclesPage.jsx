@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
-import SearchCircleForm from "../SearchCircleForm";
+import SearchForm from "../../Search/SearchForm";
 
 function MyCirclesPage() {
   const { id } = useSelector((store) => store.user);
@@ -30,7 +30,7 @@ function MyCirclesPage() {
   }, [id, dispatch]);
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/myJoinedCircleList?term=${searchTerm}`);
+    history.push(`/search/circles/myJoinedCircleList?term=${searchTerm}`);
   };
 
   const handleCreateCircle = () => {
@@ -66,7 +66,7 @@ function MyCirclesPage() {
       >
         Browser Circle
       </button>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
       <CircleTableView circlelist={myJoinedCircleList} />
