@@ -59,7 +59,8 @@ function MessageBoard() {
                 }>
                 <div>
                   <pre>{JSON.stringify(message)}</pre>
-                  <button onClick={() => {
+                  {message.has_children
+                    ? <button onClick={() => {
                     if (expand.includes(message.id)) {
                       setExpand(expand.filter((id) => {
                         if (id != message.id) {
@@ -76,7 +77,8 @@ function MessageBoard() {
                       expand.includes(message.id) ?
                         <FontAwesomeIcon icon={faChevronDown} />
                       : <FontAwesomeIcon icon={faChevronRight} />
-                  }  </button>
+                      }  </button>
+                    : ''} 
                   {`@${message.username}: `}
                   {`${message.message} `}
                   {/* passing message.id as parent_id prop to form component */}
