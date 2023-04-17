@@ -33,6 +33,7 @@ function* createNewCircle(action) {
       type: "FETCH_MY_CREATED_CIRCLES",
       payload: action.payload.ownerId,
     });
+    yield put({ type: "FETCH_USER" });
   } catch (error) {
     console.log("Create new circle request failed in saga", error);
   }
@@ -59,7 +60,7 @@ function* fetchCircleManuscriptsList(action) {
 
 function* fetchUserManuscriptsNotInCircle(action) {
   try {
-    const {userId, circle_id} = action.payload;
+    const { userId, circle_id } = action.payload;
     const response = yield axios.get(
       `/api/circles/userManuscriptNotInCircle?userId=${userId}&circle_id=${circle_id}`
     );
@@ -78,7 +79,6 @@ function* fetchUserManuscriptsNotInCircle(action) {
     );
   }
 }
-
 
 function* createCircleManuscript(action) {
   try {
@@ -100,7 +100,9 @@ function* createCircleManuscript(action) {
 function* deleteSharedCircleManuscript(action) {
   try {
     const { circle_id, manuscriptId } = action.payload;
-    yield axios.delete(`/api/circles/manuscript/${manuscriptId}`, { data: { circle_id } });
+    yield axios.delete(`/api/circles/manuscript/${manuscriptId}`, {
+      data: { circle_id },
+    });
     yield put({ type: "FETCH_CIRCLE_MANUSCRIPTS_LIST", payload: circle_id });
   } catch (error) {
     console.log("delete shared circle manuscript error in saga", error);
@@ -118,7 +120,10 @@ function* circlesSaga() {
     fetchUserManuscriptsNotInCircle
   );
   yield takeLatest("CREATE_CIRCLE_MANUSCRIPT", createCircleManuscript);
-  yield takeLatest("DELETE_SHARED_CIRCLE_MANUSCRIPT", deleteSharedCircleManuscript);
+  yield takeLatest(
+    "DELETE_SHARED_CIRCLE_MANUSCRIPT",
+    deleteSharedCircleManuscript
+  );
 }
 
 export default circlesSaga;
