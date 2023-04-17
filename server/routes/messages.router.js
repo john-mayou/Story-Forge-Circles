@@ -17,7 +17,8 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
   WHERE parent_id = m.id) AS has_children
   FROM "messages" m
   JOIN "user" u on u.id = m.user_id
-  WHERE parent_id = $1 ORDER BY created_at ASC
+  WHERE parent_id = $1 
+  ORDER BY created_at ASC
   ;`
   pool
     .query(getChildrenQuery, [req.params.id])
@@ -40,7 +41,9 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   WHERE parent_id = m.id) AS has_children
   FROM "messages" m 
   JOIN "user" u on u.id = m.user_id 
-  WHERE path='' LIMIT 10
+  WHERE path='' 
+  ORDER BY created_at ASC 
+  LIMIT 10
   ;`
   pool
     .query(getThreadsQuery)
@@ -67,12 +70,13 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     await connection.query('BEGIN');
     const result = await connection.query(`
     INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)
-    VALUES ( NOW(), $1, $2, $3, $4, $5 ) RETURNING *
+    VALUES ( NOW(), $1, $2, $3, $4, $5 )
+    RETURNING *
     ;`,
       [manuscript_id, circle_id, req.user.id, parent_id, message]
     );
     // if parent id exists, update path
-    if (parent_id) {
+    // if (parent_id) {
       let pathQuery = `
       WITH RECURSIVE messages_cte (id, path) 
       AS (SELECT m.id,''
@@ -88,11 +92,12 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
       ;`;
       const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
       const path = pathResponse.rows[0].path.substr(1);
+      result.rows[0].path = path;
       console.log('path:', path);
       // Making new query to set path (ltree type) for reply
       const updateQuery = `UPDATE messages SET path = $1 WHERE id = $2;`;
       const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
-    }
+    // }
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {

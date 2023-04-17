@@ -33,7 +33,7 @@ function MessageBoard() {
   return (
     <>
       <h3 align="center">Message Board</h3>
-      <div align="center">
+      <div align="center" style={{backgroundColor: '#FCF5F0'}}>
         {/* Search bar for message board */}
         <label htmlFor="message-board-search">Search the Message Board:</label>
         <input
@@ -52,8 +52,8 @@ function MessageBoard() {
               <li key={message.id}
                 style={message.parent_id ?
                   { // Adding indentation based on path length
-                    marginLeft: `${4 * (message.path.includes('.') ?
-                      message.path.split('.').length : 1)}rem`
+                    marginLeft: `${4 * (message?.path?.includes('.') ?
+                      message?.path?.split('.').length : 1)}rem`
                   }
                   : {}
                 }>

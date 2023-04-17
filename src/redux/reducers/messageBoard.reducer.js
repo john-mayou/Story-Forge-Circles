@@ -3,6 +3,8 @@ const messages = (state = [], action) => {
     switch (action.type) {
         case 'SET_ALL_MESSAGES':
             return action.payload;
+        case 'ADD_BASE_MESSAGE':
+            return [...state, action.payload];
         case 'ADD_CHILDREN_MESSAGES':
             // creating new array
             let newArr = [];

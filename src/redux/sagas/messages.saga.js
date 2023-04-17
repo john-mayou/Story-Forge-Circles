@@ -1,4 +1,4 @@
-import { put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // * Get all base messages saga: fires on `FETCH_BASE_MESSAGES`
@@ -26,14 +26,26 @@ function* fetchChildrenMessages(action) {
   }
 }
 
+// * Select user reducer to access username
+const userSelector = (state) => state.user;
 
 // * Post a message: fires on `POST_MESSAGE`
 function* postMessage(action) {
   try {
-      yield axios.post(`/api/messages`, action.payload);
+    const response = yield axios.post(`/api/messages`, action.payload);
+    const user = yield select(userSelector)
+    response.data.username = user.username;
+    if (response.data.parent_id) {
       yield put({
-        type: "FETCH_BASE_MESSAGES",
+        type: "ADD_CHILDREN_MESSAGES",
+        payload: [response.data]
       });
+    } else {
+      yield put({
+        type: "ADD_BASE_MESSAGE",
+        payload: response.data
+      });
+    }
   } catch (error) {
     console.log("Error in POST Saga:", error);
   }
