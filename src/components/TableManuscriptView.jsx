@@ -46,13 +46,13 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
       <tbody>
         {manuscriptlist?.map((manuscript) => (
           <tr key={manuscript?.id}>
-            <td onClick={() => handleManuscriptClick(manuscript?.id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
               {manuscript?.author || manuscript?.username}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
               {manuscript?.title}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
               {manuscript?.body}
             </td>
             {manuscript?.author && (
