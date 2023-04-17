@@ -162,7 +162,7 @@ router.get("/manuscript", async (req, res) => {
  */
 router.get("/userManuscriptNotInCircle", async (req, res) => {
   try {
-    const { id } = req.query;
+    const { userId, circle_id } = req.query;
     const userManuscripts = await pool.query(
       `
       SELECT *
@@ -170,6 +170,7 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
       WHERE id NOT IN (
         SELECT manuscript_id
         FROM "circle_manuscript"
+        WHERE "circle_manuscript".circle_id = $2
       )
       AND id IN (
         SELECT manuscript_id
@@ -180,12 +181,12 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
           WHERE user_id = $1
         )
       )
-    `,
-      [id]
+      `,
+      [userId, circle_id]
     );
     res.json(userManuscripts.rows);
   } catch (error) {
-    console.error("Error fetching all public circles:", error);
+    console.error("Error fetching user manuscripts not in circle:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

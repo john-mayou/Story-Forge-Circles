@@ -59,9 +59,9 @@ function* fetchCircleManuscriptsList(action) {
 
 function* fetchUserManuscriptsNotInCircle(action) {
   try {
-    const id = action.payload;
+    const {userId, circle_id} = action.payload;
     const response = yield axios.get(
-      `/api/circles/userManuscriptNotInCircle?id=${id}`
+      `/api/circles/userManuscriptNotInCircle?userId=${userId}&circle_id=${circle_id}`
     );
     const manuscripts = response.data.rows;
     yield put({
@@ -78,6 +78,7 @@ function* fetchUserManuscriptsNotInCircle(action) {
     );
   }
 }
+
 
 function* createCircleManuscript(action) {
   try {

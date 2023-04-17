@@ -21,9 +21,13 @@ export default function CircleDashboard() {
   }, [dispatch]);
 
   const getUserAllManuscriptList = () => {
+    const payload = {
+      userId,
+      circle_id,
+    }
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
-      payload: userId,
+      payload,
       callback: (manuscripts) => {
         setShowShareModal(true);
       },
