@@ -47,6 +47,9 @@ export default function CircleDashboard() {
     history.push(`/search-circles/circleManuscriptsList?term=${searchTerm}`);
   };
 
+  const goToMessageBoard = () => {
+    history.push(`/message-board/${circle_id}`)
+  }
   const handleManuscriptClick = (manuscriptId) => {
     history.push(`/manuscript-read/${manuscriptId}`);
   };
@@ -68,7 +71,7 @@ export default function CircleDashboard() {
 
       <button>Members</button>
 
-      <button>Message Board</button>
+      <button onClick={goToMessageBoard}>Message Board</button>
 
       <ShareManuscriptDialog
         manuscripts={userManuscriptNotInCircle}
