@@ -9,7 +9,7 @@ const messages = (state = [], action) => {
             // looping through current messages
             for (let i = 0; i < state.length; i++) {
                 // checking if id of current message = parent_id of first child
-                if (state[i].id === action.payload[0].parent_id) {
+                if (state[i].id === action.payload[0]?.parent_id) {
                     // spreading new array, adding current message, adding all child messages
                     newArr = [...newArr, state[i], ...action.payload];
                     // otherwise push current message to new array
