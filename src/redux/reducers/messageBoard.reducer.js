@@ -18,6 +18,12 @@ const messages = (state = [], action) => {
                 }
             }
             return newArr;
+        case 'REMOVE_CHILDREN':
+            return state.filter((message) => {
+                if (!message.path.split('.').includes(`${action.payload}`)) {
+                    return message
+                }
+            })
         default:
             return state;
     }

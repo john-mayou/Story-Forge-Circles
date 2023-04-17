@@ -32,7 +32,7 @@ function MessageBoardForm({ parent_id, setReplyId }) {
 
   return (
     <>
-      <div className="messages-container" align="center">
+      <div className="messages-container">
         <form onSubmit={handleSubmitComment}>
           <input
             type="text"

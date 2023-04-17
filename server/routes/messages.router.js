@@ -12,7 +12,10 @@ forbidden.code = 403;
  */
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   console.log("Getting children comments");
-  const getChildrenQuery = `SELECT * FROM "messages" WHERE path <@ $1 ORDER BY created_at ASC;`
+  const getChildrenQuery = `SELECT m.*, u.username
+  FROM "messages" m 
+  JOIN "user" u on u.id = m.user_id
+  WHERE path <@ $1 ORDER BY created_at ASC;`
   pool
     .query(getChildrenQuery, [req.params.id])
     .then((dbRes) => {
@@ -29,7 +32,10 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
  */
 router.get("/", rejectUnauthenticated, (req, res) => {
   console.log("Getting all messages");
-  const getThreadsQuery = `SELECT * FROM "messages" WHERE path='' LIMIT 10;`
+  const getThreadsQuery = `SELECT m.*, u.username 
+  FROM "messages" m 
+  JOIN "user" u on u.id = m.user_id 
+  WHERE path='' LIMIT 10;`
   pool
     .query(getThreadsQuery)
     .then((dbRes) => {
