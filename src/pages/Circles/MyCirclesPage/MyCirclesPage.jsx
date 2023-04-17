@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
 import SearchForm from "../../Search/SearchForm";
+import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
+import { Button } from "@mui/material";
 
 function MyCirclesPage() {
   const { id } = useSelector((store) => store.user);
@@ -39,7 +41,7 @@ function MyCirclesPage() {
       alert("Please enter a value for both Circle Name and Description");
       return;
     }
-  
+
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
@@ -71,17 +73,21 @@ function MyCirclesPage() {
 
       <CircleTableView circlelist={myJoinedCircleList} />
 
-        <button
-          className="create-btn-new-circle"
-          onClick={() => setShowModal(true)}
-        >
-          New Circle
-        </button>
+      {/* <button
+        className="create-btn-new-circle"
+        onClick={() => setShowModal(true)}
+      >
+        New Circle
+      </button> */}
 
-        <p>CIRCLES I OWN / MY CIRCLES</p>
+      <Button variant="outlined" onClick={() => setShowModal(true)}>
+        + New Circle
+      </Button>
 
-        <CircleTableView circlelist={myCreatedCircleList} />
+      <p>CIRCLES I OWN / MY CIRCLES</p>
 
+      <CircleTableView circlelist={myCreatedCircleList} />
+      {/* 
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-container">
@@ -105,7 +111,18 @@ function MyCirclesPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
+
+      <CreateCircleDialog
+        title="Create Circle"
+        open={showModal}
+        setOpen={setShowModal}
+        inputOne={circleName}
+        setInputOne={setCircleName}
+        inputTwo={circleDescription}
+        setInputTwo={setCircleDescription}
+        onConfirm={() => handleCreateCircle()}
+      />
     </main>
   );
 }
