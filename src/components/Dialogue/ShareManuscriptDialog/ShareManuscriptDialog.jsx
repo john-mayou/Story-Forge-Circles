@@ -32,6 +32,7 @@ export default function ShareManuscriptDialog({
 
   const handleShareClick = () => {
     onShare(selectedManuscriptsId);
+    setSelectedManuscriptsId([]);
   };
 
   return (
