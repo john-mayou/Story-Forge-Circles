@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 function WriteManuscriptPage() {
   const history = useHistory();
@@ -79,10 +80,11 @@ function WriteManuscriptPage() {
           />
           <br></br>
 
-          <input className="submit-button" type="submit" />
+        
+        <Button variant="outlined" className="submit-button" type="submit" >Submit</Button>
         </form>
 
-        <button onClick={history.goBack}>Back</button>
+        <Button variant="outlined" onClick={history.goBack}>Back</Button>
         <h4>Comments</h4>
         <button>+Comment</button>
       </div>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ManuscriptListItem from "../../ManuscriptListItem";
 import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
+import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
 
 function WritersDeskPage() {
@@ -24,12 +25,11 @@ function WritersDeskPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   // Creates Manuscript Object with Title and Body and sends it to the database
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const newManuscript = {
       title: newTitle,
       body: newBody,
@@ -66,7 +66,7 @@ function WritersDeskPage() {
 
       <br></br>
 
-      {/* Manuscript Create Form */}
+      {/* Manuscript Create Form
       <h2>New Manuscript:</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
@@ -96,8 +96,27 @@ function WritersDeskPage() {
           checked={isChecked}
         />
 
-        <Button variant="outlined" className="submit-button" type="submit" >Submit</Button>
-      </form>
+        <Button variant="outlined" className="submit-button" type="submit">
+          Submit
+        </Button>
+      </form> */}
+
+      <h2>Start Writing!</h2>
+      <Button variant="outlined" onClick={() => setCreateOpen(true)}>
+        + New Manuscript
+      </Button>
+      <CreateManuscriptDialog
+        title="Create Manuscript"
+        open={createOpen}
+        setOpen={setCreateOpen}
+        inputOne={newTitle}
+        setInputOne={setNewTitle}
+        inputTwo={newBody}
+        setInputTwo={setNewBody}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        onConfirm={() => handleSubmit()}
+      ></CreateManuscriptDialog>
 
       <br></br>
 
@@ -108,19 +127,19 @@ function WritersDeskPage() {
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <Button variant="outlined" onClick={() => handleEdit(manuscript)}>Edit</Button>
+            <Button variant="outlined" onClick={() => handleEdit(manuscript)}>
+              Edit
+            </Button>
 
-            <Button variant="outlined" onClick={() => setConfirmOpen(true)}>
+            <Button variant="outlined" onClick={() => setDeleteOpen(true)}>
               Delete
             </Button>
-              <ConfirmDialog
-                title="Delete Manuscript?"
-                open={confirmOpen}
-                setOpen={setConfirmOpen}
-                onConfirm={() => handleDelete(manuscript.id)}
-              >
-              </ConfirmDialog>
-
+            <ConfirmDialog
+              title="Delete Manuscript?"
+              open={deleteOpen}
+              setOpen={setDeleteOpen}
+              onConfirm={() => handleDelete(manuscript.id)}
+            ></ConfirmDialog>
           </div>
         );
       })}

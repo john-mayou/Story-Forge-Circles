@@ -5,6 +5,7 @@ import ShareManuscriptModal from "../ShareManuscriptModal";
 import SearchCircleForm from "../SearchCircleForm";
 import { useHistory } from "react-router-dom";
 import CircleTableManuscriptView from "../CircleTableManuscriptView";
+import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -69,7 +70,17 @@ export default function CircleDashboard() {
 
       <button>Message Board</button>
 
-      {showShareModal && (
+      <ShareManuscriptDialog
+        manuscripts={userManuscriptNotInCircle}
+        open = {showShareModal}
+        setOpen={setShowShareModal}
+        circleId={circle_id}
+        onShare={(selectedManuscriptsId) =>
+          handleShareManuscript(selectedManuscriptsId)
+        }
+      />
+
+      {/* {showShareModal && (
         <ShareManuscriptModal
           manuscripts={userManuscriptNotInCircle}
           circleId={circle_id}
@@ -78,7 +89,7 @@ export default function CircleDashboard() {
             handleShareManuscript(selectedManuscriptsId)
           }
         />
-      )}
+      )} */}
     </main>
   );
 }
