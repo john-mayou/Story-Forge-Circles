@@ -11,12 +11,21 @@ function SearchPage() {
   const location = useLocation();
   const { id } = useSelector((store) => store.user);
   const contentList = useSelector((store) => store[content][type]);
+
+    // Initialize searchTerm state with value from URL search parameter
   const [searchTerm, setSearchTerm] = useState(() => new URLSearchParams(location.search).get("term") || "");
   const [isDataFetched, setIsDataFetched] = useState(false);
+
+    // Define an array of types that represent a manuscript list
   const manuscriptListTypes = ["circleManuscriptsList", "publicManuscriptList", "writersDeskManuscriptList"];
+
+    // Determine if the current type represents a manuscript list
   const isManuscriptList = manuscriptListTypes.includes(type);
+
+    // Get the filtered list based on the current search term
   const filteredCircles = getFilteredCircles();
 
+    // Define a function to filter the list based on the current search term
   function getFilteredCircles() {
     const searchItem = isManuscriptList ? "title" : "name";
     return contentList.filter(item =>
@@ -25,8 +34,10 @@ function SearchPage() {
     );
   }
 
+  // Fetch the data for the current type if it hasn't already been fetched
   useEffect(() => {
     if (contentList.length === 0 && !isDataFetched) {
+      // Define an array of objects with configuration for each data fetch type
       const fetchDataConfig = [
         {
           type: "myJoinedCircleList",
@@ -50,12 +61,17 @@ function SearchPage() {
           getDataType: "FETCH_WRITERS_DESK_LIST"
         }
       ];
+
+      // Find the configuration object that matches the current type
       const { getDataType, payload } = fetchDataConfig.find(item => item.type === type);
+
+      // Dispatch an action to fetch the data
       dispatch({ type: getDataType, payload });
       setIsDataFetched(true);
     }
   }, [contentList.length, dispatch, id, isDataFetched, type]);
 
+  // Determine the type of the list based on the current type
   const listType = () => {
     const listTypeConfig = {
       myJoinedCircleList: "Joined Circle",
