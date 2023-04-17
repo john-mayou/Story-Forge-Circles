@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
-import SearchCircleForm from "../SearchCircleForm";
 import CircleTableManuscriptView from "../CircleTableManuscriptView";
+import SearchForm from "../../../components/SearchForm";
 
 export default function SearchCirclesPage() {
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ export default function SearchCirclesPage() {
   return (
     <main className="content-main">
       <h1>Search {circleListType()} Circles</h1>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <h2>Search Results for "{searchTerm}"</h2>
       {!hasSearchResults && <h2>No results found</h2>}
       {hasSearchResults && (

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
-import SearchCircleForm from "../SearchCircleForm";
+import SearchForm from "../../../components/SearchForm";
 
 function BrowserCirclePage() {
   const { allPublicCirclesList } = useSelector((store) => store.circles);
@@ -23,7 +23,7 @@ function BrowserCirclePage() {
   return (
     <main className="content-main">
       <h1>PUBLIC CIRCLES</h1>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <p>JOINABLE CIRCLES BELOW</p>
       <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
     </main>

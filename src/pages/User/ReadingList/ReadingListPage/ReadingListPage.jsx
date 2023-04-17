@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import ManuscriptListItem from "../../ManuscriptListItem";
-import SearchManuscriptForm from "../../SearchManuscriptForm";
+import SearchForm from "../../../../components/SearchForm";
 
 function ReadingListPage() {
   const user = useSelector((store) => store.user);
@@ -54,7 +54,7 @@ function ReadingListPage() {
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
-      <SearchManuscriptForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
 
       {/* Displays list of publically shared Manuscripts to page */}
       {filteredmanuscripts?.map((manuscript) => {
