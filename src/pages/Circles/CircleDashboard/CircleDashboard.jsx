@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ShareManuscriptModal from "../ShareManuscriptModal";
-import SearchCircleForm from "../SearchCircleForm";
 import { useHistory } from "react-router-dom";
-import CircleTableManuscriptView from "../CircleTableManuscriptView";
+import TableManuscriptView from "../../../components/TableManuscriptView";
+import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
+import SearchForm from "../../Search/SearchForm";
+
+import { Button } from "@mui/material";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
   const { circle_id } = useParams();
-  const { id } = useSelector((store) => store.user);
+  const { id: userId } = useSelector((store) => store.user);
   const history = useHistory();
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
     (store) => store.circles
@@ -21,9 +24,13 @@ export default function CircleDashboard() {
   }, [dispatch]);
 
   const getUserAllManuscriptList = () => {
+    const payload = {
+      userId,
+      circle_id,
+    }
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
-      payload: id,
+      payload,
       callback: (manuscripts) => {
         setShowShareModal(true);
       },
@@ -43,26 +50,44 @@ export default function CircleDashboard() {
   };
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/circleManuscriptsList?term=${searchTerm}`);
+    history.push(`/search/circles/circleManuscriptsList?term=${searchTerm}`);
   };
+
+  const goToMessageBoard = () => {
+    history.push(`/message-board/${circle_id}`)
+  }
+
 
   return (
     <main className="content-main">
       <h1>Circle Dashboard</h1>
       <h2>Circle Manuscripts</h2>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
-      <CircleTableManuscriptView manuscriptlist={circleManuscriptsList} />
+      <TableManuscriptView
+        circle_id={circle_id}
+        manuscriptlist={circleManuscriptsList}
+      />
 
-      <button onClick={() => getUserAllManuscriptList()}>
+      <Button variant="outlined" onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
-      </button>
+      </Button>
 
       <button>Members</button>
 
-      <button>Message Board</button>
+      <button onClick={goToMessageBoard}>Message Board</button>
 
-      {showShareModal && (
+      <ShareManuscriptDialog
+        manuscripts={userManuscriptNotInCircle}
+        open = {showShareModal}
+        setOpen={setShowShareModal}
+        circleId={circle_id}
+        onShare={(selectedManuscriptsId) =>
+          handleShareManuscript(selectedManuscriptsId)
+        }
+      />
+
+      {/* {showShareModal && (
         <ShareManuscriptModal
           manuscripts={userManuscriptNotInCircle}
           circleId={circle_id}
@@ -71,7 +96,7 @@ export default function CircleDashboard() {
             handleShareManuscript(selectedManuscriptsId)
           }
         />
-      )}
+      )} */}
     </main>
   );
 }

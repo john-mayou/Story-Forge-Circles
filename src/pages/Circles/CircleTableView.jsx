@@ -3,9 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
-  // Get the current user's ID from the Redux store
-  const { owned_circles, joined_circles } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { owned_circles, joined_circles, id } = useSelector(
+    (store) => store.user
+  );
+
+  const navigateToCircleDashboard = ({ id }) => {
+    if (owned_circles.includes(id) || joined_circles.includes(id)) {
+      history.push(`/circle-dashboard/${id}`);
+    } else {
+      alert("You must be a subscriber to view this circle.");
+    }
+  };
 
   return (
     <table>
@@ -13,16 +24,19 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
         <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Join</th>
+          <th>Go</th>
         </tr>
       </thead>
       <tbody>
         {circlelist.map((circle) => {
           return (
             <tr key={circle.id}>
+              <td>{circle.name}</td>
+              <td>{circle.description}</td>
               <td>
-                {circle.name}
-                {(owned_circles.includes(circle.id) ||
-                  joined_circles.includes(circle.id)) && (
+                {!owned_circles.includes(circle.id) &&
+                !joined_circles.includes(circle.id) ? (
                   <button
                     onClick={() =>
                       dispatch({
@@ -35,12 +49,15 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                       })
                     }
                   >
-                    JOIN
+                    Request to Join
                   </button>
+                ) : (
+                  <span>Joined</span>
                 )}
               </td>
-
-              <td>{circle.description}</td>
+              <td onClick={() => navigateToCircleDashboard(circle)}>
+                <button>Go</button>
+              </td>
             </tr>
           );
         })}

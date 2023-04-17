@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ManuscriptListItem from "../../ManuscriptListItem";
+import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
+import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
+import { Button } from "@mui/material";
+import SearchForm from "../../../Search/SearchForm";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -11,7 +15,6 @@ function WritersDeskPage() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch({
@@ -23,11 +26,11 @@ function WritersDeskPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   // Creates Manuscript Object with Title and Body and sends it to the database
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     const newManuscript = {
       title: newTitle,
       body: newBody,
@@ -50,11 +53,14 @@ function WritersDeskPage() {
 
   //Deletes Manuscript from Database
   const handleDelete = (id) => {
-
     dispatch({
       type: "REMOVE_MANUSCRIPT",
       payload: id,
     });
+  };
+
+  const handleSearch = (searchTerm) => {
+    history.push(`/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`);
   };
 
   return (
@@ -63,9 +69,9 @@ function WritersDeskPage() {
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
-      <br></br>
+    <SearchForm onSearch={handleSearch}/>
 
-      {/* Manuscript Create Form */}
+      {/* Manuscript Create Form
       <h2>New Manuscript:</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>
@@ -95,8 +101,27 @@ function WritersDeskPage() {
           checked={isChecked}
         />
 
-        <input className="submit-button" type="submit" />
-      </form>
+        <Button variant="outlined" className="submit-button" type="submit">
+          Submit
+        </Button>
+      </form> */}
+
+      <h2>Start Writing!</h2>
+      <Button variant="outlined" onClick={() => setCreateOpen(true)}>
+        + New Manuscript
+      </Button>
+      <CreateManuscriptDialog
+        title="Create Manuscript"
+        open={createOpen}
+        setOpen={setCreateOpen}
+        inputOne={newTitle}
+        setInputOne={setNewTitle}
+        inputTwo={newBody}
+        setInputTwo={setNewBody}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
+        onConfirm={() => handleSubmit()}
+      ></CreateManuscriptDialog>
 
       <br></br>
 
@@ -107,9 +132,19 @@ function WritersDeskPage() {
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <button onClick={() => handleEdit(manuscript)}>Edit</button>
+            <button onClick={() => handleEdit(manuscript)}>
+              Edit
+            </button>
 
-            <button onClick={() => handleDelete(manuscript.id)}>Delete</button>
+            <Button variant="outlined" onClick={() => setDeleteOpen(true)}>
+              Delete
+            </Button>
+            <ConfirmDialog
+              title="Delete Manuscript?"
+              open={deleteOpen}
+              setOpen={setDeleteOpen}
+              onConfirm={() => handleDelete(manuscript.id)}
+            ></ConfirmDialog>
           </div>
         );
       })}

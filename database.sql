@@ -56,17 +56,18 @@ CREATE TABLE "manuscripts" (
 );
 
 
-
 CREATE TABLE "circle_manuscript" (
 	"id" serial NOT NULL,
 	"manuscript_id" int NOT NULL,
 	"circle_id" int NOT NULL,
-	CONSTRAINT "circle_manuscript_pk" PRIMARY KEY ("id")
+	CONSTRAINT "circle_manuscript_pk" PRIMARY KEY ("id"),
+	CONSTRAINT "circle_manuscript_manuscript_fk" FOREIGN KEY ("manuscript_id")
+		REFERENCES "manuscripts" ("id") ON DELETE CASCADE,
+	CONSTRAINT "circle_manuscript_circle_fk" FOREIGN KEY ("circle_id")
+		REFERENCES "circles" ("id") ON DELETE CASCADE
 ) WITH (
   OIDS=FALSE
 );
-
-
 
 CREATE TABLE "shelves" (
 	"id" serial NOT NULL,

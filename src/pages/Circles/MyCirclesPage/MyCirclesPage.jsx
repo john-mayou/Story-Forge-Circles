@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
-import SearchCircleForm from "../SearchCircleForm";
+import SearchForm from "../../Search/SearchForm";
+import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
+import { Button } from "@mui/material";
 
 function MyCirclesPage() {
   const { id } = useSelector((store) => store.user);
@@ -30,10 +32,16 @@ function MyCirclesPage() {
   }, [id, dispatch]);
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/myJoinedCircleList?term=${searchTerm}`);
+    history.push(`/search/circles/myJoinedCircleList?term=${searchTerm}`);
   };
 
   const handleCreateCircle = () => {
+    // Check if the inputs are not empty
+    if (!circleName || !circleDescription) {
+      alert("Please enter a value for both Circle Name and Description");
+      return;
+    }
+
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
@@ -60,22 +68,26 @@ function MyCirclesPage() {
       >
         Browser Circle
       </button>
-      <SearchCircleForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
       <CircleTableView circlelist={myJoinedCircleList} />
 
-        <button
-          className="create-btn-new-circle"
-          onClick={() => setShowModal(true)}
-        >
-          New Circle
-        </button>
+      {/* <button
+        className="create-btn-new-circle"
+        onClick={() => setShowModal(true)}
+      >
+        New Circle
+      </button> */}
 
-        <p>CIRCLES I OWN / MY CIRCLES</p>
+      <Button variant="outlined" onClick={() => setShowModal(true)}>
+        + New Circle
+      </Button>
 
-        <CircleTableView circlelist={myCreatedCircleList} />
+      <p>CIRCLES I OWN / MY CIRCLES</p>
 
+      <CircleTableView circlelist={myCreatedCircleList} />
+      {/* 
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-container">
@@ -99,7 +111,18 @@ function MyCirclesPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
+
+      <CreateCircleDialog
+        title="Create Circle"
+        open={showModal}
+        setOpen={setShowModal}
+        inputOne={circleName}
+        setInputOne={setCircleName}
+        inputTwo={circleDescription}
+        setInputTwo={setCircleDescription}
+        onConfirm={() => handleCreateCircle()}
+      />
     </main>
   );
 }

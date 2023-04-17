@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function SearchCircleForm({ onSearch }) {
+export default function SearchForm({ onSearch }) {
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearch = () => {
@@ -18,7 +18,7 @@ export default function SearchCircleForm({ onSearch }) {
       <input
         type="text"
         className="search-input"
-        placeholder="Search"
+        placeholder="Search "
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         onKeyPress={handleKeyPress}
