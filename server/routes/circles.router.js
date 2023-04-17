@@ -12,23 +12,17 @@ const {
  */
 router.post("/createCircleManuscript", async (req, res) => {
   const { selectedManuscriptsId, circle_id } = req.body;
+  const { owned_circles, joined_circles } = req.user;
+
+  const isInCircle =
+    owned_circles.includes(Number(circle_id)) ||
+    joined_circles.includes(Number(circle_id));
+
+  if (!isInCircle) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
 
   try {
-    // check if circle exists
-    const circle = await pool.query("SELECT * FROM circles WHERE id = $1", [
-      circle_id,
-    ]);
-    if (circle.rows.length === 0) {
-      return res.status(404).json({ message: "Circle not found" });
-    }
-
-    // check if user has permission to add manuscripts to circle
-    const user_id = req.user.id;
-    const isOwner = circle.rows[0].owner_id === user_id;
-    if (!isOwner) {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
-
     // create circle manuscripts
     for (let i = 0; i < selectedManuscriptsId.length; i++) {
       const manuscript_id = selectedManuscriptsId[i];
@@ -271,15 +265,18 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
 });
 
 // DELETE /api/manuscript/:id
-router.delete('/manuscript/:id', async (req, res) => {
+router.delete("/manuscript/:id", async (req, res) => {
   const manuscriptId = req.params.id;
   const circleId = req.body.circle_id;
   try {
     // Delete the manuscript from the circle_manuscript table
-    await pool.query('DELETE FROM circle_manuscript WHERE manuscript_id = $1 AND circle_id = $2', [manuscriptId, circleId]);
+    await pool.query(
+      "DELETE FROM circle_manuscript WHERE manuscript_id = $1 AND circle_id = $2",
+      [manuscriptId, circleId]
+    );
     res.sendStatus(204);
   } catch (error) {
-    console.error('Error deleting shared circle manuscript', error);
+    console.error("Error deleting shared circle manuscript", error);
     res.sendStatus(500);
   }
 });

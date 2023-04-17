@@ -83,6 +83,11 @@ function App() {
             <MessageBoard />
           </ProtectedRoute>
 
+          {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
+          <ProtectedRoute exact path="/notification-actions">
+            <NotificationActionsPage />
+          </ProtectedRoute>
+
           <ProtectedRoute exact path="/message-board-form">
             <MessageBoardForm />
           </ProtectedRoute>

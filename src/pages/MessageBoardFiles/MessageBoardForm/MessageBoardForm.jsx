@@ -1,77 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+// font-awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faReply } from '@fortawesome/free-solid-svg-icons';
 
-function MessageBoardForm() {
+function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
   console.log("circle_id", circle_id);
+  // getting user from store
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const history = useHistory();
-  const [comments, setComments] = useState('');
-  const [newComment, setNewComment] = useState('');
-  const [commentBody, setCommentBody]  = useState({
-    // created_at: "",
-    // manuscript_id: "",
-    // circle_id: "",
-    // user_id: "",
-    // parent_id: "",
-    comment: "",
+  const [message, setMessage] = useState({
+    circle_id,
+    parent_id,
+    message: '',
   });
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
     dispatch({
-      type: "POST_COMMENT",
-      payload: {message : commentBody.comment, circle_id }
+      type: "POST_MESSAGE",
+      payload: message,
     });
     clearInput();
   };
 
+  // clearing text input field
   const clearInput = () => {
-    setCommentBody({
-      created_at: "",
-      manuscript_id: "",
-      circle_id: "",
-      user_id: "",
-      parent_id: "",
-      comment: "",
-    });
-  };
-
-  const handleChange = (e, key) => {
-    setInput({ ...input, [key]: e.target.value });
+    // spreading message object to preserve ids, clearing message input value
+    setMessage({ ...message, message: '' });
   };
 
   return (
     <>
-      <h2 align="center">Message Board Form</h2>
-      <div className="comments-container" align="center">
+      <div className="messages-container">
         <form onSubmit={handleSubmitComment}>
-        <input
-          type="text"
-          value={commentBody.comment}
-            onChange={(e) => setCommentBody({ comment: e.target.value })}
-          placeholder="add comment"
-          style={{ width: "80%", marginRight: "1rem"}}
-        />
-        <button type="submit"
-        >Add Comment
-        </button>
-        <div className="flex flex-col gap-4 mt-10">
-          {/* <ul>
-            {commentsList.map((comment) => (
-              <li key={comment.id} className="border-[1px] border-zinc-500 rounded-md">
-                <div>
-                  {comment.body}
-                </div>
-              </li>
-          ))}
-            </ul> */}
-          </div>
-          </form>
-        </div>
+          <input
+            type="text"
+            value={message.message}
+            onChange={(e) => setMessage({ ...message, message: e.target.value })}
+            placeholder={parent_id ? "Reply" : "New Thread"}
+            style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
+          />
+          <button type="submit"><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</button>
+          {/* Conditionally rendering cancel button if parent id exists */}
+          {parent_id ?
+            <button onClick={() => (setReplyId(-1))}> Cancel</button>
+            : ''
+          }
+        </form>
+      </div>
     </>
   );
-};
+}
 
 export default MessageBoardForm;
