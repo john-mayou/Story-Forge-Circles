@@ -27,7 +27,6 @@ import WriteManuscriptPage from "../../pages/User/WritersDesk/WriteManuscriptPag
 import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
-import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
 import SearchPage from "../../pages/Search/SearchPage";
 import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
 
@@ -76,10 +75,6 @@ function App() {
 
                     <ProtectedRoute exact path="/message-board/:circle_id">
                         <MessageBoard />
-                    </ProtectedRoute>
-
-                    <ProtectedRoute exact path="/message-board-form">
-                        <MessageBoardForm />
                     </ProtectedRoute>
                     
                     {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
