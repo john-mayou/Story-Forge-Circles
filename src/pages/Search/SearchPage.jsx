@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import CircleTableView from "../Circles/CircleTableView";
-import CircleTableManuscriptView from "../Circles/CircleTableManuscriptView";
+import TableManuscriptView from "../../components/TableManuscriptView";
 import SearchForm from "./SearchForm";
 
 function SearchPage() {
@@ -13,8 +13,8 @@ function SearchPage() {
   const contentList = useSelector((store) => store[content][type]);
   const [searchTerm, setSearchTerm] = useState(() => new URLSearchParams(location.search).get("term") || "");
   const [isDataFetched, setIsDataFetched] = useState(false);
-
-  const isManuscriptList = type === "circleManuscriptsList" || type === "publicManuscriptList";
+  const manuscriptListTypes = ["circleManuscriptsList", "publicManuscriptList", "writersDeskManuscriptList"];
+  const isManuscriptList = manuscriptListTypes.includes(type);
   const filteredCircles = getFilteredCircles();
 
   function getFilteredCircles() {
@@ -44,6 +44,10 @@ function SearchPage() {
         {
           type: "publicManuscriptList",
           getDataType: "FETCH_PUBLIC_MANUSCRIPT_LIST"
+        },
+        {
+          type: "writersDeskManuscriptList",
+          getDataType: "FETCH_WRITERS_DESK_LIST"
         }
       ];
       const { getDataType, payload } = fetchDataConfig.find(item => item.type === type);
@@ -54,10 +58,11 @@ function SearchPage() {
 
   const listType = () => {
     const listTypeConfig = {
-      myJoinedCircleList: "Joined",
-      allPublicCirclesList: "Public",
-      circleManuscriptsList: "Manuscript",
-      publicManuscriptList: "Public Manuscript"
+      myJoinedCircleList: "Joined Circle",
+      allPublicCirclesList: "Public Circle",
+      circleManuscriptsList: "Manuscripts",
+      publicManuscriptList: "Public Manuscripts",
+      writersDeskManuscriptList: "Writers Desk Manuscripts"
     };
     return listTypeConfig[type] || "";
   };
@@ -70,12 +75,12 @@ function SearchPage() {
 
   return (
     <main className="content-main">
-      <h1>Search {listType()} Circles</h1>
+      <h1>Search {listType()}</h1>
       <SearchForm onSearch={handleSearch} />
       <h2>Search Results for "{searchTerm}"</h2>
       {!hasSearchResults && <h2>No results found</h2>}
       {hasSearchResults && isManuscriptList ? (
-        <CircleTableManuscriptView manuscriptlist={filteredCircles} />
+        <TableManuscriptView manuscriptlist={filteredCircles} />
       ) : (
         <CircleTableView
           circlelist={filteredCircles}

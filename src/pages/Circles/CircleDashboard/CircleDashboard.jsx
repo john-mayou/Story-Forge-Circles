@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import ShareManuscriptModal from "../ShareManuscriptModal";
 import { useHistory } from "react-router-dom";
-import CircleTableManuscriptView from "../CircleTableManuscriptView";
+import TableManuscriptView from "../../../components/TableManuscriptView";
 import SearchForm from "../../Search/SearchForm";
 
 export default function CircleDashboard() {
@@ -61,7 +61,7 @@ export default function CircleDashboard() {
       <h2>Circle Manuscripts</h2>
       <SearchForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
-      <CircleTableManuscriptView
+      <TableManuscriptView
         circle_id={circle_id}
         manuscriptlist={circleManuscriptsList}
       />

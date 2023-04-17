@@ -6,7 +6,7 @@ function UnshareButton({ onClick }) {
   return <button onClick={onClick}>Unshare</button>;
 }
 
-export default function CircleTableManuscriptView({
+export default function TableManuscriptView({
   circle_id,
   manuscriptlist,
 }) {
