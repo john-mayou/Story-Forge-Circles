@@ -5,6 +5,7 @@ import ManuscriptListItem from "../../ManuscriptListItem";
 import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
+import SearchForm from "../../../Search/SearchForm";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -58,13 +59,17 @@ function WritersDeskPage() {
     });
   };
 
+  const handleSearch = (searchTerm) => {
+    history.push(`/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`);
+  };
+
   return (
     <main className="content-main">
       <h1>Writers Desk Page</h1>
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
-      <br></br>
+    <SearchForm onSearch={handleSearch}/>
 
       {/* Manuscript Create Form
       <h2>New Manuscript:</h2>
