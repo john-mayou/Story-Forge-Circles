@@ -100,7 +100,7 @@ function MembersPage() {
                       circle_id: circleDetails.id,
                       recipient_id: circleDetails.owner_id,
                       type: "member nomination - leader action",
-                      nomination: userExistsResult.data[0].id,
+                      new_nomination: userExistsResult.data[0].id,
                     },
                   });
                 } else {

@@ -53,6 +53,7 @@ router.get("/details/:id", async (req, res) => {
       `SELECT * FROM "circles" WHERE id = $1;`,
       [circle_id]
     );
+
     res.send(circleDetailsResult.rows).status(200);
   } catch (error) {
     console.log(`Error making query`, error);
