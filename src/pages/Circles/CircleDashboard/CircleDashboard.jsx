@@ -49,9 +49,7 @@ export default function CircleDashboard() {
   const goToMessageBoard = () => {
     history.push(`/message-board/${circle_id}`)
   }
-  const handleManuscriptClick = (manuscriptId) => {
-    history.push(`/manuscript-read/${manuscriptId}`);
-  };
+
 
   return (
     <main className="content-main">
@@ -60,8 +58,8 @@ export default function CircleDashboard() {
       <SearchCircleForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
       <CircleTableManuscriptView
+        circle_id={circle_id}
         manuscriptlist={circleManuscriptsList}
-        onManuscriptClick={handleManuscriptClick}
       />
 
       <button onClick={() => getUserAllManuscriptList()}>
