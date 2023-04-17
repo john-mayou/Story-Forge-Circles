@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import ShareManuscriptModal from "../ShareManuscriptModal";
 import { useHistory } from "react-router-dom";
 import CircleTableManuscriptView from "../CircleTableManuscriptView";
-import SearchForm from "../../../components/SearchForm";
+import SearchForm from "../../Search/SearchForm";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function CircleDashboard() {
   };
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/circleManuscriptsList?term=${searchTerm}`);
+    history.push(`/search/circles/circleManuscriptsList?term=${searchTerm}`);
   };
 
   const goToMessageBoard = () => {

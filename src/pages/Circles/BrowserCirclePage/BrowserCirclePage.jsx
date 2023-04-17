@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
-import SearchForm from "../../../components/SearchForm";
+import SearchForm from "../../Search/SearchForm";
 
 function BrowserCirclePage() {
   const { allPublicCirclesList } = useSelector((store) => store.circles);
@@ -17,7 +17,7 @@ function BrowserCirclePage() {
   }, [dispatch]);
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search-circles/allPublicCirclesList?term=${searchTerm}`);
+    history.push(`/search/circles/allPublicCirclesList?term=${searchTerm}`);
   };
 
   return (

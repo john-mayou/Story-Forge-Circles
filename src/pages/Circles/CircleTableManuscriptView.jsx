@@ -28,6 +28,8 @@ export default function CircleTableManuscriptView({
     });
   };
 
+  console.log("manuscriptlist", manuscriptlist);
+
   return (
     <table>
       <thead>
@@ -43,16 +45,18 @@ export default function CircleTableManuscriptView({
             key={manuscript?.id}
             onClick={() => handleManuscriptClick(manuscript?.id)}
           >
-            <td>{manuscript?.author}</td>
+            <td>{manuscript?.author || manuscript?.username}</td>
             <td>{manuscript?.title}</td>
             <td>{manuscript?.body}</td>
-            <td>
-              <UnshareButton
-                onClick={(e) =>
-                  handleUnshareButtonClick(e, manuscript?.manuscript_id)
-                }
-              />
-            </td>
+            {manuscript?.author && (
+              <td>
+                <UnshareButton
+                  onClick={(e) =>
+                    handleUnshareButtonClick(e, manuscript?.manuscript_id)
+                  }
+                />
+              </td>
+            )}
           </tr>
         ))}
       </tbody>

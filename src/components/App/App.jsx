@@ -28,7 +28,7 @@ import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
 import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
-import SearchCirclesPage from "../../pages/Circles/SearchCirclesPage/SearchCirclesPage";
+import SearchCirclesPage from "../../pages/Search/SearchPage";
 import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
 
 // Login Pages
@@ -91,7 +91,7 @@ function App() {
                         <BrowserCirclePage />
                     </ProtectedRoute>
 
-                    <ProtectedRoute exact path="/search-circles/:type">
+                    <ProtectedRoute exact path="/search/:content/:type">
                         <SearchCirclesPage />
                     </ProtectedRoute>
 
