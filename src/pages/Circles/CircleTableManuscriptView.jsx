@@ -1,14 +1,17 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function UnshareButton({ onClick }) {
   return <button onClick={onClick}>Unshare</button>;
 }
 
-export default function CircleTableManuscriptView({ circle_id, manuscriptlist }) {
+export default function CircleTableManuscriptView({
+  circle_id,
+  manuscriptlist,
+}) {
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const handleManuscriptClick = (manuscriptId) => {
     history.push(`/manuscript-read/${manuscriptId}`);
   };
@@ -17,13 +20,12 @@ export default function CircleTableManuscriptView({ circle_id, manuscriptlist })
     event.stopPropagation();
     const payload = {
       circle_id,
-      manuscriptId
-    }
+      manuscriptId,
+    };
     dispatch({
       type: "DELETE_SHARED_CIRCLE_MANUSCRIPT",
-      payload
-      
-    })
+      payload,
+    });
   };
 
   return (
@@ -37,11 +39,20 @@ export default function CircleTableManuscriptView({ circle_id, manuscriptlist })
       </thead>
       <tbody>
         {manuscriptlist?.map((manuscript) => (
-          <tr key={manuscript?.id} onClick={() => handleManuscriptClick(manuscript?.id)}>
+          <tr
+            key={manuscript?.id}
+            onClick={() => handleManuscriptClick(manuscript?.id)}
+          >
             <td>{manuscript?.author}</td>
             <td>{manuscript?.title}</td>
             <td>{manuscript?.body}</td>
-            <td><UnshareButton onClick={(e) => handleUnshareButtonClick(e, manuscript?.id)} /></td>
+            <td>
+              <UnshareButton
+                onClick={(e) =>
+                  handleUnshareButtonClick(e, manuscript?.manuscript_id)
+                }
+              />
+            </td>
           </tr>
         ))}
       </tbody>

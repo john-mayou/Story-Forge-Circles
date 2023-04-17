@@ -96,6 +96,16 @@ function* createCircleManuscript(action) {
   }
 }
 
+function* deleteSharedCircleManuscript(action) {
+  try {
+    const { circle_id, manuscriptId } = action.payload;
+    yield axios.delete(`/api/circles/manuscript/${manuscriptId}`, { data: { circle_id } });
+    yield put({ type: "FETCH_CIRCLE_MANUSCRIPTS_LIST", payload: circle_id });
+  } catch (error) {
+    console.log("delete shared circle manuscript error in saga", error);
+  }
+}
+
 function* circlesSaga() {
   yield takeLatest("FETCH_MY_JOINED_CIRCLES", fetchMyJoinedCirclesList);
   yield takeLatest("FETCH_MY_CREATED_CIRCLES", fetchMyCreatedCirclesList);
@@ -107,6 +117,7 @@ function* circlesSaga() {
     fetchUserManuscriptsNotInCircle
   );
   yield takeLatest("CREATE_CIRCLE_MANUSCRIPT", createCircleManuscript);
+  yield takeLatest("DELETE_SHARED_CIRCLE_MANUSCRIPT", deleteSharedCircleManuscript);
 }
 
 export default circlesSaga;

@@ -190,4 +190,18 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
   }
 });
 
+// DELETE /api/manuscript/:id
+router.delete('/manuscript/:id', async (req, res) => {
+  const manuscriptId = req.params.id;
+  const circleId = req.body.circle_id;
+  try {
+    // Delete the manuscript from the circle_manuscript table
+    await pool.query('DELETE FROM circle_manuscript WHERE manuscript_id = $1 AND circle_id = $2', [manuscriptId, circleId]);
+    res.sendStatus(204);
+  } catch (error) {
+    console.error('Error deleting shared circle manuscript', error);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;
