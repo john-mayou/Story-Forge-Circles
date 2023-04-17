@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+// font-awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faReply } from '@fortawesome/free-solid-svg-icons';
 
 function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
@@ -38,13 +41,13 @@ function MessageBoardForm({ parent_id, setReplyId }) {
             type="text"
             value={message.message}
             onChange={(e) => setMessage({ ...message, message: e.target.value })}
-            placeholder={parent_id ? "Reply" : "Add Comment"}
-            style={{ width: "80%", marginLeft: "5rem", marginRight: "0rem" }}
+            placeholder={parent_id ? "Reply" : "New Thread"}
+            style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
           />
-          <button type="submit">{parent_id ? "Reply" : "Add Comment"}</button>
+          <button type="submit"><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</button>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ?
-            <button onClick={() => (setReplyId(-1))}>Cancel</button>
+            <button onClick={() => (setReplyId(-1))}> Cancel</button>
             : ''
           }
         </form>

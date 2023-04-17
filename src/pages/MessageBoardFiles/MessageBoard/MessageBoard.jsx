@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 // font-awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus, faChevronRight, faChevronDown, faReply } from '@fortawesome/free-solid-svg-icons';
 
 function MessageBoard() {
   const { circle_id } = useParams();
@@ -35,15 +35,15 @@ function MessageBoard() {
       <h3 align="center">Message Board</h3>
       <div align="center" style={{backgroundColor: '#FCF5F0'}}>
         {/* Search bar for message board */}
-        <label htmlFor="message-board-search">Search the Message Board:</label>
         <input
           type="search"
           id="message-board-search"
           name="message-board-input"
+          placeholder="Search..."
         />
-        <button>Search</button>
+        <button><FontAwesomeIcon icon={faMagnifyingGlass} /> </button>
         <div>
-          <button onClick={handleAddThreadClick}>{!addThread ? '+Thread' : 'Cancel' }</button>
+          <button onClick={handleAddThreadClick}><FontAwesomeIcon icon={faPlus} size="sm" />{!addThread ? ' Thread' : ' Cancel' }</button>
           <button onClick={goToDashboard}>Dashboard</button>
           <div className="thread-container">
             { addThread ? <MessageBoardForm /> : ''}
@@ -58,7 +58,7 @@ function MessageBoard() {
                   : {}
                 }>
                 <div>
-                  <pre>{JSON.stringify(message)}</pre>
+                  {/* <pre>{JSON.stringify(message)}</pre> */}
                   {message.has_children
                     ? <button onClick={() => {
                     if (expand.includes(message.id)) {
@@ -79,15 +79,15 @@ function MessageBoard() {
                       : <FontAwesomeIcon icon={faChevronRight} />
                       }  </button>
                     : ''} 
-                  {`@${message.username}: `}
-                  {`${message.message} `}
+                  <strong>{`@${message.username} `}</strong>
+                  {` FEB 4 AT 11:38 A.M.  ${message.message} `}
                   {/* passing message.id as parent_id prop to form component */}
                   {replyId == message.id ? <MessageBoardForm parent_id={message.id} setReplyId={setReplyId} />
-                   : <button onClick={() => (setReplyId(message.id))}>Reply</button> 
+                   : <button onClick={() => (setReplyId(message.id))}><FontAwesomeIcon icon={faReply} /> Reply</button> 
                   }
                 </div>
               </li>
-          ))}
+            ))}
             </ul>
           </div>
         </div>
