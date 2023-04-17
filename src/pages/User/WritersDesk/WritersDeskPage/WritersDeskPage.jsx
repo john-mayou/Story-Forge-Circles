@@ -132,9 +132,9 @@ function WritersDeskPage() {
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <Button variant="outlined" onClick={() => handleEdit(manuscript)}>
+            <button onClick={() => handleEdit(manuscript)}>
               Edit
-            </Button>
+            </button>
 
             <Button variant="outlined" onClick={() => setDeleteOpen(true)}>
               Delete

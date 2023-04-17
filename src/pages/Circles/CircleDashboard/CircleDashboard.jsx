@@ -7,6 +7,8 @@ import TableManuscriptView from "../../../components/TableManuscriptView";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
 import SearchForm from "../../Search/SearchForm";
 
+import { Button } from "@mui/material";
+
 export default function CircleDashboard() {
   const dispatch = useDispatch();
   const { circle_id } = useParams();
@@ -67,9 +69,9 @@ export default function CircleDashboard() {
         manuscriptlist={circleManuscriptsList}
       />
 
-      <button onClick={() => getUserAllManuscriptList()}>
+      <Button variant="outlined" onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
-      </button>
+      </Button>
 
       <button>Members</button>
 
