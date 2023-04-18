@@ -1,0 +1,18 @@
+/* * { 
+    border: black 1px solid
+} */
+
+.login-register-flex-container {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.formPanel {
+    margin: 1%;
+    padding: 1%;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+}

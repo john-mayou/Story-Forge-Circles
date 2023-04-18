@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
+import './TableStyling.css'
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   const dispatch = useDispatch();
@@ -19,25 +21,27 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
   };
 
   return (
-    <table>
+    <table className='circle-Table'>
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Join</th>
-          <th>Go</th>
+        <tr className='table-header'>
+          <th><h3>Name</h3></th>
+          <th><h3>Description</h3></th>
+          <th><h3>Join</h3></th>
+          <th><h3>Go</h3></th>
         </tr>
       </thead>
       <tbody>
         {circlelist?.map((circle, index) => {
           return (
-            <tr key={index}>
-              <td>{circle.name}</td>
-              <td>{circle.description}</td>
+            <tr className='circle-table-row-style' key={circle.id}>
+              <td><p>{circle.name}</p></td>
+              <td><p>{circle.description}</p></td>
               <td>
                 {!owned_circles.includes(circle.id) &&
                 !joined_circles.includes(circle.id) ? (
-                  <button
+                  <Button
+                    variant="contained"
+                    color="secondary"
                     onClick={() =>
                       dispatch({
                         type: "CREATE_NEW_NOTIFICATION",
@@ -50,13 +54,15 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                     }
                   >
                     Request to Join
-                  </button>
+                  </Button>
                 ) : (
                   <span>Joined</span>
                 )}
               </td>
               <td onClick={() => navigateToCircleDashboard(circle)}>
-                <button>Go</button>
+                <Button variant="contained" color="primary">
+                  Go
+                </Button>
               </td>
             </tr>
           );

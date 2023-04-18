@@ -22,10 +22,12 @@ function BrowserCirclePage() {
 
   return (
     <main className="content-main">
-      <h1>PUBLIC CIRCLES</h1>
-      <SearchForm onSearch={handleSearch} />
-      <p>JOINABLE CIRCLES BELOW</p>
-      <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
+      <div align="center">
+        <h1>PUBLIC CIRCLES</h1>
+        <SearchForm onSearch={handleSearch} />
+        <h2>JOINABLE CIRCLES</h2>
+        <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
+      </div>
     </main>
   );
 }

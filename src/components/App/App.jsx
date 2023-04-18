@@ -36,7 +36,39 @@ import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
 import RegisterPage from "../../pages/Login/Register/RegisterPage/RegisterPage";
 
+//CSS
 import "./App.css";
+
+//MUI Theme
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
+ const themeOptions = {
+    palette: {
+        mode: 'light',
+        primary: {
+          main: '#ffc15e',
+          light: '#ffc15e',
+          dark: '#ffda9a',
+        },
+        secondary: {
+          main: '#ffffff',
+          dark: '#fffaf2',
+          contrastText: '#000000',
+          light: '#fffbf2',
+        },
+        background: {
+          default: '#fcf5f0',
+          paper: '#ffffff',
+        },
+      },
+    shape: {
+        borderRadius: 0,
+      }, 
+  };
+
+  const theme = createTheme(themeOptions);
+
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +80,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ThemeProvider theme={theme}>
     <Router>
       <div>
         {user.id && <Sidebar />}
@@ -146,6 +179,7 @@ function App() {
         </Switch>
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 

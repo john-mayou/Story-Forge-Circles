@@ -6,6 +6,7 @@ import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/Confirm
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
 import SearchForm from "../../../Search/SearchForm";
+import "../../ManuscriptStyling.css";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -60,54 +61,19 @@ function WritersDeskPage() {
   };
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`);
+    history.push(
+      `/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`
+    );
   };
 
   return (
     <main className="content-main">
-      <h1>Writers Desk Page</h1>
+      <div align="center">
+      <h1>MyShelf</h1>
       <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
-
-    <SearchForm onSearch={handleSearch}/>
-
-      {/* Manuscript Create Form
-      <h2>New Manuscript:</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-
-        <label>Body:</label>
-        <textarea
-          rows="5"
-          cols="40"
-          placeholder="Body..."
-          value={newBody}
-          onChange={(e) => setNewBody(e.target.value)}
-        />
-
-        <label> Public</label>
-        <input
-          onChange={(e) => setIsChecked(!isChecked)}
-          type="checkbox"
-          id="public"
-          name="public"
-          value="public"
-          checked={isChecked}
-        />
-
-        <Button variant="outlined" className="submit-button" type="submit">
-          Submit
-        </Button>
-      </form> */}
 
       <h2>Start Writing!</h2>
-      <Button variant="outlined" onClick={() => setCreateOpen(true)}>
+      <Button variant="contained" onClick={() => setCreateOpen(true)}>
         + New Manuscript
       </Button>
       <CreateManuscriptDialog
@@ -124,27 +90,48 @@ function WritersDeskPage() {
       ></CreateManuscriptDialog>
 
       <br></br>
+      <br></br>
+      <SearchForm onSearch={handleSearch} />
+      <br></br>
+      </div>
 
       {/* List of Manuscripts Created by User */}
+
+      <div className="ManuscriptListHeader">
+        <h1 className="headers"> Title</h1>
+        <h1 className="headers"> Author</h1>
+        <h1 className="headers"> Preview</h1>
+      </div>
+
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <button onClick={() => handleEdit(manuscript)}>
-              Edit
-            </button>
+            <div className="writersDesk-button-wrapper">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleEdit(manuscript)}
+              >
+                Edit
+              </Button>
 
-            <Button variant="outlined" onClick={() => setDeleteOpen(true)}>
-              Delete
-            </Button>
-            <ConfirmDialog
-              title="Delete Manuscript?"
-              open={deleteOpen}
-              setOpen={setDeleteOpen}
-              onConfirm={() => handleDelete(manuscript.id)}
-            ></ConfirmDialog>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setDeleteOpen(true)}
+              >
+                Delete
+              </Button>
+              <ConfirmDialog
+                title="Delete Manuscript?"
+                open={deleteOpen}
+                setOpen={setDeleteOpen}
+                onConfirm={() => handleDelete(manuscript.id)}
+              ></ConfirmDialog>
+            </div>
           </div>
         );
       })}
