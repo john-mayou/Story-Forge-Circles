@@ -69,7 +69,7 @@ CREATE TABLE "circle_manuscript" (
   OIDS=FALSE
 );
 
-CREATE TABLE "shelves" (
+CREATE TABLE "shelves" ( 
 	"id" serial NOT NULL,
 	"user_id" int NOT NULL,
 	"name" varchar(60) NOT NULL,

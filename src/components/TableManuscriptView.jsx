@@ -39,7 +39,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
         {manuscriptlist?.map((manuscript) => (
           <tr key={manuscript?.id}>
             <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
-              {manuscript?.author || manuscript?.username}
+              {manuscript?.author ?? manuscript?.username}
             </td>
             <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
               {manuscript?.title}
