@@ -76,7 +76,10 @@ function Sidebar() {
                 </li>
                 <li
                     className="navbar__item"
-                    onClick={() => dispatch({ type: "LOGOUT" })}
+                    onClick={() => {
+                        dispatch({ type: "LOGOUT" });
+                        history.push("/reading-list");
+                    }}
                 >
                     <a className="navbar__link">
                         <FontAwesomeIcon
