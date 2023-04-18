@@ -2,9 +2,9 @@
 PLEASE DO NOT TOUCH!!!
 -------------------------------------------------------------------------------- */
 
-* {
+/* * {
     border: black solid 1px;
-}
+} */
 
 html {
     background-color: #FCF5F0;
@@ -53,15 +53,28 @@ select {
     font: inherit;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
+p {
+    color: #373F51
+}
+h1 {
+    color: #373F51
+}
+h2 {
+    color: #373F51
+}
+h3 {
+    color: #373F51
+}
+h4 {
+    color: #373F51
+}
+h5 {
+    color: #373F51
+}
 h6 {
     overflow-wrap: break-word;
     margin: 0;
+    color: #373F51
 }
 
 /* --------------------------------------------------------------------------------

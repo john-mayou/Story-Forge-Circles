@@ -38,7 +38,9 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
               <td>
                 {!owned_circles.includes(circle.id) &&
                 !joined_circles.includes(circle.id) ? (
-                  <button
+                  <Button
+                    variant="contained"
+                    color="secondary"
                     onClick={() =>
                       dispatch({
                         type: "CREATE_NEW_NOTIFICATION",
@@ -51,13 +53,15 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                     }
                   >
                     Request to Join
-                  </button>
+                  </Button>
                 ) : (
                   <span>Joined</span>
                 )}
               </td>
               <td onClick={() => navigateToCircleDashboard(circle)}>
-                <Button variant="contained" color="primary">Go</Button>
+                <Button variant="contained" color="primary">
+                  Go
+                </Button>
               </td>
             </tr>
           );

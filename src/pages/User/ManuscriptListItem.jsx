@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
+import './ManuscriptStyling.css'
 
 /**
  *
@@ -13,8 +14,8 @@ function ManuscriptListItem(props) {
 
   let preview = props.manuscript.body;
 
-  if (props.manuscript.body.length > 100) {
-    preview = props.manuscript.body.substring(0, 100);
+  if (props.manuscript.body.length > 200) {
+    preview = props.manuscript.body.substring(0, 200);
     preview = preview + '...';
   }
 
@@ -25,9 +26,9 @@ function ManuscriptListItem(props) {
   return (
     <>
       <div className="ManuscriptListItem" onClick={handleManuscriptClick}>
-        <h1>Title: {props.manuscript.title}</h1>
-        <h3>Author: {props.manuscript.username}</h3>
-        <p>Preview: {preview}</p>
+        <h1 className="title"> {props.manuscript.title}</h1>
+        <h3 className="author"> {props.manuscript.username}</h3>
+        <p className="preview"> {preview}</p>
       </div>
     </>
   );

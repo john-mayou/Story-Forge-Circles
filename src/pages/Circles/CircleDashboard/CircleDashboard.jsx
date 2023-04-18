@@ -68,15 +68,15 @@ export default function CircleDashboard() {
         manuscriptlist={circleManuscriptsList}
       />
 
-      <Button variant="outlined" onClick={() => getUserAllManuscriptList()}>
+      <Button variant="contained" color="primary" onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
       </Button>
 
-      <button onClick={() => history.push(`/circles/${circle_id}/members`)}>
+      <Button variant="contained" color="secondary" onClick={() => history.push(`/circles/${circle_id}/members`)}>
         Members
-      </button>
+      </Button>
 
-      <button onClick={goToMessageBoard}>Message Board</button>
+      <Button variant="contained" color="secondary" onClick={goToMessageBoard}>Message Board</Button>
 
       <ShareManuscriptDialog
         manuscripts={userManuscriptNotInCircle}

@@ -34,13 +34,21 @@ function ReadingListPage() {
 
       <SearchForm onSearch={handleSearch} />
 
+      <div className="ManuscriptListHeader">
+        <h1 className='headers' > Title</h1>
+        <h1 className='headers'> Author</h1>
+        <h1 className='headers'> Preview</h1>
+      </div>
+
       {/* Displays list of publically shared Manuscripts to page */}
       {publicManuscriptList?.map((manuscript) => {
         return (
+          <>
+          <br></br>
           <div key={manuscript.id}>
-            <br></br>
             <ManuscriptListItem manuscript={manuscript} />
           </div>
+          </>
         );
       })}
     </main>

@@ -6,6 +6,7 @@ import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/Confirm
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
 import SearchForm from "../../../Search/SearchForm";
+import "../../ManuscriptStyling.css";
 
 function WritersDeskPage() {
   const user = useSelector((store) => store.user);
@@ -60,7 +61,9 @@ function WritersDeskPage() {
   };
 
   const handleSearch = (searchTerm) => {
-    history.push(`/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`);
+    history.push(
+      `/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`
+    );
   };
 
   return (
@@ -69,7 +72,7 @@ function WritersDeskPage() {
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
 
-    <SearchForm onSearch={handleSearch}/>
+      <SearchForm onSearch={handleSearch} />
 
       {/* Manuscript Create Form
       <h2>New Manuscript:</h2>
@@ -126,25 +129,42 @@ function WritersDeskPage() {
       <br></br>
 
       {/* List of Manuscripts Created by User */}
+
+      <div className="ManuscriptListHeader">
+        <h1 className='headers' > Title</h1>
+        <h1 className='headers'> Author</h1>
+        <h1 className='headers'> Preview</h1>
+      </div>
+
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <Button variant="contained" color="primary" onClick={() => handleEdit(manuscript)}>
-              Edit
-            </Button>
+            <div className="writersDesk-button-wrapper">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleEdit(manuscript)}
+              >
+                Edit
+              </Button>
 
-            <Button variant="contained" color="secondary" onClick={() => setDeleteOpen(true)}>
-              Delete
-            </Button>
-            <ConfirmDialog
-              title="Delete Manuscript?"
-              open={deleteOpen}
-              setOpen={setDeleteOpen}
-              onConfirm={() => handleDelete(manuscript.id)}
-            ></ConfirmDialog>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setDeleteOpen(true)}
+              >
+                Delete
+              </Button>
+              <ConfirmDialog
+                title="Delete Manuscript?"
+                open={deleteOpen}
+                setOpen={setDeleteOpen}
+                onConfirm={() => handleDelete(manuscript.id)}
+              ></ConfirmDialog>
+            </div>
           </div>
         );
       })}

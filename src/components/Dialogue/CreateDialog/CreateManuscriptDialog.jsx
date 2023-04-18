@@ -91,7 +91,7 @@ const CreateManuscriptDialog = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => setOpen(false)}>
+        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>
           Cancel
         </Button>
         <Button
