@@ -171,10 +171,9 @@ router.get("/:id/members", (req, res) => {
 router.delete(
   "/:id/members/remove",
   rejectUnauthenticated,
-  isCircleOwner,
   async (req, res) => {
-    const circle_id = req.params.id;
-    const member_to_delete_id = req.body.user;
+    const circle_id = Number(req.params.id);
+    const { owned_circles, joined_circles } = req.user;
 
     try {
       const memberDeletionQuery = `
@@ -182,7 +181,14 @@ router.delete(
         WHERE cu.circle_id = $1 AND cu.user_id = $2;
       `;
 
-      await pool.query(memberDeletionQuery, [circle_id, member_to_delete_id]);
+      if (owned_circles.includes(circle_id)) {
+        const member_to_delete_id = req.body.user;
+        await pool.query(memberDeletionQuery, [circle_id, member_to_delete_id]);
+      } else if (joined_circles.includes(circle_id)) {
+        await pool.query(memberDeletionQuery, [circle_id, req.user.id]);
+      } else {
+        return res.sendStatus(403);
+      }
 
       res.sendStatus(204);
     } catch (error) {
@@ -191,24 +197,6 @@ router.delete(
     }
   }
 );
-
-router.delete("/:id/members/leave", rejectUnauthenticated, async (req, res) => {
-  const circle_id = req.params.id;
-
-  try {
-    const memberDeletionQuery = `
-        DELETE FROM "circle_user" AS cu
-        WHERE cu.circle_id = $1 AND cu.user_id = $2;
-      `;
-
-    await pool.query(memberDeletionQuery, [circle_id, req.user.id]);
-
-    res.sendStatus(204);
-  } catch (error) {
-    console.log(`Error deleting member from a circle`, error);
-    res.sendStatus(500);
-  }
-});
 
 /**
  * GET circle Manuscripts list route

@@ -34,18 +34,6 @@ function MembersPage() {
     setCircleMembers(circlesResponse.data);
   };
 
-  const adminRemoveMember = async (memberId) => {
-    await axios.delete(`/api/circles/${circleDetails.id}/members/remove`, {
-      data: { user: memberId },
-    });
-    fetchMembers();
-  };
-
-  const userLeaveCircle = async (memberId) => {
-    await axios.delete(`/api/circles/${circleDetails.id}/members/leave`);
-    await history.push("/circles");
-  };
-
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
@@ -145,7 +133,15 @@ function MembersPage() {
               </button>
             )
           ) : (
-            <Button color="error" onClick={() => userLeaveCircle(user.id)}>
+            <Button
+              color="error"
+              onClick={async () => {
+                await axios.delete(
+                  `/api/circles/${circleDetails.id}/members/remove`
+                );
+                await history.push("/circles");
+              }}
+            >
               Leave Circle
             </Button>
           )}
@@ -167,7 +163,15 @@ function MembersPage() {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => adminRemoveMember(member.id)}
+                    onClick={async () => {
+                      await axios.delete(
+                        `/api/circles/${circleDetails.id}/members/remove`,
+                        {
+                          data: { user: member.id },
+                        }
+                      );
+                      fetchMembers();
+                    }}
                   >
                     Remove
                   </Button>
