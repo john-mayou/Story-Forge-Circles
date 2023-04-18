@@ -28,11 +28,12 @@ function ReadingListPage() {
 
   return (
     <main className="content-main">
+      <div align="center">
       <h1>Reading List Page</h1>
       <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
 
       <SearchForm onSearch={handleSearch} />
+      </div>
 
       <div className="ManuscriptListHeader">
         <h1 className='headers' > Title</h1>

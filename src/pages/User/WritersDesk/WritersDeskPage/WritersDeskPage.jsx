@@ -68,46 +68,9 @@ function WritersDeskPage() {
 
   return (
     <main className="content-main">
-      <h1>Writers Desk Page</h1>
+      <div align="center">
+      <h1>MyShelf</h1>
       <h2>Welcome, {user.username}!</h2>
-      <p>Your ID is: {user.id}</p>
-
-      <SearchForm onSearch={handleSearch} />
-
-      {/* Manuscript Create Form
-      <h2>New Manuscript:</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input
-          type="text"
-          placeholder="Title"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-
-        <label>Body:</label>
-        <textarea
-          rows="5"
-          cols="40"
-          placeholder="Body..."
-          value={newBody}
-          onChange={(e) => setNewBody(e.target.value)}
-        />
-
-        <label> Public</label>
-        <input
-          onChange={(e) => setIsChecked(!isChecked)}
-          type="checkbox"
-          id="public"
-          name="public"
-          value="public"
-          checked={isChecked}
-        />
-
-        <Button variant="outlined" className="submit-button" type="submit">
-          Submit
-        </Button>
-      </form> */}
 
       <h2>Start Writing!</h2>
       <Button variant="contained" onClick={() => setCreateOpen(true)}>
@@ -127,13 +90,17 @@ function WritersDeskPage() {
       ></CreateManuscriptDialog>
 
       <br></br>
+      <br></br>
+      <SearchForm onSearch={handleSearch} />
+      <br></br>
+      </div>
 
       {/* List of Manuscripts Created by User */}
 
       <div className="ManuscriptListHeader">
-        <h1 className='headers' > Title</h1>
-        <h1 className='headers'> Author</h1>
-        <h1 className='headers'> Preview</h1>
+        <h1 className="headers"> Title</h1>
+        <h1 className="headers"> Author</h1>
+        <h1 className="headers"> Preview</h1>
       </div>
 
       {writersDeskManuscriptList?.map((manuscript) => {
