@@ -106,7 +106,7 @@ function WritersDeskPage() {
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
-            <br></br>
+              <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
             <div className="writersDesk-button-wrapper">

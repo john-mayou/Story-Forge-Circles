@@ -2,11 +2,15 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
-import './TableStyling.css'
+import "./TableStyling.css";
+import { useState } from "react";
+import AlertDialog from "../../components/Dialogue/AlertDialog/AlertDialog";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const { owned_circles, joined_circles, id } = useSelector(
     (store) => store.user
@@ -16,26 +20,38 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
     if (owned_circles.includes(id) || joined_circles.includes(id)) {
       history.push(`/circle-dashboard/${id}/${name}`);
     } else {
-      alert("You must be a subscriber to view this circle.");
+      setAlertOpen(true);
     }
   };
 
   return (
-    <table className='circle-Table'>
+    <table className="circle-Table">
       <thead>
-        <tr className='table-header'>
-          <th><h3>Name</h3></th>
-          <th><h3>Description</h3></th>
-          <th><h3>Join</h3></th>
-          <th><h3>Go</h3></th>
+        <tr className="table-header">
+          <th>
+            <h3>Name</h3>
+          </th>
+          <th>
+            <h3>Description</h3>
+          </th>
+          <th>
+            <h3>Join</h3>
+          </th>
+          <th>
+            <h3>Go</h3>
+          </th>
         </tr>
       </thead>
       <tbody>
         {circlelist?.map((circle, index) => {
           return (
-            <tr className='circle-table-row-style' key={circle.id}>
-              <td><p>{circle.name}</p></td>
-              <td><p>{circle.description}</p></td>
+            <tr className="circle-table-row-style" key={circle.id}>
+              <td>
+                <p>{circle.name}</p>
+              </td>
+              <td>
+                <p>{circle.description}</p>
+              </td>
               <td>
                 {!owned_circles.includes(circle.id) &&
                 !joined_circles.includes(circle.id) ? (
@@ -63,6 +79,13 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                 <Button variant="contained" color="primary">
                   Go
                 </Button>
+                <AlertDialog
+                  title="Access Denied"
+                  child="You must be a subscriber to view this circle."
+                  open={alertOpen}
+                  setOpen={setAlertOpen}
+                  onConfirm={() => history.push('./circles-browser')}
+                ></AlertDialog>
               </td>
             </tr>
           );

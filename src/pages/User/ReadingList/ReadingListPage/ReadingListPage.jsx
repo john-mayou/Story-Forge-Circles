@@ -44,7 +44,6 @@ function ReadingListPage() {
       {publicManuscriptList?.map((manuscript) => {
         return (
           <>
-            <br></br>
             <div key={manuscript.id}>
               <ManuscriptListItem manuscript={manuscript} />
             </div>
