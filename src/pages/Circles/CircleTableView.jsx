@@ -29,9 +29,9 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
         </tr>
       </thead>
       <tbody>
-        {circlelist.map((circle) => {
+        {circlelist?.map((circle, index) => {
           return (
-            <tr key={circle.id}>
+            <tr key={index}>
               <td>{circle.name}</td>
               <td>{circle.description}</td>
               <td>
