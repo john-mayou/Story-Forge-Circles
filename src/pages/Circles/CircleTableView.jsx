@@ -10,9 +10,9 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
     (store) => store.user
   );
 
-  const navigateToCircleDashboard = ({ id }) => {
+  const navigateToCircleDashboard = ({ id, name }) => {
     if (owned_circles.includes(id) || joined_circles.includes(id)) {
-      history.push(`/circle-dashboard/${id}`);
+      history.push(`/circle-dashboard/${id}/${name}`);
     } else {
       alert("You must be a subscriber to view this circle.");
     }
@@ -29,9 +29,9 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
         </tr>
       </thead>
       <tbody>
-        {circlelist.map((circle) => {
+        {circlelist?.map((circle, index) => {
           return (
-            <tr key={circle.id}>
+            <tr key={index}>
               <td>{circle.name}</td>
               <td>{circle.description}</td>
               <td>

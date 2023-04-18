@@ -79,7 +79,7 @@ function App() {
             <MembersPage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/message-board/:circle_id">
+          <ProtectedRoute exact path="/message-board/:circle_id/:circleName">
             <MessageBoard />
           </ProtectedRoute>
 
@@ -105,7 +105,7 @@ function App() {
             <SearchPage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/circle-dashboard/:circle_id">
+          <ProtectedRoute exact path="/circle-dashboard/:circle_id/:circleName">
             <CircleDashboard />
           </ProtectedRoute>
 
