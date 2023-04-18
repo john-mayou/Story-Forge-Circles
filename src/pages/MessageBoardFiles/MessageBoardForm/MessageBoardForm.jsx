@@ -37,8 +37,7 @@ function MessageBoardForm({ parent_id, setReplyId }) {
 
   return (
     <>
-      <div className="messages-container">
-        <form onSubmit={handleSubmitComment}>
+      <div className="messages-container" >
           <input
             type="text"
             value={message.message}
@@ -52,7 +51,6 @@ function MessageBoardForm({ parent_id, setReplyId }) {
             <Button onClick={() => (setReplyId(-1))}> Cancel</Button>
             : ''
           }
-        </form>
       </div>
     </>
   );

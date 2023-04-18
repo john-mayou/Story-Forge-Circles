@@ -5,6 +5,8 @@ import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
 // font-awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faPlus, faChevronRight, faChevronDown, faReply } from '@fortawesome/free-solid-svg-icons';
+import { Divider } from "@mui/material";
+import dayjs from 'dayjs';
 
 import { Button } from "@mui/material";
 
@@ -81,8 +83,12 @@ function MessageBoard() {
                       : <FontAwesomeIcon icon={faChevronRight} />
                       }  </Button>
                     : ''} 
-                  <strong>{`@${message.username} `}</strong>
-                  {` FEB 4 AT 11:38 A.M.  ${message.message} `}
+                  {/* style={{ borderBottom: "1px solid black", padding: "3px 0"}} */}
+                  <span><strong>{`@${message.username}  `}</strong>{dayjs(message.created_at).format('MMM D h:mm A')}</span>
+                  {message.message}
+                  {/* TEMPORARY DIVIDER OPTIONS */}
+                  <div style={{ width: "100%", height: "1px", backgroundColor: "black", maxWidth: "90%"}}></div>
+                  {/* <Divider variant="inset" component="li" /> */}
                   {/* passing message.id as parent_id prop to form component */}
                   {replyId == message.id ? <MessageBoardForm parent_id={message.id} setReplyId={setReplyId} />
                    : <Button onClick={() => (setReplyId(message.id))}><FontAwesomeIcon icon={faReply} /> Reply</Button> 

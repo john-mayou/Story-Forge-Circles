@@ -46,12 +46,13 @@ function Header() {
         <h1 className="header-title">Header Title</h1>
       </div>
       <div className="header-right-end-container">
-        {/* <FontAwesomeIcon icon={faBell} className="header-notification-bell" /> */}
-        <NestedModal notifications={notifications} />
+        <FontAwesomeIcon icon={faBell} className="header-notification-bell" />
         <div className="header-profile-container">
           <img
-            src="https://loremflickr.com/40/40"
             className="header-avatar-image"
+            src="/cat.svg"
+            width="40"
+            height="49"
           />
           <p className="header-username">{user?.username}</p>
         </div>
