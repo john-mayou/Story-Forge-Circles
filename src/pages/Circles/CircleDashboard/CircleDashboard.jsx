@@ -93,20 +93,6 @@ export default function CircleDashboard() {
         circle_id={circle_id}
         manuscriptlist={circleManuscriptsList}
       />
-
-
-
-
-      {/* {showShareModal && (
-        <ShareManuscriptModal
-          manuscripts={userManuscriptNotInCircle}
-          circleId={circle_id}
-          closeModal={() => setShowShareModal(false)}
-          onShare={(selectedManuscriptsId) =>
-            handleShareManuscript(selectedManuscriptsId)
-          }
-        />
-      )} */}
     </main>
   );
 }

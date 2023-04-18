@@ -23,7 +23,7 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
   return (
     <table className='circle-Table'>
       <thead>
-        <tr className='circle-table-row-style'>
+        <tr className='table-header'>
           <th><h3>Name</h3></th>
           <th><h3>Description</h3></th>
           <th><h3>Join</h3></th>

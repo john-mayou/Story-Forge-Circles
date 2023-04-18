@@ -1,10 +1,16 @@
 .circle-Table {
-    background-color: #FFFFFF;
     border-collapse:separate;
     border-spacing: 0 5px;
     width: 75%;
     margin-left: 10%;
     margin-right: 10%;
+}
+
+.table-header {
+    background-color: #ffc15e;
+    padding-left:5%;
+    text-align: center;
+    box-shadow: 7px 3px 3px #e0d4cc;
 }
 
 .circle-table-row-style {
@@ -13,6 +19,7 @@
     border-top: 1px solid #FCF5F0;
     text-align: center;
     box-shadow: 7px 3px 3px #e0d4cc;
+    background-color: #FFFFFF;
 }
 
 .manuscript-table-row-style{
@@ -21,6 +28,7 @@
     border-top: 1px solid #FCF5F0;
     text-align: center;
     box-shadow: 7px 3px 3px #e0d4cc;
+    background-color: #FFFFFF;
 }
 
 .manuscript-table-row-style:hover {

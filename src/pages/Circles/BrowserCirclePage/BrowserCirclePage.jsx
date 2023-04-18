@@ -25,7 +25,7 @@ function BrowserCirclePage() {
       <div align="center">
         <h1>PUBLIC CIRCLES</h1>
         <SearchForm onSearch={handleSearch} />
-        <h2>JOINABLE CIRCLES BELOW</h2>
+        <h2>JOINABLE CIRCLES</h2>
         <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
       </div>
     </main>
