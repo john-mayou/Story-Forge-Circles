@@ -5,11 +5,6 @@ import { useDispatch } from "react-redux";
 import ConfirmDialog from "./Dialogue/ConfirmDialog/ConfirmDialog";
 import { Button } from "@mui/material";
 
-
-function UnshareButton({ onClick }) {
-  return <button onClick={onClick}>Unshare</button>;
-}
-
 export default function TableManuscriptView({ circle_id, manuscriptlist }) {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -20,8 +15,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
     history.push(`/manuscript-read/${manuscriptId}`);
   };
 
-  const handleUnshareButtonClick = (event, manuscriptId) => {
-    // event.stopPropagation();
+  const handleUnshareButtonClick = (manuscriptId) => {
     const payload = {
       circle_id,
       manuscriptId,
@@ -31,8 +25,6 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
       payload,
     });
   };
-
-  console.log("manuscriptlist", manuscriptlist);
 
   return (
     <table>
@@ -46,23 +38,17 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
       <tbody>
         {manuscriptlist?.map((manuscript) => (
           <tr key={manuscript?.id}>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
               {manuscript?.author || manuscript?.username}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
               {manuscript?.title}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}>
+            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
               {manuscript?.body}
             </td>
             {manuscript?.author && (
               <td>
-                {/* <UnshareButton
-                  onClick={(e) =>
-                    handleUnshareButtonClick(e, manuscript?.manuscript_id)
-                  }
-                /> */}
-
                 <Button onClick={() => setDeleteOpen(true)}>
                   Unshare
                 </Button>
@@ -72,7 +58,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
                   open={deleteOpen}
                   setOpen={setDeleteOpen}
                   onConfirm={(e) =>
-                    handleUnshareButtonClick(e, manuscript?.manuscript_id)
+                    handleUnshareButtonClick(manuscript?.manuscript_id ?? manuscript?.id)
                   }
                 ></ConfirmDialog>
               </td>
