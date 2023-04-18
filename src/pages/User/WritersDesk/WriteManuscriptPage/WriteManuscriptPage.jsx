@@ -5,6 +5,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
 
+// font-awesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
 function WriteManuscriptPage() {
   const history = useHistory();
   const manuscript = useSelector(
@@ -50,6 +54,7 @@ function WriteManuscriptPage() {
 
   return (
     <main className="content-main">
+              <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /></Button>
       <div align="center">
         <br></br>
         <form onSubmit={handleSubmit}>
@@ -84,7 +89,6 @@ function WriteManuscriptPage() {
         <Button variant="contained" color="primary" className="submit-button" type="submit" >Submit</Button>
         </form>
 
-        <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /></Button>
         <h4>Comments</h4>
         <Button variant="contained" color="primary">+Comment</Button>
       </div>

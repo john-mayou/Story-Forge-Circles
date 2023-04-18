@@ -1,71 +1,71 @@
 .ManuscriptListHeader {
-    display: grid;
-    grid-template-columns: .5fr .5fr 1fr;
-    margin-left: 10%;
-    margin-right:10%;
-    margin-top : 1%;
-    background-color: #FFC15E;
-    box-shadow: 7px 3px 3px #e0d4cc;
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 1fr;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1%;
+  background-color: #ffc15e;
+  box-shadow: 7px 3px 3px #e0d4cc;
 }
-
 
 .headers {
-    padding-left: 1%;
-    margin:0;
+  padding-left: 1%;
+  margin: 0;
 }
 
-
-
-
 .ManuscriptListItem {
-    display: grid;
-    grid-template-columns: .5fr .5fr 1fr;
-    margin-left: 10%;
-    margin-right:10%;
-    background-color:#FFFFFF;
-    margin-bottom: 5px;
-    box-shadow: 7px 3px 3px #e0d4cc;
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 1fr;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: #ffffff;
+  margin-bottom: 5px;
+  box-shadow: 7px 3px 3px #e0d4cc;
 }
 
 .ManuscriptListItem:hover {
-    cursor: pointer;
-    box-shadow: 9px 4px 4px #d3c8c1;
+  cursor: pointer;
+  box-shadow: 9px 4px 4px #d3c8c1;
 }
-
 
 .title {
-    display:flex;
-    flex-flow: column wrap;
-    margin: 5px;
-    padding-left:1%;
-    grid-column: 1/2;
-    align-self: center;
+  display: flex;
+  flex-flow: column wrap;
+  margin: 5px;
+  padding-left: 1%;
+  grid-column: 1/2;
+  align-self: center;
 }
-
 
 .author {
-    margin: 0px;
-    grid-column: 2/3;
-    align-self: center;
-    display:flex;
-    flex-flow: column wrap;
+  margin: 0px;
+  grid-column: 2/3;
+  align-self: center;
+  display: flex;
+  flex-flow: column wrap;
 }
-
 
 .preview {
-    display: flex;
-    flex-flow: column wrap;
-    align-self: center;
-    margin-right: 5px;
-    padding-right:2%;
-    grid-column: 3/4;
-    grid-row: 1/3;
+  display: flex;
+  flex-flow: column wrap;
+  align-self: center;
+  margin-right: 5px;
+  padding-right: 2%;
+  grid-column: 3/4;
+  grid-row: 1/3;
 }
-
-
-
 
 .writersDesk-button-wrapper {
-    margin-left: 10%;
+  margin-left: 10%;
 }
 
+.manuscript {
+  background-color: #ffffff;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 10px;
+  padding-top: .5%;
+  padding-bottom: .5%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
