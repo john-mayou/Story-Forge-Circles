@@ -84,7 +84,7 @@ function WriteManuscriptPage() {
         <Button variant="contained" color="primary" className="submit-button" type="submit" >Submit</Button>
         </form>
 
-        <Button variant="contained" color="secondary" onClick={history.goBack}>Back</Button>
+        <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /></Button>
         <h4>Comments</h4>
         <Button variant="contained" color="primary">+Comment</Button>
       </div>

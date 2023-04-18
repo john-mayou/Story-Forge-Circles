@@ -75,13 +75,13 @@ function MyCirclesPage() {
         <br />
 
         <SearchForm onSearch={handleSearch} />
-        <h2>JOINED CIRCLES BELOW</h2>
+        <h2>JOINED CIRCLES</h2>
       </div>
 
       <CircleTableView circlelist={myJoinedCircleList} />
 
       <div align="center">
-        <h2>CIRCLES I OWN / MY CIRCLES</h2>
+        <h2>MY OWNED CIRCLES</h2>
 
         <Button
         variant="contained"

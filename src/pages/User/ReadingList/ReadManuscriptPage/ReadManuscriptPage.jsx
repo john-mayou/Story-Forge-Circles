@@ -21,7 +21,7 @@ function ReadManuscriptPage() {
 
   return (
     <main className="content-main">
-      <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /> BACK</Button>
+      <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /></Button>
       <div align="center">
         
         <h1>{manuscript.title}</h1>
