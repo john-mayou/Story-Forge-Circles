@@ -78,7 +78,7 @@ const CreateCircleDialog = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => setOpen(false)}>
+        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>
           Cancel
         </Button>
         <Button
@@ -88,7 +88,7 @@ const CreateCircleDialog = (props) => {
             onConfirm();
           }}
         >
-          Submit
+          Create
         </Button>
       </DialogActions>
     </Dialog>

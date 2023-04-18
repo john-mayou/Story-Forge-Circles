@@ -58,25 +58,25 @@ export default function CircleDashboard() {
 
   return (
     <main className="content-main">
+      <div align="center">
       <h1>Circle Dashboard</h1>
       <h2>{circleName.charAt(0).toUpperCase() + circleName.slice(1)}</h2>
       <h2>Circle Manuscripts</h2>
-      <SearchForm onSearch={handleSearch} />
-      <h3>SHARED MANUSCRIPTS LIST</h3>
-      <TableManuscriptView
-        circle_id={circle_id}
-        manuscriptlist={circleManuscriptsList}
-      />
 
-      <Button variant="outlined" onClick={() => getUserAllManuscriptList()}>
+      <SearchForm onSearch={handleSearch} />
+
+      <h2>SHARED MANUSCRIPTS LIST</h2>
+
+
+      <Button variant="contained" color="primary" onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
       </Button>
 
-      <button onClick={() => history.push(`/circles/${circle_id}/members`)}>
+      <Button variant="contained" color="secondary" onClick={() => history.push(`/circles/${circle_id}/members`)}>
         Members
-      </button>
+      </Button>
 
-      <button onClick={goToMessageBoard}>Message Board</button>
+      <Button variant="contained" color="secondary" onClick={goToMessageBoard}>Message Board</Button>
 
       <ShareManuscriptDialog
         manuscripts={userManuscriptNotInCircle}
@@ -86,6 +86,13 @@ export default function CircleDashboard() {
         onShare={(selectedManuscriptsId) =>
           handleShareManuscript(selectedManuscriptsId)
         }
+      />
+              <br></br>
+              <br></br>
+      </div>
+      <TableManuscriptView
+        circle_id={circle_id}
+        manuscriptlist={circleManuscriptsList}
       />
     </main>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 function MembersPage() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function MembersPage() {
 
   return (
     <main className="content-main">
+      <div align="center">
       <h1>Members Page</h1>
       {userExitsError && <p>User doesnt exist... Try again</p>}
       <h2>Circle Id: {circleId}</h2>
@@ -47,7 +49,7 @@ function MembersPage() {
         {/* if user is circle owner */}
         {user.id === circleDetails.owner_id ? (
           <>
-            <button
+            <Button variant="contained" color="primary"
               onClick={async () => {
                 if (!newMember) {
                   return;
@@ -72,7 +74,7 @@ function MembersPage() {
               }}
             >
               Add Member
-            </button>
+            </Button>
             <input
               type="text"
               value={newMember}
@@ -83,7 +85,7 @@ function MembersPage() {
           </>
         ) : (
           <>
-            <button
+            <Button variant="contained" color="primary"
               onClick={async () => {
                 if (!newMember) {
                   return;
@@ -109,7 +111,7 @@ function MembersPage() {
               }}
             >
               Invite Member
-            </button>
+            </Button>
             <input
               type="text"
               value={newMember}
@@ -124,7 +126,7 @@ function MembersPage() {
           // and there are no members in the circle
           circleMembers.length === 0 && <button>Close Circle</button>
         ) : (
-          <button>Leave Circle</button>
+          <Button color="error">Leave Circle</Button>
         )}
       </div>
 
@@ -136,8 +138,8 @@ function MembersPage() {
             <p>{member.avatar_image || "null image"}</p>
             {user.id === circleDetails.owner_id && (
               <>
-                <button onClick={() => removeMember(member.id)}>Remove</button>
-                <button
+                <Button variant="contained" color="secondary" onClick={() => removeMember(member.id)}>Remove</Button>
+                <Button variant="contained" color="primary"
                   onClick={() =>
                     dispatch({
                       type: "CREATE_NEW_NOTIFICATION",
@@ -150,12 +152,13 @@ function MembersPage() {
                   }
                 >
                   Promote To Leader
-                </button>
+                </Button>
               </>
             )}
           </div>
         );
       })}
+      </div>
     </main>
   );
 }

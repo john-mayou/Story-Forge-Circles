@@ -5,6 +5,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faReply } from '@fortawesome/free-solid-svg-icons';
 
+import { Button } from "@mui/material";
+
 function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
   console.log("circle_id", circle_id);
@@ -43,10 +45,10 @@ function MessageBoardForm({ parent_id, setReplyId }) {
             placeholder={parent_id ? "Reply" : "New Thread"}
             style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
           />
-        <span onClick={handleSubmitComment}><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</span>
+          <Button type="submit"><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</Button>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ?
-            <span onClick={() => (setReplyId(-1))}> Cancel</span>
+            <Button onClick={() => (setReplyId(-1))}> Cancel</Button>
             : ''
           }
       </div>

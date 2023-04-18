@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@mui/material";
 
 export default function SearchForm({ onSearch }) {
   const [searchInput, setSearchInput] = useState("");
@@ -23,9 +24,9 @@ export default function SearchForm({ onSearch }) {
         onChange={(e) => setSearchInput(e.target.value)}
         onKeyPress={handleKeyPress}
       />
-      <button className="search-btn" onClick={handleSearch}>
+      <Button variant="contained" color="primary" className="search-btn" onClick={handleSearch}>
         Search
-      </button>
+      </Button>
     </div>
   );
 }

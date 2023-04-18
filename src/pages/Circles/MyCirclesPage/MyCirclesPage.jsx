@@ -64,28 +64,38 @@ function MyCirclesPage() {
 
   return (
     <main className="content-main">
-      <h1>My Circles</h1>
+      <div align="center">
+        <h1>My Circles</h1>
 
-      <h2>Joined Circles</h2>
-      <button
-        className="browse-joinable-btn"
-        onClick={() => history.push(`/circles-browser`)}
+        <h2>Joined Circles</h2>
+        <Button
+          variant="contained"
+          color="secondary"
+          className="browse-joinable-btn"
+          onClick={() => history.push(`/circles-browser`)}
+        >
+          Circle Browser
+        </Button>
+        <br />
+        <br />
+
+        <SearchForm onSearch={handleSearch} />
+        <h2>JOINED CIRCLES</h2>
+      </div>
+
+      <CircleTableView circlelist={myJoinedCircleList} />
+
+      <div align="center">
+        <h2>MY OWNED CIRCLES</h2>
+
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setShowModal(true)}
       >
-        Browser Circle
-      </button>
-      <SearchForm onSearch={handleSearch} />
-      <p>JOINED CIRCLES BELOW</p>
-
-      <CircleTableView circlelist={myJoinedCircle} />
-
-      <Button variant="outlined" onClick={() => setShowModal(true)}>
         + New Circle
       </Button>
-
-      <p>CIRCLES I OWN / MY CIRCLES</p>
-
-      <CircleTableView circlelist={myCreatedCircleList} />
-
+ 
       <CreateCircleDialog
         title="Create Circle"
         open={showModal}
@@ -96,6 +106,13 @@ function MyCirclesPage() {
         setInputTwo={setCircleDescription}
         onConfirm={handleCreateCircle}
       />
+      <br></br>
+      <br></br>
+      </div>
+
+      <CircleTableView circlelist={myCreatedCircleList} />
+  
+      
     </main>
   );
 }

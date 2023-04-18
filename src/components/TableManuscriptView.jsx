@@ -4,6 +4,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ConfirmDialog from "./Dialogue/ConfirmDialog/ConfirmDialog";
 import { Button } from "@mui/material";
+import "../pages/Circles/TableStyling.css";
+
+function UnshareButton({ onClick }) {
+  return <button onClick={onClick}>Unshare</button>;
+}
 
 export default function TableManuscriptView({ circle_id, manuscriptlist }) {
   const history = useHistory();
@@ -27,38 +32,63 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
   };
 
   return (
-    <table>
+    <table className="circle-Table">
       <thead>
-        <tr>
-          <th>Author</th>
-          <th>Title</th>
-          <th>Preview</th>
+        <tr className="table-header">
+          <th>
+            <h3>Author</h3>
+          </th>
+          <th>
+            <h3>Title</h3>
+          </th>
+          <th>
+            <h3>Preview</h3>
+          </th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {manuscriptlist?.map((manuscript) => (
-          <tr key={manuscript?.id}>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
+          <tr className='circle-table-row-style' key={manuscript?.id}>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
               {manuscript?.author ?? manuscript?.username}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
               {manuscript?.title}
             </td>
-            <td onClick={() => handleManuscriptClick(manuscript?.manuscript_id ?? manuscript?.id)}>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
               {manuscript?.body}
             </td>
             {manuscript?.author && (
               <td>
-                <Button onClick={() => setDeleteOpen(true)}>
-                  Unshare
-                </Button>
+                <Button onClick={() => setDeleteOpen(true)}>Unshare</Button>
                 <ConfirmDialog
                   title="Unshare Manuscript?"
                   children="Manuscript will be removed from circle dashboard."
                   open={deleteOpen}
                   setOpen={setDeleteOpen}
                   onConfirm={(e) =>
-                    handleUnshareButtonClick(manuscript?.manuscript_id ?? manuscript?.id)
+                    handleUnshareButtonClick(
+                      manuscript?.manuscript_id ?? manuscript?.id
+                    )
                   }
                 ></ConfirmDialog>
               </td>

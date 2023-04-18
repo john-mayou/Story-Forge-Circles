@@ -8,6 +8,8 @@ import { faMagnifyingGlass, faPlus, faChevronRight, faChevronDown, faReply } fro
 import { Divider } from "@mui/material";
 import dayjs from 'dayjs';
 
+import { Button } from "@mui/material";
+
 function MessageBoard() {
   const { circle_id, circleName } = useParams();
   const dispatch = useDispatch();
@@ -43,18 +45,18 @@ function MessageBoard() {
           name="message-board-input"
           placeholder="Search..."
         />
-        <button><FontAwesomeIcon icon={faMagnifyingGlass} /> </button>
+        <Button><FontAwesomeIcon icon={faMagnifyingGlass} /> </Button>
         <div>
-          <button onClick={handleAddThreadClick}><FontAwesomeIcon icon={faPlus} size="sm" />{!addThread ? ' Thread' : ' Cancel' }</button>
-          <button onClick={goToDashboard}>Dashboard</button>
+          <Button variant="contained" onClick={handleAddThreadClick}><FontAwesomeIcon icon={faPlus} size="sm" />{!addThread ? ' Thread' : ' Cancel' }</Button>
+          <Button variant="contained" color="secondary" onClick={goToDashboard}>Dashboard</Button>
           <div className="thread-container">
             { addThread ? <MessageBoardForm /> : ''}
-            <ul align="left" style={{ listStyle: "none", marginLeft: "5rem" }}>
+            <ul align="left" style={{ listStyle: "none", marginLeft: "20%" }}>
             {messageList?.map((message) => (
               <li key={message.id}
                 style={message.parent_id ?
                   { // Adding indentation based on path length
-                    marginLeft: `${4 * (message?.path?.includes('.') ?
+                    marginLeft: `${8 * (message?.path?.includes('.') ?
                       message?.path?.split('.').length : 1)}rem`
                   }
                   : {}
@@ -62,7 +64,7 @@ function MessageBoard() {
                 <div>
                   {/* <pre>{JSON.stringify(message)}</pre> */}
                   {message.has_children
-                    ? <span onClick={() => {
+                    ? <Button onClick={() => {
                     if (expand.includes(message.id)) {
                       setExpand(expand.filter((id) => {
                         if (id != message.id) {
@@ -79,7 +81,7 @@ function MessageBoard() {
                       expand.includes(message.id) ?
                         <FontAwesomeIcon icon={faChevronDown} />
                       : <FontAwesomeIcon icon={faChevronRight} />
-                      }  </span>
+                      }  </Button>
                     : ''} 
                   {/* style={{ borderBottom: "1px solid black", padding: "3px 0"}} */}
                   <span><strong>{`@${message.username}  `}</strong>{dayjs(message.created_at).format('MMM D h:mm A')}</span>
@@ -89,7 +91,7 @@ function MessageBoard() {
                   {/* <Divider variant="inset" component="li" /> */}
                   {/* passing message.id as parent_id prop to form component */}
                   {replyId == message.id ? <MessageBoardForm parent_id={message.id} setReplyId={setReplyId} />
-                   : <div onClick={() => (setReplyId(message.id))}><FontAwesomeIcon icon={faReply} /> Reply</div> 
+                   : <Button onClick={() => (setReplyId(message.id))}><FontAwesomeIcon icon={faReply} /> Reply</Button> 
                   }
                 </div>
               </li>

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import '../../Login-Register.css'
 
 function LoginPage() {
     const history = useHistory();
@@ -26,7 +28,8 @@ function LoginPage() {
     }; // end login
 
     return (
-        <div>
+        <div className="login-register-flex-container">
+            <img src='./Story-Forge-Logo.png'/>
             <form className="formPanel" onSubmit={login}>
                 <h2>Login</h2>
                 {errors.loginMessage && (
@@ -63,17 +66,22 @@ function LoginPage() {
                     </label>
                 </div>
                 <div>
-                    <input
+                    <Button
+                        variant="contained"
+                        color="primary"
                         className="btn"
                         type="submit"
                         name="submit"
                         value="Log In"
-                    />
+                    >Log In 
+                    </Button>
                 </div>
             </form>
 
             <center>
-                <button
+                <Button
+                    variant="contained"
+                    color="secondary"
                     type="button"
                     className="btn btn_asLink"
                     onClick={() => {
@@ -81,7 +89,7 @@ function LoginPage() {
                     }}
                 >
                     Register
-                </button>
+                </Button>
             </center>
         </div>
     );

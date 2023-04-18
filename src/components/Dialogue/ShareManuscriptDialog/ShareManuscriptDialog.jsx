@@ -62,7 +62,7 @@ export default function ShareManuscriptDialog({
 
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button variant="outlined" onClick={handleShareClick}>Share</Button>
+          <Button variant="contained" color='primary' onClick={handleShareClick}>Share</Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
