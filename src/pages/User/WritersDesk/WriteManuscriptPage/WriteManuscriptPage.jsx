@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
+import Header from "../../../../layout/Header/Header";
 
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +16,7 @@ function WriteManuscriptPage() {
     (store) => store.manuscripts.manuscriptDetails
   );
   const dispatch = useDispatch();
-  const {id : manuscriptId} = useParams();
+  const { id: manuscriptId } = useParams();
 
   useEffect(() => {
     fetchManuscriptDetails();
@@ -29,20 +30,19 @@ function WriteManuscriptPage() {
     setIsChecked(response.data[0].public);
   };
 
-  const [newTitle, setNewTitle] = useState('');
-  const [newBody, setNewBody] = useState('');
+  const [newTitle, setNewTitle] = useState("");
+  const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newManuscript =
-      {
-        id : manuscriptId,
-        title : newTitle,
-        body : newBody,
-        public : isChecked,
-      }
+    const newManuscript = {
+      id: manuscriptId,
+      title: newTitle,
+      body: newBody,
+      public: isChecked,
+    };
 
     dispatch({
       type: "UPDATE_MANUSCRIPT",
@@ -54,7 +54,10 @@ function WriteManuscriptPage() {
 
   return (
     <main className="content-main">
-              <Button variant="contained" color="secondary" onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+      <Header title={`${manuscript.title} Editing`} />
+      <Button variant="contained" color="secondary" onClick={history.goBack}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </Button>
       <div align="center">
         <br></br>
         <form onSubmit={handleSubmit}>
@@ -85,12 +88,20 @@ function WriteManuscriptPage() {
           />
           <br></br>
 
-        
-        <Button variant="contained" color="primary" className="submit-button" type="submit" >Submit</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className="submit-button"
+            type="submit"
+          >
+            Submit
+          </Button>
         </form>
 
         <h4>Comments</h4>
-        <Button variant="contained" color="primary">+Comment</Button>
+        <Button variant="contained" color="primary">
+          +Comment
+        </Button>
       </div>
     </main>
   );

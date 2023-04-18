@@ -5,6 +5,7 @@ import CircleTableView from "../CircleTableView";
 import SearchForm from "../../Search/SearchForm";
 import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
 import { Button } from "@mui/material";
+import Header from "../../../layout/Header/Header";
 
 function MyCirclesPage() {
   const { id } = useSelector((store) => store.user);
@@ -12,9 +13,9 @@ function MyCirclesPage() {
     (store) => store.circles
   );
 
-// Uses useMemo to filter circles in myJoinedCircleList based on owner_id
+  // Uses useMemo to filter circles in myJoinedCircleList based on owner_id
   const myJoinedCircle = useMemo(() => {
-    return myJoinedCircleList.filter(circle => circle.owner_id !== id);
+    return myJoinedCircleList.filter((circle) => circle.owner_id !== id);
   }, [myJoinedCircleList, id]);
 
   const dispatch = useDispatch();
@@ -64,9 +65,8 @@ function MyCirclesPage() {
 
   return (
     <main className="content-main">
+      <Header title={"My Circles"} />
       <div align="center">
-        <h1>My Circles</h1>
-
         <h2>Joined Circles</h2>
         <Button
           variant="contained"
@@ -89,30 +89,28 @@ function MyCirclesPage() {
         <h2>MY OWNED CIRCLES</h2>
 
         <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setShowModal(true)}
-      >
-        + New Circle
-      </Button>
- 
-      <CreateCircleDialog
-        title="Create Circle"
-        open={showModal}
-        setOpen={setShowModal}
-        inputOne={circleName}
-        setInputOne={setCircleName}
-        inputTwo={circleDescription}
-        setInputTwo={setCircleDescription}
-        onConfirm={handleCreateCircle}
-      />
-      <br></br>
-      <br></br>
+          variant="contained"
+          color="primary"
+          onClick={() => setShowModal(true)}
+        >
+          + New Circle
+        </Button>
+
+        <CreateCircleDialog
+          title="Create Circle"
+          open={showModal}
+          setOpen={setShowModal}
+          inputOne={circleName}
+          setInputOne={setCircleName}
+          inputTwo={circleDescription}
+          setInputTwo={setCircleDescription}
+          onConfirm={handleCreateCircle}
+        />
+        <br></br>
+        <br></br>
       </div>
 
       <CircleTableView circlelist={myCreatedCircleList} />
-  
-      
     </main>
   );
 }

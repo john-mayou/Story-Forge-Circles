@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import TableManuscriptView from "../../../components/TableManuscriptView";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
 import SearchForm from "../../Search/SearchForm";
+import Header from "../../../layout/Header/Header";
 
 import { Button } from "@mui/material";
 
@@ -59,36 +60,48 @@ export default function CircleDashboard() {
   return (
     <main className="content-main">
       <div align="center">
-      <h1>Circle Dashboard</h1>
-      <h2>{circleName.charAt(0).toUpperCase() + circleName.slice(1)}</h2>
-      <h2>Circle Manuscripts</h2>
+        <Header
+          title={`${
+            circleName.charAt(0).toUpperCase() + circleName.slice(1)
+          } Dashboard`}
+        />
+        <SearchForm onSearch={handleSearch} />
+        <h2>SHARED MANUSCRIPTS LIST</h2>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => getUserAllManuscriptList()}
+        >
+          Share Manuscript
+        </Button>
 
-      <SearchForm onSearch={handleSearch} />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => history.push(`/circles/${circle_id}/members`)}
+        >
+          Members
+        </Button>
 
-      <h2>SHARED MANUSCRIPTS LIST</h2>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={goToMessageBoard}
+        >
+          Message Board
+        </Button>
 
-
-      <Button variant="contained" color="primary" onClick={() => getUserAllManuscriptList()}>
-        Share Manuscript
-      </Button>
-
-      <Button variant="contained" color="secondary" onClick={() => history.push(`/circles/${circle_id}/members`)}>
-        Members
-      </Button>
-
-      <Button variant="contained" color="secondary" onClick={goToMessageBoard}>Message Board</Button>
-
-      <ShareManuscriptDialog
-        manuscripts={userManuscriptNotInCircle}
-        open={showShareModal}
-        setOpen={setShowShareModal}
-        circleId={circle_id}
-        onShare={(selectedManuscriptsId) =>
-          handleShareManuscript(selectedManuscriptsId)
-        }
-      />
-              <br></br>
-              <br></br>
+        <ShareManuscriptDialog
+          manuscripts={userManuscriptNotInCircle}
+          open={showShareModal}
+          setOpen={setShowShareModal}
+          circleId={circle_id}
+          onShare={(selectedManuscriptsId) =>
+            handleShareManuscript(selectedManuscriptsId)
+          }
+        />
+        <br></br>
+        <br></br>
       </div>
       <TableManuscriptView
         circle_id={circle_id}

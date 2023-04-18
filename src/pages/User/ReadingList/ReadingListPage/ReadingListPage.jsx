@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import Header from "../../../../layout/Header/Header";
 
 import ManuscriptListItem from "../../ManuscriptListItem";
 import SearchForm from "../../../Search/SearchForm";
@@ -21,7 +22,6 @@ function ReadingListPage() {
     });
   }, []);
 
-
   const handleSearch = (searchTerm) => {
     history.push(`/search/manuscripts/publicManuscriptList?term=${searchTerm}`);
   };
@@ -29,26 +29,25 @@ function ReadingListPage() {
   return (
     <main className="content-main">
       <div align="center">
-      <h1>Reading List Page</h1>
-      <h2>Welcome, {user.username}!</h2>
+        <Header title={"Reading List"} />
 
-      <SearchForm onSearch={handleSearch} />
+        <SearchForm onSearch={handleSearch} />
       </div>
 
       <div className="ManuscriptListHeader">
-        <h1 className='headers' > Title</h1>
-        <h1 className='headers'> Author</h1>
-        <h1 className='headers'> Preview</h1>
+        <h1 className="headers"> Title</h1>
+        <h1 className="headers"> Author</h1>
+        <h1 className="headers"> Preview</h1>
       </div>
 
       {/* Displays list of publically shared Manuscripts to page */}
       {publicManuscriptList?.map((manuscript) => {
         return (
           <>
-          <br></br>
-          <div key={manuscript.id}>
-            <ManuscriptListItem manuscript={manuscript} />
-          </div>
+            <br></br>
+            <div key={manuscript.id}>
+              <ManuscriptListItem manuscript={manuscript} />
+            </div>
           </>
         );
       })}

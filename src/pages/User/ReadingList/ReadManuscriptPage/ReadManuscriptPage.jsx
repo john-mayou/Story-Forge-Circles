@@ -7,6 +7,8 @@ import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 import "../../ManuscriptStyling.css";
 
+import Header from "../../../../layout/Header/Header";
+
 function ReadManuscriptPage() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ function ReadManuscriptPage() {
 
   return (
     <main className="content-main">
+      <Header title={`${manuscript.title} Manuscript`} />
       <Button variant="contained" color="secondary" onClick={history.goBack}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Button>
