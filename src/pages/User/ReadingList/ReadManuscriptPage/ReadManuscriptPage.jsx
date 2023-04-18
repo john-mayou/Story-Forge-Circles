@@ -26,7 +26,7 @@ function ReadManuscriptPage() {
 
   return (
     <main className="content-main">
-      <Header title={`${manuscript.title} Manuscript`} />
+      <Header title={`Read Mode`} />
       <Button variant="contained" color="secondary" onClick={history.goBack}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Button>
