@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
@@ -11,6 +11,13 @@ function MyCirclesPage() {
   const { myJoinedCircleList, myCreatedCircleList } = useSelector(
     (store) => store.circles
   );
+
+
+  const myJoinedCircle = useMemo(() => {
+    return myJoinedCircleList.filter(circle => circle.owner_id !== id);
+  }, [myJoinedCircleList, id]);
+
+  // const myJoinedCircle = myJoinedCircleList.filter(circle => circle.owner_id !== id);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -71,7 +78,7 @@ function MyCirclesPage() {
       <SearchForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
-      <CircleTableView circlelist={myJoinedCircleList} />
+      <CircleTableView circlelist={myJoinedCircle} />
 
       {/* <button
         className="create-btn-new-circle"
@@ -121,7 +128,7 @@ function MyCirclesPage() {
         setInputOne={setCircleName}
         inputTwo={circleDescription}
         setInputTwo={setCircleDescription}
-        onConfirm={() => handleCreateCircle()}
+        onConfirm={handleCreateCircle}
       />
     </main>
   );
