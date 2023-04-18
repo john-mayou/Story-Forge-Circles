@@ -13,10 +13,11 @@ function MyCirclesPage() {
     (store) => store.circles
   );
 
+  // (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle
   // Uses useMemo to filter circles in myJoinedCircleList based on owner_id
-  const myJoinedCircle = useMemo(() => {
-    return myJoinedCircleList.filter((circle) => circle.owner_id !== id);
-  }, [myJoinedCircleList, id]);
+  // const myJoinedCircle = useMemo(() => {
+  //   return myJoinedCircleList.filter(circle => circle.owner_id !== id);
+  // }, [myJoinedCircleList, id]);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -84,6 +85,10 @@ function MyCirclesPage() {
       </div>
 
       <CircleTableView circlelist={myJoinedCircleList} />
+
+{/* (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle */}
+      {/* <CircleTableView circlelist={myJoinedCircle} /> */}
+
 
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>
