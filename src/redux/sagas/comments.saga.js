@@ -1,35 +1,64 @@
-import { put, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // Get all saga: fires on `FETCH_COMMENTS`
-function* fetchComments() {
+function* fetchBaseComments() {
   try {
       // ask for comment data from db
       let commentsResponse = yield axios.get(`/api/comments`)
       // once received, send to comments Reducer
-      yield put({ type: 'SET_COMMENTS', payload: commentsResponse.data })
+      yield put({ type: 'SET_ALL_COMMENTS', payload: commentsResponse.data })
   } catch (err) {
-      console.error('Error in fetchComments comments saga', err);
+      console.error('Error in fetchBaseComments saga', err);
   }
 }
 
-// Post a message: fires on `POST_COMMENT`
-function* postComment(action) {
-    try {
-        yield axios.post(`/api/comments`, action.payload);
-        yield put({
-          type: "FETCH_COMMENTS",
-        });
-      } catch (error) {
-        console.log("Error in POST comments Saga:", error);
-      }
+// * Get children comments by parent_id, fires on `FETCH_CHILDREN`
+function* fetchChildrenComments(action) {
+  try {
+    // ask for children messages
+    const response = yield axios.get(`/api/comments/${action.payload}`)
+    console.log("Response.data", response.data);
+    // once received, send to commentThread Reducer
+    yield put({ type: 'ADD_CHILDREN_COMMENTS', payload: response.data })
+  } catch (err) {
+    console.error('Error in fetchChildrenComments saga', err);
+  }
+}
 
+// * Select user reducer to access username
+const userSelector = (state) => state.user;
+
+// * Post a message: fires on `POST_COMMENT`
+function* postComment(action) {
+  try {
+    const response = yield axios.post(`/api/comments`, action.payload);
+    const user = yield select(userSelector)
+    response.data.username = user.username;
+    if (response.data.parent_id) {
+      yield put({
+        type: "ADD_CHILDREN_COMMENTS",
+        payload: [response.data]
+      });
+    } else {
+      yield put({
+        type: "ADD_BASE_COMMENT",
+        payload: response.data
+      });
+    }
+  } catch (error) {
+    console.log("Error in POST Saga:", error);
+  }
 }
 
 
 function* commentsSaga() {
+  // GET
+  yield takeEvery("FETCH_COMMENTS", fetchBaseComments);
+  yield takeLatest("FETCH_CHILDREN", fetchChildrenComments);
+  // POST
   yield takeEvery("POST_COMMENT", postComment);
-  yield takeEvery("FETCH_COMMENTS", fetchComments);
+  
 }
 
 export default commentsSaga;
