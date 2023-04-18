@@ -28,7 +28,8 @@ function WritersDeskPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
   const [createOpen, setCreateOpen] = useState(false);
 
   // Creates Manuscript Object with Title and Body and sends it to the database
@@ -105,7 +106,7 @@ function WritersDeskPage() {
       {writersDeskManuscriptList?.map((manuscript) => {
         return (
           <div key={manuscript.id}>
-            <br></br>
+              <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
             <div className="writersDesk-button-wrapper">
@@ -120,16 +121,18 @@ function WritersDeskPage() {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => setDeleteOpen(true)}
+                onClick={() => setDeleteId(manuscript.id)}
               >
                 Delete
               </Button>
+
               <ConfirmDialog
                 title="Delete Manuscript?"
-                open={deleteOpen}
-                setOpen={setDeleteOpen}
+                open={deleteId === manuscript.id}
+                setOpen={() => setDeleteId(null)}
                 onConfirm={() => handleDelete(manuscript.id)}
               ></ConfirmDialog>
+        
             </div>
           </div>
         );
