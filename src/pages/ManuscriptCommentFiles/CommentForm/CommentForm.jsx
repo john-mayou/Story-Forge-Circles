@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import { Button, Divider } from "@mui/material";
+import { Button } from "@mui/material";
 
 function CommentForm({ manuscript_id, parent_id, setReplyId }) {
   // getting user from store
