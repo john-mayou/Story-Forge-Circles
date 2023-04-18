@@ -13,11 +13,10 @@ function MyCirclesPage() {
   );
 
 
+// Uses useMemo to filter circles in myJoinedCircleList based on owner_id
   const myJoinedCircle = useMemo(() => {
     return myJoinedCircleList.filter(circle => circle.owner_id !== id);
   }, [myJoinedCircleList, id]);
-
-  // const myJoinedCircle = myJoinedCircleList.filter(circle => circle.owner_id !== id);
 
   const dispatch = useDispatch();
   const history = useHistory();
