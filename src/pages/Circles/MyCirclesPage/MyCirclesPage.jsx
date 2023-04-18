@@ -59,65 +59,37 @@ function MyCirclesPage() {
 
   return (
     <main className="content-main">
-      <h1>My Circles</h1>
+      <div align="center">
+        <h1>My Circles</h1>
 
-      <h2>Joined Circles</h2>
-      <Button
-        variant="contained"
-        color="secondary"
-        className="browse-joinable-btn"
-        onClick={() => history.push(`/circles-browser`)}
-      >
-        Browser Circle
-      </Button>
-      <SearchForm onSearch={handleSearch} />
-      <p>JOINED CIRCLES BELOW</p>
+        <h2>Joined Circles</h2>
+        <Button
+          variant="contained"
+          color="secondary"
+          className="browse-joinable-btn"
+          onClick={() => history.push(`/circles-browser`)}
+        >
+          Circle Browser
+        </Button>
+        <br />
+        <br />
+
+        <SearchForm onSearch={handleSearch} />
+        <h2>JOINED CIRCLES BELOW</h2>
+      </div>
 
       <CircleTableView circlelist={myJoinedCircleList} />
 
-      {/* <button
-        className="create-btn-new-circle"
-        onClick={() => setShowModal(true)}
-      >
-        New Circle
-      </button> */}
+      <div align="center">
+        <h2>CIRCLES I OWN / MY CIRCLES</h2>
 
-      <Button
+        <Button
         variant="contained"
         color="primary"
         onClick={() => setShowModal(true)}
       >
         + New Circle
       </Button>
-
-      <p>CIRCLES I OWN / MY CIRCLES</p>
-
-      <CircleTableView circlelist={myCreatedCircleList} />
-      {/* 
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <h3>Create a new circle</h3>
-            <input
-              type="text"
-              id="circle-name"
-              value={circleName}
-              placeholder="Circle Name"
-              onChange={(e) => setCircleName(e.target.value)}
-            />
-            <input
-              id="circle-description"
-              value={circleDescription}
-              placeholder="Description"
-              onChange={(e) => setCircleDescription(e.target.value)}
-            />
-            <div className="modal-actions">
-              <button onClick={() => setShowModal(false)}>Cancel</button>
-              <button onClick={handleCreateCircle}>Create Circle</button>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       <CreateCircleDialog
         title="Create Circle"
@@ -129,6 +101,13 @@ function MyCirclesPage() {
         setInputTwo={setCircleDescription}
         onConfirm={() => handleCreateCircle()}
       />
+      <br></br>
+      <br></br>
+      </div>
+
+      <CircleTableView circlelist={myCreatedCircleList} />
+  
+      
     </main>
   );
 }

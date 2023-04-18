@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button } from "@mui/material";
+import './TableStyling.css'
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   const dispatch = useDispatch();
@@ -20,21 +21,21 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
   };
 
   return (
-    <table>
+    <table className='circle-Table'>
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Join</th>
-          <th>Go</th>
+        <tr className='circle-table-row-style'>
+          <th><h3>Name</h3></th>
+          <th><h3>Description</h3></th>
+          <th><h3>Join</h3></th>
+          <th><h3>Go</h3></th>
         </tr>
       </thead>
       <tbody>
         {circlelist.map((circle) => {
           return (
-            <tr key={circle.id}>
-              <td>{circle.name}</td>
-              <td>{circle.description}</td>
+            <tr className='circle-table-row-style' key={circle.id}>
+              <td><p>{circle.name}</p></td>
+              <td><p>{circle.description}</p></td>
               <td>
                 {!owned_circles.includes(circle.id) &&
                 !joined_circles.includes(circle.id) ? (

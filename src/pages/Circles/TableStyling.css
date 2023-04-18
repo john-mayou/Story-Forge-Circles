@@ -1,0 +1,29 @@
+.circle-Table {
+    background-color: #FFFFFF;
+    border-collapse:separate;
+    border-spacing: 0 5px;
+    width: 75%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.circle-table-row-style {
+    padding-left:5%;
+    border: 1px solid #FCF5F0;
+    border-top: 1px solid #FCF5F0;
+    text-align: center;
+    box-shadow: 7px 3px 3px #e0d4cc;
+}
+
+.manuscript-table-row-style{
+    padding-left:5%;
+    border: 1px solid #FCF5F0;
+    border-top: 1px solid #FCF5F0;
+    text-align: center;
+    box-shadow: 7px 3px 3px #e0d4cc;
+}
+
+.manuscript-table-row-style:hover {
+    cursor:pointer;
+    box-shadow: 9px 4px 4px #d3c8c1;
+}

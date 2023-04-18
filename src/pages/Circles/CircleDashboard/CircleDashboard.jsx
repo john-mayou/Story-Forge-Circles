@@ -59,14 +59,13 @@ export default function CircleDashboard() {
 
   return (
     <main className="content-main">
+      <div align="center">
       <h1>Circle Dashboard</h1>
-      <h2>Circle Manuscripts</h2>
+
       <SearchForm onSearch={handleSearch} />
-      <h3>SHARED MANUSCRIPTS LIST</h3>
-      <TableManuscriptView
-        circle_id={circle_id}
-        manuscriptlist={circleManuscriptsList}
-      />
+
+      <h2>SHARED MANUSCRIPTS LIST</h2>
+
 
       <Button variant="contained" color="primary" onClick={() => getUserAllManuscriptList()}>
         Share Manuscript
@@ -87,6 +86,16 @@ export default function CircleDashboard() {
           handleShareManuscript(selectedManuscriptsId)
         }
       />
+              <br></br>
+              <br></br>
+      </div>
+      <TableManuscriptView
+        circle_id={circle_id}
+        manuscriptlist={circleManuscriptsList}
+      />
+
+
+
 
       {/* {showShareModal && (
         <ShareManuscriptModal
