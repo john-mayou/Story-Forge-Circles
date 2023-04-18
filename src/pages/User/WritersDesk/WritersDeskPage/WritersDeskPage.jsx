@@ -6,6 +6,7 @@ import ConfirmDialog from "../../../../components/Dialogue/ConfirmDialog/Confirm
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
 import SearchForm from "../../../Search/SearchForm";
+import Header from "../../../../layout/Header/Header";
 import "../../ManuscriptStyling.css";
 
 function WritersDeskPage() {
@@ -68,31 +69,29 @@ function WritersDeskPage() {
 
   return (
     <main className="content-main">
+      <Header title={"My Shelf"} />
       <div align="center">
-      <h1>MyShelf</h1>
-      <h2>Welcome, {user.username}!</h2>
+        <h2>Start Writing!</h2>
+        <Button variant="contained" onClick={() => setCreateOpen(true)}>
+          + New Manuscript
+        </Button>
+        <CreateManuscriptDialog
+          title="Create Manuscript"
+          open={createOpen}
+          setOpen={setCreateOpen}
+          inputOne={newTitle}
+          setInputOne={setNewTitle}
+          inputTwo={newBody}
+          setInputTwo={setNewBody}
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          onConfirm={() => handleSubmit()}
+        ></CreateManuscriptDialog>
 
-      <h2>Start Writing!</h2>
-      <Button variant="contained" onClick={() => setCreateOpen(true)}>
-        + New Manuscript
-      </Button>
-      <CreateManuscriptDialog
-        title="Create Manuscript"
-        open={createOpen}
-        setOpen={setCreateOpen}
-        inputOne={newTitle}
-        setInputOne={setNewTitle}
-        inputTwo={newBody}
-        setInputTwo={setNewBody}
-        isChecked={isChecked}
-        setIsChecked={setIsChecked}
-        onConfirm={() => handleSubmit()}
-      ></CreateManuscriptDialog>
-
-      <br></br>
-      <br></br>
-      <SearchForm onSearch={handleSearch} />
-      <br></br>
+        <br></br>
+        <br></br>
+        <SearchForm onSearch={handleSearch} />
+        <br></br>
       </div>
 
       {/* List of Manuscripts Created by User */}

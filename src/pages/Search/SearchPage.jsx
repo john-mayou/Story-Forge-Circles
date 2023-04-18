@@ -4,6 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import CircleTableView from "../Circles/CircleTableView";
 import TableManuscriptView from "../../components/TableManuscriptView";
 import SearchForm from "./SearchForm";
+import Header from "../../layout/Header/Header";
 
 function SearchPage() {
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ function SearchPage() {
     if (!hasSearchResults) {
       return <h2>No results found</h2>;
     }
-    // If the current type represents a manuscript list, display TableManuscriptView component 
+    // If the current type represents a manuscript list, display TableManuscriptView component
     if (isManuscriptList) {
       return <TableManuscriptView manuscriptlist={filteredCircles} />;
     }
@@ -122,7 +123,7 @@ function SearchPage() {
 
   return (
     <main className="content-main">
-      <h1>Search {listType()}</h1>
+      <Header title={`Search ${listType()}`} />
       <SearchForm onSearch={handleSearch} />
       <h2>Search Results for "{searchTerm}"</h2>
       {renderSearchResults()}
@@ -135,6 +136,3 @@ export default SearchPage;
 // The above code updates the search term state when a search is performed, determines if there are any search results,
 // and renders the search results based on the type of list being displayed. It also renders the SearchPage component
 // with the appropriate header, search form, and search results view.
-
-
-

@@ -40,35 +40,34 @@ import RegisterPage from "../../pages/Login/Register/RegisterPage/RegisterPage";
 import "./App.css";
 
 //MUI Theme
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
- const themeOptions = {
-    palette: {
-        mode: 'light',
-        primary: {
-          main: '#ffc15e',
-          light: '#ffc15e',
-          dark: '#ffda9a',
-        },
-        secondary: {
-          main: '#ffffff',
-          dark: '#fffaf2',
-          contrastText: '#000000',
-          light: '#fffbf2',
-        },
-        background: {
-          default: '#fcf5f0',
-          paper: '#ffffff',
-        },
-      },
-    shape: {
-        borderRadius: 0,
-      }, 
-  };
+const themeOptions = {
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#ffc15e",
+      light: "#ffc15e",
+      dark: "#ffda9a",
+    },
+    secondary: {
+      main: "#ffffff",
+      dark: "#fffaf2",
+      contrastText: "#000000",
+      light: "#fffbf2",
+    },
+    background: {
+      default: "#fcf5f0",
+      paper: "#ffffff",
+    },
+  },
+  shape: {
+    borderRadius: 0,
+  },
+};
 
-  const theme = createTheme(themeOptions);
-
+const theme = createTheme(themeOptions);
 
 function App() {
   const dispatch = useDispatch();
@@ -81,104 +80,92 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-    <Router>
-      <div>
-        {user.id && <Sidebar />}
-        {user.id && <Header />}
-        <Switch>
-          <Redirect exact from="/" to="/reading-list" />
+      <Router>
+        <div>
+          {user.id && <Sidebar />}
+          <Switch>
+            <Redirect exact from="/" to="/reading-list" />
 
-          <ProtectedRoute exact path="/reading-list">
-            <ReadingListPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/reading-list">
+              <ReadingListPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/manuscript-read/:id">
-            <ReadManuscriptPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/manuscript-read/:id">
+              <ReadManuscriptPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/writers-desk">
-            <WritersDeskPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/writers-desk">
+              <WritersDeskPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/manuscript-write/:id">
-            <WriteManuscriptPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/manuscript-write/:id">
+              <WriteManuscriptPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/circles">
-            <MyCirclesPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/circles">
+              <MyCirclesPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/circles/:id/members">
-            <MembersPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/circles/:id/members">
+              <MembersPage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/message-board/:circle_id/:circleName">
-            <MessageBoard />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/message-board/:circle_id/:circleName">
+              <MessageBoard />
+            </ProtectedRoute>
 
-          {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
-          <ProtectedRoute exact path="/notification-actions">
-            <NotificationActionsPage />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/circles-browser">
+              <BrowserCirclePage />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/message-board-form">
-            <MessageBoardForm />
-          </ProtectedRoute>
+            <ProtectedRoute exact path="/search/:content/:type">
+              <SearchPage />
+            </ProtectedRoute>
 
-          {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
-          <ProtectedRoute exact path="/notification-actions">
-            <NotificationActionsPage />
-          </ProtectedRoute>
+            <ProtectedRoute
+              exact
+              path="/circle-dashboard/:circle_id/:circleName"
+            >
+              <CircleDashboard />
+            </ProtectedRoute>
 
-          <ProtectedRoute exact path="/circles-browser">
-            <BrowserCirclePage />
-          </ProtectedRoute>
+            <Route exact path="/login">
+              {user.id ? (
+                // If the user is already logged in
+                <Redirect to="/reading-list" />
+              ) : (
+                // Otherwise, show the login page
+                <LoginPage />
+              )}
+            </Route>
 
-          <ProtectedRoute exact path="/search/:content/:type">
-            <SearchPage />
-          </ProtectedRoute>
+            <Route exact path="/login">
+              {user.id ? (
+                // If the user is already logged in
+                <Redirect to="/reading-list" />
+              ) : (
+                // Otherwise, show the login page
+                <LoginPage />
+              )}
+            </Route>
 
-          <ProtectedRoute exact path="/circle-dashboard/:circle_id/:circleName">
-            <CircleDashboard />
-          </ProtectedRoute>
+            <Route exact path="/registration">
+              {user.id ? (
+                // If the user is already logged in
+                <Redirect to="/reading-list" />
+              ) : (
+                // Otherwise, show the registration page
+                <RegisterPage />
+              )}
+            </Route>
 
-          <Route exact path="/login">
-            {user.id ? (
-              // If the user is already logged in
-              <Redirect to="/reading-list" />
-            ) : (
-              // Otherwise, show the login page
-              <LoginPage />
-            )}
-          </Route>
-
-          <Route exact path="/login">
-            {user.id ? (
-              // If the user is already logged in
-              <Redirect to="/reading-list" />
-            ) : (
-              // Otherwise, show the login page
-              <LoginPage />
-            )}
-          </Route>
-
-          <Route exact path="/registration">
-            {user.id ? (
-              // If the user is already logged in
-              <Redirect to="/reading-list" />
-            ) : (
-              // Otherwise, show the registration page
-              <RegisterPage />
-            )}
-          </Route>
-
-          {/* If none of the other routes matched, we will show a 404. */}
-          <Route>
-            <h1>404</h1>
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+            {/* If none of the other routes matched, we will show a 404. */}
+            <Route>
+              <h1>404</h1>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </ThemeProvider>
   );
 }
