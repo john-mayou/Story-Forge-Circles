@@ -2,7 +2,14 @@
 PLEASE DO NOT TOUCH!!!
 -------------------------------------------------------------------------------- */
 
-html,
+* {
+    border: black solid 1px;
+}
+
+html {
+    background-color: #FCF5F0;
+}
+
 body,
 #react-root {
     height: 100%;

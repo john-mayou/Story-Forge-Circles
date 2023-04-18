@@ -107,7 +107,7 @@ function WritersDeskPage() {
       </form> */}
 
       <h2>Start Writing!</h2>
-      <Button variant="outlined" onClick={() => setCreateOpen(true)}>
+      <Button variant="contained" onClick={() => setCreateOpen(true)}>
         + New Manuscript
       </Button>
       <CreateManuscriptDialog
@@ -132,11 +132,11 @@ function WritersDeskPage() {
             <br></br>
             <ManuscriptListItem manuscript={manuscript} />
 
-            <button onClick={() => handleEdit(manuscript)}>
+            <Button variant="contained" color="primary" onClick={() => handleEdit(manuscript)}>
               Edit
-            </button>
+            </Button>
 
-            <Button variant="outlined" onClick={() => setDeleteOpen(true)}>
+            <Button variant="contained" color="secondary" onClick={() => setDeleteOpen(true)}>
               Delete
             </Button>
             <ConfirmDialog

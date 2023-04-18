@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { Button } from "@mui/material";
 
 export default function CircleTableView({ circlelist, isJoined = false }) {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                 )}
               </td>
               <td onClick={() => navigateToCircleDashboard(circle)}>
-                <button>Go</button>
+                <Button variant="contained" color="primary">Go</Button>
               </td>
             </tr>
           );

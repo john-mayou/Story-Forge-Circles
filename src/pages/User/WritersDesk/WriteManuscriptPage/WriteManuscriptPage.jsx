@@ -81,12 +81,12 @@ function WriteManuscriptPage() {
           <br></br>
 
         
-        <button className="submit-button" type="submit" >Submit</button>
+        <Button variant="contained" color="primary" className="submit-button" type="submit" >Submit</Button>
         </form>
 
-        <button onClick={history.goBack}>Back</button>
+        <Button variant="contained" color="secondary" onClick={history.goBack}>Back</Button>
         <h4>Comments</h4>
-        <button>+Comment</button>
+        <Button variant="contained" color="primary">+Comment</Button>
       </div>
     </main>
   );

@@ -62,12 +62,14 @@ function MyCirclesPage() {
       <h1>My Circles</h1>
 
       <h2>Joined Circles</h2>
-      <button
+      <Button
+        variant="contained"
+        color="secondary"
         className="browse-joinable-btn"
         onClick={() => history.push(`/circles-browser`)}
       >
         Browser Circle
-      </button>
+      </Button>
       <SearchForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
@@ -80,7 +82,11 @@ function MyCirclesPage() {
         New Circle
       </button> */}
 
-      <Button variant="outlined" onClick={() => setShowModal(true)}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setShowModal(true)}
+      >
         + New Circle
       </Button>
 
