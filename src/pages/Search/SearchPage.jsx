@@ -12,63 +12,73 @@ function SearchPage() {
   const { id } = useSelector((store) => store.user);
   const contentList = useSelector((store) => store[content][type]);
 
-    // Initialize searchTerm state with value from URL search parameter
-  const [searchTerm, setSearchTerm] = useState(() => new URLSearchParams(location.search).get("term") || "");
+  // Initialize searchTerm state with value from URL search parameter
+  const [searchTerm, setSearchTerm] = useState(
+    () => new URLSearchParams(location.search).get("term") || ""
+  );
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-    // Define an array of types that represent a manuscript list
-  const manuscriptListTypes = ["circleManuscriptsList", "publicManuscriptList", "writersDeskManuscriptList"];
+  // Define an array of types that represent a manuscript list
+  const manuscriptListTypes = [
+    "circleManuscriptsList",
+    "publicManuscriptList",
+    "writersDeskManuscriptList",
+  ];
 
-    // Determine if the current type represents a manuscript list
+  // Determine if the current type represents a manuscript list
   const isManuscriptList = manuscriptListTypes.includes(type);
 
-    // Get the filtered list based on the current search term
+  // Get the filtered list based on the current search term
   const filteredCircles = getFilteredCircles();
 
-    // Define a function to filter the list based on the current search term
+  // Define a function to filter the list based on the current search term
   function getFilteredCircles() {
     const searchItem = isManuscriptList ? "title" : "name";
-    return contentList.filter(item =>
-      searchTerm === "" ||
-      item[searchItem]?.toLowerCase().includes(searchTerm.toLowerCase())
+    return contentList.filter(
+      (item) =>
+        searchTerm === "" ||
+        item[searchItem]?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
 
-  // Fetch the data for the current type if it hasn't already been fetched
-  useEffect(() => {
+  // Define an array of objects with configuration for each data fetch type
+  const fetchDataConfig = {
+    myJoinedCircleList: {
+      getDataType: "FETCH_MY_JOINED_CIRCLES",
+      payload: (id) => id,
+    },
+    allPublicCirclesList: {
+      getDataType: "FETCH_ALL_PUBLIC_CIRCLES",
+    },
+    circleManuscriptsList: {
+      getDataType: "FETCH_CIRCLE_MANUSCRIPTS_LIST",
+    },
+    publicManuscriptList: {
+      getDataType: "FETCH_PUBLIC_MANUSCRIPT_LIST",
+    },
+    writersDeskManuscriptList: {
+      getDataType: "FETCH_WRITERS_DESK_LIST",
+    },
+  };
+
+  // Fetch data using Redux if data is not fetched yet
+  const fetchData = async () => {
     if (contentList.length === 0 && !isDataFetched) {
-      // Define an array of objects with configuration for each data fetch type
-      const fetchDataConfig = [
-        {
-          type: "myJoinedCircleList",
-          getDataType: "FETCH_MY_JOINED_CIRCLES",
-          payload: id
-        },
-        {
-          type: "allPublicCirclesList",
-          getDataType: "FETCH_ALL_PUBLIC_CIRCLES"
-        },
-        {
-          type: "circleManuscriptsList",
-          getDataType: "FETCH_CIRCLE_MANUSCRIPTS_LIST"
-        },
-        {
-          type: "publicManuscriptList",
-          getDataType: "FETCH_PUBLIC_MANUSCRIPT_LIST"
-        },
-        {
-          type: "writersDeskManuscriptList",
-          getDataType: "FETCH_WRITERS_DESK_LIST"
-        }
-      ];
+      const fetchConfig = fetchDataConfig[type];
 
-      // Find the configuration object that matches the current type
-      const { getDataType, payload } = fetchDataConfig.find(item => item.type === type);
+      const payload =
+        fetchConfig.payload && typeof fetchConfig.payload === "function"
+          ? fetchConfig.payload(id)
+          : fetchConfig.payload;
 
-      // Dispatch an action to fetch the data
-      dispatch({ type: getDataType, payload });
+      dispatch({ type: fetchConfig.getDataType, payload });
       setIsDataFetched(true);
     }
+  };
+
+  // Call the fetchData function when the component mounts and some dependencies change
+  useEffect(() => {
+    fetchData();
   }, [contentList.length, dispatch, id, isDataFetched, type]);
 
   // Determine the type of the list based on the current type
@@ -78,33 +88,53 @@ function SearchPage() {
       allPublicCirclesList: "Public Circle",
       circleManuscriptsList: "Manuscripts",
       publicManuscriptList: "Public Manuscripts",
-      writersDeskManuscriptList: "Writers Desk Manuscripts"
+      writersDeskManuscriptList: "Writers Desk Manuscripts",
     };
     return listTypeConfig[type] || "";
   };
 
+  // Define a function to update the search term state when a search is performed
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
 
+  // Determine if there are any search results
   const hasSearchResults = filteredCircles.length > 0;
+
+  // Define a function to render search results based on the type of list being displayed
+  function renderSearchResults() {
+    if (!hasSearchResults) {
+      return <h2>No results found</h2>;
+    }
+    // If the current type represents a manuscript list, display TableManuscriptView component 
+    if (isManuscriptList) {
+      return <TableManuscriptView manuscriptlist={filteredCircles} />;
+    }
+
+    // If the current type represents a circle list, display CircleTableView component
+    return (
+      <CircleTableView
+        circlelist={filteredCircles}
+        isJoined={type === "allPublicCirclesList"}
+      />
+    );
+  }
 
   return (
     <main className="content-main">
       <h1>Search {listType()}</h1>
       <SearchForm onSearch={handleSearch} />
       <h2>Search Results for "{searchTerm}"</h2>
-      {!hasSearchResults && <h2>No results found</h2>}
-      {hasSearchResults && isManuscriptList ? (
-        <TableManuscriptView manuscriptlist={filteredCircles} />
-      ) : (
-        <CircleTableView
-          circlelist={filteredCircles}
-          isJoined={type === "allPublicCirclesList"}
-        />
-      )}
+      {renderSearchResults()}
     </main>
   );
 }
 
 export default SearchPage;
+
+// The above code updates the search term state when a search is performed, determines if there are any search results,
+// and renders the search results based on the type of list being displayed. It also renders the SearchPage component
+// with the appropriate header, search form, and search results view.
+
+
+

@@ -9,7 +9,7 @@ import { faMagnifyingGlass, faPlus, faChevronRight, faChevronDown, faReply } fro
 import { Button } from "@mui/material";
 
 function MessageBoard() {
-  const { circle_id } = useParams();
+  const { circle_id, circleName } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const messageList = useSelector(store => store.messages);
@@ -29,7 +29,7 @@ function MessageBoard() {
   };
 
   const goToDashboard = () => {
-    history.push(`/circle-dashboard/${circle_id}`);
+    history.push(`/circle-dashboard/${circle_id}/${circleName}`);
   };
 
   return (

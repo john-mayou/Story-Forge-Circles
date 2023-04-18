@@ -85,7 +85,7 @@ function MembersPage() {
           </>
         ) : (
           <>
-            <button
+            <Button variant="contained" color="primary"
               onClick={async () => {
                 if (!newMember) {
                   return;
@@ -111,7 +111,7 @@ function MembersPage() {
               }}
             >
               Invite Member
-            </button>
+            </Button>
             <input
               type="text"
               value={newMember}
@@ -126,7 +126,7 @@ function MembersPage() {
           // and there are no members in the circle
           circleMembers.length === 0 && <button>Close Circle</button>
         ) : (
-          <button>Leave Circle</button>
+          <Button color="error">Leave Circle</Button>
         )}
       </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
@@ -11,6 +11,11 @@ function MyCirclesPage() {
   const { myJoinedCircleList, myCreatedCircleList } = useSelector(
     (store) => store.circles
   );
+
+// Uses useMemo to filter circles in myJoinedCircleList based on owner_id
+  const myJoinedCircle = useMemo(() => {
+    return myJoinedCircleList.filter(circle => circle.owner_id !== id);
+  }, [myJoinedCircleList, id]);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -90,7 +95,7 @@ function MyCirclesPage() {
       >
         + New Circle
       </Button>
-
+ 
       <CreateCircleDialog
         title="Create Circle"
         open={showModal}
@@ -99,7 +104,7 @@ function MyCirclesPage() {
         setInputOne={setCircleName}
         inputTwo={circleDescription}
         setInputTwo={setCircleDescription}
-        onConfirm={() => handleCreateCircle()}
+        onConfirm={handleCreateCircle}
       />
       <br></br>
       <br></br>

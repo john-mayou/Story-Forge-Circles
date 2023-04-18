@@ -20,8 +20,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
     history.push(`/manuscript-read/${manuscriptId}`);
   };
 
-  const handleUnshareButtonClick = (event, manuscriptId) => {
-    // event.stopPropagation();
+  const handleUnshareButtonClick = (manuscriptId) => {
     const payload = {
       circle_id,
       manuscriptId,
@@ -31,8 +30,6 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
       payload,
     });
   };
-
-  console.log("manuscriptlist", manuscriptlist);
 
   return (
     <table className="circle-Table">
@@ -47,52 +44,57 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
           <th>
             <h3>Preview</h3>
           </th>
-          <th>
-          </th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {manuscriptlist?.map((manuscript) => {
-          let preview = manuscript.body;
-          if (manuscript.body.length > 125) {
-            preview = manuscript.body.substring(0, 125);
-            preview = preview + "...";
-          }
-          
-          return (
-            <tr className="manuscript-table-row-style" key={manuscript?.id}>
-              <td
-                onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}
-              >
-                {manuscript?.author || manuscript?.username}
+        {manuscriptlist?.map((manuscript) => (
+          <tr className='circle-table-row-style' key={manuscript?.id}>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
+              {manuscript?.author ?? manuscript?.username}
+            </td>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
+              {manuscript?.title}
+            </td>
+            <td
+              onClick={() =>
+                handleManuscriptClick(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
+              }
+            >
+              {manuscript?.body}
+            </td>
+            {manuscript?.author && (
+              <td>
+                <Button onClick={() => setDeleteOpen(true)}>Unshare</Button>
+                <ConfirmDialog
+                  title="Unshare Manuscript?"
+                  children="Manuscript will be removed from circle dashboard."
+                  open={deleteOpen}
+                  setOpen={setDeleteOpen}
+                  onConfirm={(e) =>
+                    handleUnshareButtonClick(
+                      manuscript?.manuscript_id ?? manuscript?.id
+                    )
+                  }
+                ></ConfirmDialog>
               </td>
-              <td
-                onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}
-              >
-                {manuscript?.title}
-              </td>
-              <td
-                onClick={() => handleManuscriptClick(manuscript?.manuscript_id)}
-              >
-                {preview}
-              </td>
-              {manuscript?.author && (
-                <td>
-                  <Button onClick={() => setDeleteOpen(true)}>Unshare</Button>
-                  <ConfirmDialog
-                    title="Unshare Manuscript?"
-                    children="Manuscript will be removed from circle dashboard."
-                    open={deleteOpen}
-                    setOpen={setDeleteOpen}
-                    onConfirm={(e) =>
-                      handleUnshareButtonClick(e, manuscript?.manuscript_id)
-                    }
-                  ></ConfirmDialog>
-                </td>
-              )}
-            </tr>
-          );
-        })}
+            )}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
