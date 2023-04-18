@@ -37,7 +37,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
   return (
     <table className="circle-Table">
       <thead>
-        <tr className="manuscript-table-row-style">
+        <tr className="table-header">
           <th>
             <h3>Author</h3>
           </th>
@@ -46,6 +46,8 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
           </th>
           <th>
             <h3>Preview</h3>
+          </th>
+          <th>
           </th>
         </tr>
       </thead>
