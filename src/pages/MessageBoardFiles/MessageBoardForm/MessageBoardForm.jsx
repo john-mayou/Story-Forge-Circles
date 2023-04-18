@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // font-awesome
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReply } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faReply } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "@mui/material";
 
@@ -17,7 +17,7 @@ function MessageBoardForm({ parent_id, setReplyId }) {
   const [message, setMessage] = useState({
     circle_id,
     parent_id,
-    message: '',
+    message: "",
   });
 
   const handleSubmitComment = (e) => {
@@ -32,25 +32,33 @@ function MessageBoardForm({ parent_id, setReplyId }) {
   // clearing text input field
   const clearInput = () => {
     // spreading message object to preserve ids, clearing message input value
-    setMessage({ ...message, message: '' });
+    setMessage({ ...message, message: "" });
   };
 
   return (
     <>
-      <div className="messages-container" >
+      <div className="messages-container">
+        <form onSubmit={handleSubmitComment}>
           <input
             type="text"
             value={message.message}
-            onChange={(e) => setMessage({ ...message, message: e.target.value })}
+            onChange={(e) =>
+              setMessage({ ...message, message: e.target.value })
+            }
             placeholder={parent_id ? "Reply" : "New Thread"}
             style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
           />
-          <Button type="submit"><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</Button>
+          <Button type="submit">
+            <FontAwesomeIcon icon={faReply} />
+            {parent_id ? " Reply" : " Post New Thread"}
+          </Button>
           {/* Conditionally rendering cancel button if parent id exists */}
-          {parent_id ?
-            <Button onClick={() => (setReplyId(-1))}> Cancel</Button>
-            : ''
-          }
+          {parent_id ? (
+            <Button onClick={() => setReplyId(-1)}> Cancel</Button>
+          ) : (
+            ""
+          )}
+        </form>
       </div>
     </>
   );

@@ -56,7 +56,7 @@ function MessageBoard() {
               <li key={message.id}
                 style={message.parent_id ?
                   { // Adding indentation based on path length
-                    marginLeft: `${8 * (message?.path?.includes('.') ?
+                    marginLeft: `${4 * (message?.path?.includes('.') ?
                       message?.path?.split('.').length : 1)}rem`
                   }
                   : {}
@@ -87,8 +87,8 @@ function MessageBoard() {
                   <span><strong>{`@${message.username}  `}</strong>{dayjs(message.created_at).format('MMM D h:mm A')}</span>
                   {message.message}
                   {/* TEMPORARY DIVIDER OPTIONS */}
-                  <div style={{ width: "100%", height: "1px", backgroundColor: "black", maxWidth: "90%"}}></div>
-                  {/* <Divider variant="inset" component="li" /> */}
+                  {/* <div style={{ width: "100%", height: "1px", backgroundColor: "black", maxWidth: "90%"}}></div> */}
+                  <Divider variant="inset" component="li" />
                   {/* passing message.id as parent_id prop to form component */}
                   {replyId == message.id ? <MessageBoardForm parent_id={message.id} setReplyId={setReplyId} />
                    : <Button onClick={() => (setReplyId(message.id))}><FontAwesomeIcon icon={faReply} /> Reply</Button> 

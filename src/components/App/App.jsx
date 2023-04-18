@@ -28,10 +28,9 @@ import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MembersPage from "../../pages/Circles/MembersPage/MembersPage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
-import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
 import SearchPage from "../../pages/Search/SearchPage";
 import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
-
+import ManuscriptCommentThread from "../../pages/ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
 import RegisterPage from "../../pages/Login/Register/RegisterPage/RegisterPage";
@@ -103,6 +102,11 @@ function App() {
           <ProtectedRoute exact path="/manuscript-write/:id">
             <WriteManuscriptPage />
           </ProtectedRoute>
+            
+          {/* Keep until comment thread functionality is complete */}
+          <ProtectedRoute exact path="/manuscript-comment-thread">
+            <ManuscriptCommentThread/>
+          </ProtectedRoute> 
 
           <ProtectedRoute exact path="/circles">
             <MyCirclesPage />
@@ -114,15 +118,11 @@ function App() {
 
           <ProtectedRoute exact path="/message-board/:circle_id/:circleName">
             <MessageBoard />
-          </ProtectedRoute>
+          </ProtectedRoute> 
 
           {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}
           <ProtectedRoute exact path="/notification-actions">
             <NotificationActionsPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute exact path="/message-board-form">
-            <MessageBoardForm />
           </ProtectedRoute>
 
           {/*KEEP THIS UNTIL NOTIFICATIONS ARE IMPLEMENTED FULLY*/}

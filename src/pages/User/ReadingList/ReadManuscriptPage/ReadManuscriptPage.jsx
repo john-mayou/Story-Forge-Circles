@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -38,7 +39,7 @@ function ReadManuscriptPage() {
         <Button variant="contained" color="primary">
           <FontAwesomeIcon icon={faPlus} size="sm" /> Comment
         </Button>
-        <h4>Comments placeholder...</h4>
+        {/* <ManuscriptCommentThread /> */}
       </div>
     </main>
   );
