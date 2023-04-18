@@ -11,11 +11,9 @@ import {
   faChevronDown,
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Header from "../../../layout/Header/Header";
 import dayjs from "dayjs";
-
-import { Button } from "@mui/material";
 
 function MessageBoard() {
   const { circle_id, circleName } = useParams();

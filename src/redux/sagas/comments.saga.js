@@ -16,7 +16,7 @@ function* fetchBaseComments() {
 // * Get children comments by parent_id, fires on `FETCH_CHILDREN`
 function* fetchChildrenComments(action) {
   try {
-    // ask for children messages
+    // ask for children comments
     const response = yield axios.get(`/api/comments/${action.payload}`)
     console.log("Response.data", response.data);
     // once received, send to commentThread Reducer
@@ -29,7 +29,7 @@ function* fetchChildrenComments(action) {
 // * Select user reducer to access username
 const userSelector = (state) => state.user;
 
-// * Post a message: fires on `POST_COMMENT`
+// * Post a comment: fires on `POST_COMMENT`
 function* postComment(action) {
   try {
     const response = yield axios.post(`/api/comments`, action.payload);
@@ -54,7 +54,7 @@ function* postComment(action) {
 
 function* commentsSaga() {
   // GET
-  yield takeEvery("FETCH_COMMENTS", fetchBaseComments);
+  yield takeEvery("FETCH_BASE_COMMENTS", fetchBaseComments);
   yield takeLatest("FETCH_CHILDREN", fetchChildrenComments);
   // POST
   yield takeEvery("POST_COMMENT", postComment);

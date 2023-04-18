@@ -7,14 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 import "../../ManuscriptStyling.css";
-
 import Header from "../../../../layout/Header/Header";
 
-function ReadManuscriptPage({ manuscript_id }) {
+function ReadManuscriptPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
-  const commentList = useSelector((store) => store.comments);
   const manuscript = useSelector(
     (store) => store.manuscripts.manuscriptDetails
   );
@@ -24,7 +22,12 @@ function ReadManuscriptPage({ manuscript_id }) {
       type: "FETCH_MANUSCRIPT",
       payload: params.id,
     });
+    // fetch all base comments on page load
+    dispatch({
+      type: "FETCH_BASE_COMMENTS",
+    });
   }, []);
+
 
   return (
     <main className="content-main">
@@ -39,7 +42,7 @@ function ReadManuscriptPage({ manuscript_id }) {
           <h3>By: {manuscript.username}</h3>
           <p>{manuscript.body}</p>
         </div>
-        <ManuscriptCommentThread />
+        <ManuscriptCommentThread manuscript_id={params.id}/>
       </div>
     </main>
   );

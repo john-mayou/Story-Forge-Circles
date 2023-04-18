@@ -12,19 +12,12 @@ import {
 import { Button, Divider } from "@mui/material";
 import dayjs from "dayjs";
 
-function ManuscriptCommentThread() {
+function ManuscriptCommentThread({ manuscript_id }) {
   const dispatch = useDispatch();
   const commentList = useSelector((store) => store.comments);
   const [addThread, setAddThread] = useState(false);
   const [expand, setExpand] = useState([]);
   const [replyId, setReplyId] = useState(-1);
-
-  // fetch all base comments on page load
-  useEffect(() => {
-    dispatch({
-      type: "FETCH_BASE_COMMENTS",
-    });
-  }, []);
 
   const handleAddThreadClick = () => {
     setAddThread(!addThread);
