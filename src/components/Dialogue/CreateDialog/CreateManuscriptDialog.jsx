@@ -63,7 +63,7 @@ const CreateManuscriptDialog = (props) => {
           onChange={(e) => {
             setInputOne(e.target.value);
           }}
-          fullWidth
+          fullwidth="true"
         />
         <TextareaAutosize
           minRows={20}
@@ -78,7 +78,7 @@ const CreateManuscriptDialog = (props) => {
           onChange={(e) => {
             setInputTwo(e.target.value);
           }}
-          fullWidth
+          fullwidth="true"
         />
         <FormControlLabel
           control={
