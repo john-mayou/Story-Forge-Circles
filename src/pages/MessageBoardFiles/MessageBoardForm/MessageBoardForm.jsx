@@ -35,8 +35,7 @@ function MessageBoardForm({ parent_id, setReplyId }) {
 
   return (
     <>
-      <div className="messages-container">
-        <form onSubmit={handleSubmitComment}>
+      <div className="messages-container" >
           <input
             type="text"
             value={message.message}
@@ -44,13 +43,12 @@ function MessageBoardForm({ parent_id, setReplyId }) {
             placeholder={parent_id ? "Reply" : "New Thread"}
             style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
           />
-          <button type="submit"><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</button>
+        <span onClick={handleSubmitComment}><FontAwesomeIcon icon={faReply} />{parent_id ? " Reply" : " Post New Thread"}</span>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ?
-            <button onClick={() => (setReplyId(-1))}> Cancel</button>
+            <span onClick={() => (setReplyId(-1))}> Cancel</span>
             : ''
           }
-        </form>
       </div>
     </>
   );

@@ -19,7 +19,7 @@ function ReadManuscriptPage() {
 }, []);
 
   return (
-    <main className="content-main">
+    <main className="content-main" style={{backgroundColor: '#FCF5F0'}}>
       <button onClick={history.goBack}><FontAwesomeIcon icon={faArrowLeft} /> BACK</button>
       <div align="center">
         
