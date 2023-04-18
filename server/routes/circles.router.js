@@ -168,10 +168,8 @@ router.get("/:id/members", (req, res) => {
     });
 });
 
-router.post("/:id/members", (req, res) => {});
-
 router.delete(
-  "/:id/members",
+  "/:id/members/remove",
   rejectUnauthenticated,
   isCircleOwner,
   async (req, res) => {
@@ -193,6 +191,25 @@ router.delete(
     }
   }
 );
+
+router.delete("/:id/members/leave", rejectUnauthenticated, async (req, res) => {
+  const circle_id = req.params.id;
+
+  try {
+    const memberDeletionQuery = `
+        DELETE FROM "circle_user" AS cu
+        WHERE cu.circle_id = $1 AND cu.user_id = $2;
+      `;
+
+    await pool.query(memberDeletionQuery, [circle_id, req.user.id]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.log(`Error deleting member from a circle`, error);
+    res.sendStatus(500);
+  }
+});
+
 /**
  * GET circle Manuscripts list route
  */
@@ -279,6 +296,14 @@ router.delete("/manuscript/:id", async (req, res) => {
     console.error("Error deleting shared circle manuscript", error);
     res.sendStatus(500);
   }
+});
+
+// Todo
+router.delete("/close/:id", isCircleOwner, (req, res) => {
+  const { id: circle_id } = req.params;
+
+  try {
+  } catch (error) {}
 });
 
 module.exports = router;
