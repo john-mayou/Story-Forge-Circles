@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import ShareManuscriptModal from "../ShareManuscriptModal";
 import { useHistory } from "react-router-dom";
 import TableManuscriptView from "../../../components/TableManuscriptView";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
@@ -11,7 +10,7 @@ import { Button } from "@mui/material";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
-  const { circle_id } = useParams();
+  const { circle_id, circleName } = useParams();
   const { id: userId } = useSelector((store) => store.user);
   const history = useHistory();
   const { circleManuscriptsList, userManuscriptNotInCircle } = useSelector(
@@ -27,7 +26,7 @@ export default function CircleDashboard() {
     const payload = {
       userId,
       circle_id,
-    }
+    };
     dispatch({
       type: "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",
       payload,
@@ -54,13 +53,13 @@ export default function CircleDashboard() {
   };
 
   const goToMessageBoard = () => {
-    history.push(`/message-board/${circle_id}`)
-  }
-
+    history.push(`/message-board/${circle_id}/${circleName}`);
+  };
 
   return (
     <main className="content-main">
       <h1>Circle Dashboard</h1>
+      <h2>{circleName.charAt(0).toUpperCase() + circleName.slice(1)}</h2>
       <h2>Circle Manuscripts</h2>
       <SearchForm onSearch={handleSearch} />
       <h3>SHARED MANUSCRIPTS LIST</h3>
@@ -73,30 +72,21 @@ export default function CircleDashboard() {
         Share Manuscript
       </Button>
 
-      <button>Members</button>
+      <button onClick={() => history.push(`/circles/${circle_id}/members`)}>
+        Members
+      </button>
 
       <button onClick={goToMessageBoard}>Message Board</button>
 
       <ShareManuscriptDialog
         manuscripts={userManuscriptNotInCircle}
-        open = {showShareModal}
+        open={showShareModal}
         setOpen={setShowShareModal}
         circleId={circle_id}
         onShare={(selectedManuscriptsId) =>
           handleShareManuscript(selectedManuscriptsId)
         }
       />
-
-      {/* {showShareModal && (
-        <ShareManuscriptModal
-          manuscripts={userManuscriptNotInCircle}
-          circleId={circle_id}
-          closeModal={() => setShowShareModal(false)}
-          onShare={(selectedManuscriptsId) =>
-            handleShareManuscript(selectedManuscriptsId)
-          }
-        />
-      )} */}
     </main>
   );
 }

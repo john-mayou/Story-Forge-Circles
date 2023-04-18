@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTableView from "../CircleTableView";
@@ -11,6 +11,11 @@ function MyCirclesPage() {
   const { myJoinedCircleList, myCreatedCircleList } = useSelector(
     (store) => store.circles
   );
+
+// Uses useMemo to filter circles in myJoinedCircleList based on owner_id
+  const myJoinedCircle = useMemo(() => {
+    return myJoinedCircleList.filter(circle => circle.owner_id !== id);
+  }, [myJoinedCircleList, id]);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -71,14 +76,7 @@ function MyCirclesPage() {
       <SearchForm onSearch={handleSearch} />
       <p>JOINED CIRCLES BELOW</p>
 
-      <CircleTableView circlelist={myJoinedCircleList} />
-
-      {/* <button
-        className="create-btn-new-circle"
-        onClick={() => setShowModal(true)}
-      >
-        New Circle
-      </button> */}
+      <CircleTableView circlelist={myJoinedCircle} />
 
       <Button variant="outlined" onClick={() => setShowModal(true)}>
         + New Circle
@@ -87,31 +85,6 @@ function MyCirclesPage() {
       <p>CIRCLES I OWN / MY CIRCLES</p>
 
       <CircleTableView circlelist={myCreatedCircleList} />
-      {/* 
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <h3>Create a new circle</h3>
-            <input
-              type="text"
-              id="circle-name"
-              value={circleName}
-              placeholder="Circle Name"
-              onChange={(e) => setCircleName(e.target.value)}
-            />
-            <input
-              id="circle-description"
-              value={circleDescription}
-              placeholder="Description"
-              onChange={(e) => setCircleDescription(e.target.value)}
-            />
-            <div className="modal-actions">
-              <button onClick={() => setShowModal(false)}>Cancel</button>
-              <button onClick={handleCreateCircle}>Create Circle</button>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       <CreateCircleDialog
         title="Create Circle"
@@ -121,7 +94,7 @@ function MyCirclesPage() {
         setInputOne={setCircleName}
         inputTwo={circleDescription}
         setInputTwo={setCircleDescription}
-        onConfirm={() => handleCreateCircle()}
+        onConfirm={handleCreateCircle}
       />
     </main>
   );
