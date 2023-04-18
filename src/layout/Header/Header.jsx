@@ -29,11 +29,9 @@ const style = {
   borderRadius: "5px",
 };
 
-function Header() {
+function Header({ title }) {
   const dispatch = useDispatch();
-
   const user = useSelector((store) => store.user);
-  const notifications = useSelector((store) => store.notifications);
 
   useEffect(() => {
     dispatch({ type: "FETCH_NOTIFICATIONS" });
@@ -43,10 +41,10 @@ function Header() {
     <header id="content-header">
       <div className="header-empty-div"></div>
       <div className="header-title-box">
-        <h1 className="header-title">Header Title</h1>
+        <h1 className="header-title">{title}</h1>
       </div>
       <div className="header-right-end-container">
-        <FontAwesomeIcon icon={faBell} className="header-notification-bell" />
+        <NestedModal />
         <div className="header-profile-container">
           <img
             className="header-avatar-image"
@@ -61,7 +59,8 @@ function Header() {
   );
 }
 
-function NestedModal({ notifications }) {
+function NestedModal() {
+  const notifications = useSelector((store) => store.notifications);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
 

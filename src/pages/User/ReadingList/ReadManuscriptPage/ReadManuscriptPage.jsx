@@ -8,10 +8,13 @@ import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 import "../../ManuscriptStyling.css";
 
-function ReadManuscriptPage() {
+import Header from "../../../../layout/Header/Header";
+
+function ReadManuscriptPage({ manuscript_id }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
+  const commentList = useSelector((store) => store.comments);
   const manuscript = useSelector(
     (store) => store.manuscripts.manuscriptDetails
   );
@@ -25,6 +28,7 @@ function ReadManuscriptPage() {
 
   return (
     <main className="content-main">
+      <Header title={`${manuscript.title} Manuscript`} />
       <Button variant="contained" color="secondary" onClick={history.goBack}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Button>
@@ -35,11 +39,7 @@ function ReadManuscriptPage() {
           <h3>By: {manuscript.username}</h3>
           <p>{manuscript.body}</p>
         </div>
-
-        <Button variant="contained" color="primary">
-          <FontAwesomeIcon icon={faPlus} size="sm" /> Comment
-        </Button>
-        {/* <ManuscriptCommentThread /> */}
+        <ManuscriptCommentThread />
       </div>
     </main>
   );

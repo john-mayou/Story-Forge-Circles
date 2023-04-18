@@ -4,7 +4,6 @@ import { useHistory, useParams } from "react-router-dom";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-
 import { Button } from "@mui/material";
 
 function MessageBoardForm({ parent_id, setReplyId }) {
