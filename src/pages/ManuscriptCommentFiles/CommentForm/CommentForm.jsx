@@ -6,50 +6,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 
-function MessageBoardForm({ parent_id, setReplyId }) {
-  const { circle_id } = useParams();
-  console.log("circle_id", circle_id);
+function CommentForm({ manuscript_id, parent_id, setReplyId }) {
   // getting user from store
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [message, setMessage] = useState({
-    circle_id,
+  const [comment, setComment] = useState({
+    manuscript_id,
     parent_id,
-    message: "",
+    comment: "",
   });
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
     dispatch({
-      type: "POST_MESSAGE",
-      payload: message,
+      type: "POST_COMMENT",
+      payload: comment,
     });
     clearInput();
   };
 
   // clearing text input field
   const clearInput = () => {
-    // spreading message object to preserve ids, clearing message input value
-    setMessage({ ...message, message: "" });
+    // spreading comment object to preserve ids, clearing comment input value
+    setComment({ ...comment, comment: "" });
   };
 
   return (
     <>
-      <div className="messages-container">
+      <div className="comments-container">
         <form onSubmit={handleSubmitComment}>
           <input
             type="text"
-            value={message.message}
+            value={comment.comment}
             onChange={(e) =>
-              setMessage({ ...message, message: e.target.value })
+              setComment({ ...comment, comment: e.target.value })
             }
-            placeholder={parent_id ? "Reply" : "New Thread"}
+            placeholder={parent_id ? "Reply" : "New Feedback"}
             style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
           />
           <Button type="submit">
             <FontAwesomeIcon icon={faReply} />
-            {parent_id ? " Reply" : " Post New Thread"}
+            {parent_id ? " Reply" : " Post New Feedback"}
           </Button>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ? (
@@ -63,4 +60,4 @@ function MessageBoardForm({ parent_id, setReplyId }) {
   );
 }
 
-export default MessageBoardForm;
+export default CommentForm;

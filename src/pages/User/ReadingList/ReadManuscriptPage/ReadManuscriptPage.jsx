@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 import "../../ManuscriptStyling.css";
-
 import Header from "../../../../layout/Header/Header";
 
 function ReadManuscriptPage() {
@@ -22,7 +22,12 @@ function ReadManuscriptPage() {
       type: "FETCH_MANUSCRIPT",
       payload: params.id,
     });
+    // fetch all base comments on page load
+    dispatch({
+      type: "FETCH_BASE_COMMENTS",
+    });
   }, []);
+
 
   return (
     <main className="content-main">
@@ -37,11 +42,7 @@ function ReadManuscriptPage() {
           <h3>By: {manuscript.username}</h3>
           <p>{manuscript.body}</p>
         </div>
-
-        <Button variant="contained" color="primary">
-          <FontAwesomeIcon icon={faPlus} size="sm" /> Comment
-        </Button>
-        <h4>Comments placeholder...</h4>
+        <ManuscriptCommentThread manuscript_id={params.id}/>
       </div>
     </main>
   );

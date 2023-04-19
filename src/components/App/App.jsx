@@ -28,10 +28,9 @@ import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MembersPage from "../../pages/Circles/MembersPage/MembersPage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
-import MessageBoardForm from "../../pages/MessageBoardFiles/MessageBoardForm/MessageBoardForm";
 import SearchPage from "../../pages/Search/SearchPage";
 import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
-
+import ManuscriptCommentThread from "../../pages/ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
 // Login Pages
 import LoginPage from "../../pages/Login/Login/LoginPage/LoginPage";
 import RegisterPage from "../../pages/Login/Register/RegisterPage/RegisterPage";
@@ -93,6 +92,11 @@ function App() {
             <ProtectedRoute exact path="/manuscript-read/:id">
               <ReadManuscriptPage />
             </ProtectedRoute>
+  
+          {/* Keep until comment thread functionality is complete */}
+          <ProtectedRoute exact path="/manuscript-comment-thread">
+            <ManuscriptCommentThread/>
+          </ProtectedRoute> 
 
             <ProtectedRoute exact path="/writers-desk">
               <WritersDeskPage />
