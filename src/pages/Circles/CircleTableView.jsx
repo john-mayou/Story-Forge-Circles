@@ -25,72 +25,74 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
   };
 
   return (
-    <table className="circle-Table">
-      <thead>
-        <tr className="table-header">
-          <th>
-            <h3>Name</h3>
-          </th>
-          <th>
-            <h3>Description</h3>
-          </th>
-          <th>
-            <h3>Join</h3>
-          </th>
-          <th>
-            <h3>Go</h3>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {circlelist?.map((circle, index) => {
-          return (
-            <tr className="circle-table-row-style" key={circle.id}>
-              <td>
-                <p>{circle.name}</p>
-              </td>
-              <td>
-                <p>{circle.description}</p>
-              </td>
-              <td>
-                {!owned_circles.includes(circle.id) &&
-                !joined_circles.includes(circle.id) ? (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() =>
-                      dispatch({
-                        type: "CREATE_NEW_NOTIFICATION",
-                        payload: {
-                          circle_id: circle.id,
-                          recipient_id: circle.owner_id,
-                          type: "request to join - leader action",
-                        },
-                      })
-                    }
-                  >
-                    Request to Join
+    <>
+      <table className="circle-Table">
+        <thead>
+          <tr className="table-header">
+            <th>
+              <h3>Name</h3>
+            </th>
+            <th>
+              <h3>Description</h3>
+            </th>
+            <th>
+              <h3>Join</h3>
+            </th>
+            <th>
+              <h3>Go</h3>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {circlelist?.map((circle, index) => {
+            return (
+              <tr className="circle-table-row-style" key={circle.id}>
+                <td>
+                  <p>{circle.name}</p>
+                </td>
+                <td>
+                  <p>{circle.description}</p>
+                </td>
+                <td>
+                  {!owned_circles.includes(circle.id) &&
+                  !joined_circles.includes(circle.id) ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() =>
+                        dispatch({
+                          type: "CREATE_NEW_NOTIFICATION",
+                          payload: {
+                            circle_id: circle.id,
+                            recipient_id: circle.owner_id,
+                            type: "request to join - leader action",
+                          },
+                        })
+                      }
+                    >
+                      Request to Join
+                    </Button>
+                  ) : (
+                    <span>Joined</span>
+                  )}
+                </td>
+                <td onClick={() => navigateToCircleDashboard(circle)}>
+                  <Button variant="contained" color="primary">
+                    Go
                   </Button>
-                ) : (
-                  <span>Joined</span>
-                )}
-              </td>
-              <td onClick={() => navigateToCircleDashboard(circle)}>
-                <Button variant="contained" color="primary">
-                  Go
-                </Button>
-                <AlertDialog
-                  title="Access Denied"
-                  child="You must be a subscriber to view this circle."
-                  open={alertOpen}
-                  setOpen={setAlertOpen}
-                  onConfirm={() => window.location.reload()}
-                ></AlertDialog>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <AlertDialog
+        title="Access Denied"
+        child="You must be a subscriber to view this circle."
+        open={alertOpen}
+        setOpen={setAlertOpen}
+        onConfirm={() => setAlertOpen(false)}
+      ></AlertDialog>
+    </>
   );
 }
