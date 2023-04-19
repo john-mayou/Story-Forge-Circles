@@ -84,7 +84,7 @@ export default function CircleTableView({ circlelist, isJoined = false }) {
                   child="You must be a subscriber to view this circle."
                   open={alertOpen}
                   setOpen={setAlertOpen}
-                  onConfirm={() => history.push('./circles-browser')}
+                  onConfirm={() => window.location.reload()}
                 ></AlertDialog>
               </td>
             </tr>
