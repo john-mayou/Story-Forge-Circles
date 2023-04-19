@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import {
-  Paper,
-  TextField,
-  Input,
-  InputBase,
-  Divider,
-  IconButton,
-  Button,
-} from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
