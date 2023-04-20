@@ -147,7 +147,7 @@ CREATE TABLE "nominations" (
 
 
 ALTER TABLE "circle_user" ADD CONSTRAINT "circle_user_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
-ALTER TABLE "circle_user" ADD CONSTRAINT "circle_user_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "circle_user" ADD CONSTRAINT "circle_user_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id") ON DELETE CASCADE;
 
 ALTER TABLE "circles" ADD CONSTRAINT "circles_fk0" FOREIGN KEY ("owner_id") REFERENCES "user"("id");
 
@@ -157,12 +157,12 @@ ALTER TABLE "manuscript_shelf" ADD CONSTRAINT "manuscript_shelf_fk1" FOREIGN KEY
 ALTER TABLE "manuscripts" ADD CONSTRAINT "manuscripts_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 
 ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk0" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
-ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "circle_manuscript" ADD CONSTRAINT "circle_manuscript_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id") ON DELETE CASCADE;
 
 ALTER TABLE "shelves" ADD CONSTRAINT "shelves_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 
 ALTER TABLE "messages" ADD CONSTRAINT "messages_fk0" FOREIGN KEY ("manuscript_id") REFERENCES "manuscripts"("id");
-ALTER TABLE "messages" ADD CONSTRAINT "messages_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "messages" ADD CONSTRAINT "messages_fk1" FOREIGN KEY ("circle_id") REFERENCES "circles"("id") ON DELETE CASCADE;
 ALTER TABLE "messages" ADD CONSTRAINT "messages_fk2" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 ALTER TABLE "messages" ADD CONSTRAINT "messages_fk3" FOREIGN KEY ("parent_id") REFERENCES "messages"("id");
 
@@ -173,7 +173,7 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_fk2" FOREIGN KEY ("parent_id") R
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
 ALTER TABLE "comments_likes" ADD CONSTRAINT "comments_likes_fk1" FOREIGN KEY ("comment_id") REFERENCES "comments"("id");
 
-ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("circle_id") REFERENCES "circles"("id");
+ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk0" FOREIGN KEY ("circle_id") REFERENCES "circles"("id") ON DELETE CASCADE;
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk1" FOREIGN KEY ("recipient_id") REFERENCES "user"("id");
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk2" FOREIGN KEY ("actor_id") REFERENCES "user"("id");
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_fk3" FOREIGN KEY ("nomination_id") REFERENCES "nominations"("id");

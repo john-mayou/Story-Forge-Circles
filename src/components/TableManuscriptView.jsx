@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ConfirmDialog from "./Dialogue/ConfirmDialog/ConfirmDialog";
 import { Button } from "@mui/material";
-import "../pages/Circles/TableStyling.css";
+import "../assets/styles/global/TableStyling.css";
 
 function UnshareButton({ onClick }) {
   return <button onClick={onClick}>Unshare</button>;
@@ -49,7 +49,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
       </thead>
       <tbody>
         {manuscriptlist?.map((manuscript) => (
-          <tr className='circle-table-row-style' key={manuscript?.id}>
+          <tr className="circle-table-row-style" key={manuscript?.id}>
             <td
               onClick={() =>
                 handleManuscriptClick(

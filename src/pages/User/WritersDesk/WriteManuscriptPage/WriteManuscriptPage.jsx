@@ -52,9 +52,10 @@ function WriteManuscriptPage() {
     history.push("/writers-desk");
   };
 
+  console.log(manuscript);
   return (
     <main className="content-main">
-      <Header title={`${manuscript.title} Editing`} />
+      <Header title={`Write Mode`} />
       <Button variant="contained" color="secondary" onClick={history.goBack}>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Button>

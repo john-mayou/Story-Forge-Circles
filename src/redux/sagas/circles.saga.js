@@ -1,26 +1,6 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
-function* fetchMyJoinedCirclesList(action) {
-  try {
-    const id = action.payload;
-    const response = yield axios.get(`api/circles/joined?id=${id}`);
-    yield put({ type: "SET_MY_JOINED_CIRCLES_LIST", payload: response.data });
-  } catch (error) {
-    console.log("Get my joined cirlces list request failed in Saga", error);
-  }
-}
-
-function* fetchMyCreatedCirclesList(action) {
-  try {
-    const id = action.payload;
-    const response = yield axios.get(`api/circles/created?id=${id}`);
-    yield put({ type: "SET_MY_CREATED_CIRCLES_LIST", payload: response.data });
-  } catch (error) {
-    console.log("Get my created cirlces list request failed in Saga", error);
-  }
-}
-
 function* createNewCircle(action) {
   try {
     const data = JSON.stringify(action.payload); // convert to string
@@ -36,15 +16,6 @@ function* createNewCircle(action) {
     yield put({ type: "FETCH_USER" });
   } catch (error) {
     console.log("Create new circle request failed in saga", error);
-  }
-}
-
-function* fetchAllPublicCirclesList() {
-  try {
-    const response = yield axios.get(`api/circles/public`);
-    yield put({ type: "SET_PUBLIC_CIRCLES_LIST", payload: response.data });
-  } catch (error) {
-    console.log("Get all public cirlces list request failed in Saga", error);
   }
 }
 
@@ -110,10 +81,7 @@ function* deleteSharedCircleManuscript(action) {
 }
 
 function* circlesSaga() {
-  yield takeLatest("FETCH_MY_JOINED_CIRCLES", fetchMyJoinedCirclesList);
-  yield takeLatest("FETCH_MY_CREATED_CIRCLES", fetchMyCreatedCirclesList);
   yield takeLatest("CREATE_NEW_CIRCLE", createNewCircle);
-  yield takeLatest("FETCH_ALL_PUBLIC_CIRCLES", fetchAllPublicCirclesList);
   yield takeLatest("FETCH_CIRCLE_MANUSCRIPTS_LIST", fetchCircleManuscriptsList);
   yield takeLatest(
     "FETCH_USER_MANUSCRIPTS_NOT_IN_CIRCLE",

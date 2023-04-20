@@ -12,6 +12,7 @@ import notificationsObject from "../../utils/notifications";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 
 // base style for modals
 const style = {
@@ -73,11 +74,13 @@ function NestedModal() {
 
   return (
     <div>
-      <FontAwesomeIcon
-        icon={faBell}
-        className="header-notification-bell"
-        onClick={handleOpen}
-      />
+      <Badge badgeContent={notifications.length} color="error">
+        <FontAwesomeIcon
+          icon={faBell}
+          className="header-notification-bell"
+          onClick={handleOpen}
+        />
+      </Badge>
       <Modal
         open={open}
         onClose={handleClose}

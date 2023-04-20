@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
-import CircleTableView from "../Circles/CircleTableView";
+import CircleTable from "../Circles/CircleTable/CircleTable";
 import TableManuscriptView from "../../components/TableManuscriptView";
 import SearchForm from "./SearchForm";
 import Header from "../../layout/Header/Header";
@@ -113,12 +113,12 @@ function SearchPage() {
     }
 
     // If the current type represents a circle list, display CircleTableView component
-    return (
-      <CircleTableView
-        circlelist={filteredCircles}
-        isJoined={type === "allPublicCirclesList"}
-      />
-    );
+    // return (
+    //   <CircleTableView
+    //     circlelist={filteredCircles}
+    //     isJoined={type === "allPublicCirclesList"}
+    //   />
+    // );
   }
 
   return (

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
 import Header from "../../../layout/Header/Header";
 
 function MembersPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id: circleId } = useParams();
   const user = useSelector((store) => store.user);
 
@@ -31,13 +32,6 @@ function MembersPage() {
   const fetchMembers = async () => {
     const circlesResponse = await axios.get(`/api/circles/${circleId}/members`);
     setCircleMembers(circlesResponse.data);
-  };
-
-  const removeMember = async (memberId) => {
-    await axios.delete(`/api/circles/${circleDetails.id}/members`, {
-      data: { user: memberId },
-    });
-    fetchMembers();
   };
 
   return (
@@ -127,25 +121,58 @@ function MembersPage() {
           )}
           {/* if user circle owner */}
           {user.id === circleDetails.owner_id ? (
-            // and there are no members in the circle
-            circleMembers.length === 0 && <button>Close Circle</button>
+            // only member in the circle is owner (self)
+            circleMembers.length === 1 && (
+              <button
+                onClick={async () => {
+                  await axios.delete(`/api/circles/close/${circleId}`);
+                  dispatch({ type: "FETCH_USER" });
+                  history.push("/circles");
+                }}
+              >
+                Close Circle
+              </button>
+            )
           ) : (
-            <Button color="error">Leave Circle</Button>
+            <Button
+              color="error"
+              onClick={async () => {
+                await axios.delete(
+                  `/api/circles/${circleDetails.id}/members/remove`
+                );
+                await history.push("/circles");
+              }}
+            >
+              Leave Circle
+            </Button>
           )}
         </div>
 
         {circleMembers.map((member) => {
+          if (member.id === user.id) {
+            return; // do not show self
+          }
+
           return (
             <div key={member.id}>
-              <p>{member.id}</p>
-              <p>{member.username}</p>
-              <p>{member.avatar_image || "null image"}</p>
+              <span>
+                {member.id} {member.username}{" "}
+                {member.avatar_image || "null image"}
+              </span>
               {user.id === circleDetails.owner_id && (
                 <>
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => removeMember(member.id)}
+                    onClick={async () => {
+                      await axios.delete(
+                        `/api/circles/${circleDetails.id}/members/remove`,
+                        {
+                          data: { user: member.id },
+                        }
+                      );
+                      fetchMembers();
+                    }}
                   >
                     Remove
                   </Button>
