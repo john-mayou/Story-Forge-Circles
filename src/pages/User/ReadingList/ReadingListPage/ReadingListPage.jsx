@@ -43,11 +43,9 @@ function ReadingListPage() {
       {/* Displays list of publically shared Manuscripts to page */}
       {publicManuscriptList?.map((manuscript) => {
         return (
-          <>
-            <div key={manuscript.id}>
+            <div key={manuscript?.id}>
               <ManuscriptListItem manuscript={manuscript} />
             </div>
-          </>
         );
       })}
     </main>
