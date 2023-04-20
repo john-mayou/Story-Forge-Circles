@@ -1,45 +1,23 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import CircleTableView from "../CircleTableView";
+import CircleTable from "../CircleTable/CircleTable";
 import SearchForm from "../../Search/SearchForm";
 import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
 import { Button } from "@mui/material";
 import Header from "../../../layout/Header/Header";
 
 function MyCirclesPage() {
-  const { id } = useSelector((store) => store.user);
-  const { myJoinedCircleList, myCreatedCircleList } = useSelector(
-    (store) => store.circles
-  );
-
-  // Uses useMemo to filter circles in myJoinedCircleList based on owner_id
-  const myJoinedCircle = useMemo(() => {
-    return myJoinedCircleList.filter((circle) => circle.owner_id !== id);
-  }, [myJoinedCircleList, id]);
-
   const dispatch = useDispatch();
   const history = useHistory();
+  const { id, owned_circles, joined_circles } = useSelector(
+    (store) => store.user
+  );
 
+  // Local State
   const [showModal, setShowModal] = useState(false);
   const [circleName, setCircleName] = useState("");
   const [circleDescription, setCircleDescription] = useState("");
-
-  useEffect(() => {
-    dispatch({
-      type: "FETCH_MY_JOINED_CIRCLES",
-      payload: id,
-    });
-
-    dispatch({
-      type: "FETCH_MY_CREATED_CIRCLES",
-      payload: id,
-    });
-  }, [id, dispatch]);
-
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/circles/myJoinedCircleList?term=${searchTerm}`);
-  };
 
   const handleCreateCircle = () => {
     // Check if the inputs are not empty
@@ -67,7 +45,6 @@ function MyCirclesPage() {
     <main className="content-main">
       <Header title={"My Circles"} />
       <div align="center">
-        <h2>Joined Circles</h2>
         <Button
           variant="contained"
           color="secondary"
@@ -79,11 +56,10 @@ function MyCirclesPage() {
         <br />
         <br />
 
-        <SearchForm onSearch={handleSearch} />
         <h2>JOINED CIRCLES</h2>
       </div>
 
-      <CircleTableView circlelist={myJoinedCircleList} />
+      <CircleTable circleList={joined_circles} type="joined" />
 
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>
@@ -110,7 +86,7 @@ function MyCirclesPage() {
         <br></br>
       </div>
 
-      <CircleTableView circlelist={myCreatedCircleList} />
+      <CircleTable circleList={owned_circles} type="owned" />
     </main>
   );
 }
