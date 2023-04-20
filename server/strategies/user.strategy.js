@@ -16,12 +16,22 @@ passport.deserializeUser((id, done) => {
       u.password,
       u.avatar_image,
       (SELECT 
-        ARRAY_AGG(c.id) AS owned_circles
+        COALESCE ( JSON_AGG(JSON_BUILD_OBJECT(
+          'id', c.id,
+          'name', c.name,
+          'description', c.description,
+          'owner_id', c.owner_id
+        )), '[]'::json) AS owned_circles
       FROM "user" AS u
       LEFT JOIN "circles" AS c ON c.owner_id = u.id
       WHERE u.id = $1),
       (SELECT 
-        ARRAY_AGG(c.id) AS joined_circles
+        COALESCE ( JSON_AGG(JSON_BUILD_OBJECT(
+          'id', c.id,
+          'name', c.name,
+          'description', c.description,
+          'owner_id', c.owner_id
+        )), '[]'::json) AS joined_circles
       FROM "user" AS u
       LEFT JOIN "circle_user" AS cu ON cu.user_id = u.id
       LEFT JOIN "circles" AS c ON c.id = cu.circle_id
