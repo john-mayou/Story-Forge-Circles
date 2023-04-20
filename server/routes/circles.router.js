@@ -15,8 +15,8 @@ router.post("/createCircleManuscript", async (req, res) => {
   const { owned_circles, joined_circles } = req.user;
 
   const isInCircle =
-    owned_circles.includes(Number(circle_id)) ||
-    joined_circles.includes(Number(circle_id));
+    owned_circles.some((circle) => circle.id === Number(circle_id)) ||
+    joined_circles.some((circle) => circle.id === Number(circle_id));
 
   if (!isInCircle) {
     return res.status(403).json({ message: "Unauthorized" });
@@ -56,56 +56,19 @@ router.get("/details/:id", async (req, res) => {
 });
 
 /**
- * GET all joined circles
- */
-router.get("/joined", async (req, res) => {
-  const { id } = req.query;
-  try {
-    const circles = await pool.query(
-      `
-        SELECT circles.*
-        FROM circles
-        INNER JOIN circle_user
-        ON circles.id = circle_user.circle_id
-        WHERE circle_user.user_id = $1
-      `,
-      [id]
-    );
-    res.json(circles.rows);
-  } catch (error) {
-    console.error("Error fetching circles:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-/**
- * GET all created circles
- */
-router.get("/created", async (req, res) => {
-  const { id } = req.query;
-  try {
-    const circles = await pool.query(
-      `
-      SELECT *
-      FROM circles
-      WHERE owner_id = $1
-    `,
-      [id]
-    );
-    res.json(circles.rows);
-  } catch (error) {
-    console.error("Error fetching circles:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-/**
  * GET all public circles
  */
 router.get("/public", async (req, res) => {
   try {
-    const circles = await pool.query(`SELECT * FROM "circles"`);
-    res.json(circles.rows);
+    const publicCirclesQuery = `
+      SELECT c.* FROM "circles" AS c
+        LEFT JOIN "circle_user" AS cu ON cu.circle_id = c.id
+      WHERE cu.user_id != $1 AND c.owner_id != $1
+    `;
+
+    const circles = await pool.query(publicCirclesQuery, [req.user.id]);
+
+    res.send(circles.rows);
   } catch (error) {
     console.error("Error fetching all public circles:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -181,10 +144,10 @@ router.delete(
         WHERE cu.circle_id = $1 AND cu.user_id = $2;
       `;
 
-      if (owned_circles.includes(circle_id)) {
+      if (owned_circles.some((circle) => circle.id === circle_id)) {
         const member_to_delete_id = req.body.user;
         await pool.query(memberDeletionQuery, [circle_id, member_to_delete_id]);
-      } else if (joined_circles.includes(circle_id)) {
+      } else if (joined_circles.some((circle) => circle.id === circle_id)) {
         await pool.query(memberDeletionQuery, [circle_id, req.user.id]);
       } else {
         return res.sendStatus(403);
@@ -228,6 +191,7 @@ router.get("/manuscript", async (req, res) => {
       `,
       [id]
     );
+
     res.json(circleManuscriptsList.rows);
   } catch (error) {
     console.error("Error fetching all manuscripts in circle:", error);
