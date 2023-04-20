@@ -123,10 +123,12 @@ function SearchPage() {
 
   return (
     <main className="content-main">
+      <div align="center">
       <Header title={`Search ${listType()}`} />
       <SearchForm onSearch={handleSearch} />
       <h2>Search Results for "{searchTerm}"</h2>
       {renderSearchResults()}
+      </div>
     </main>
   );
 }

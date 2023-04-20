@@ -61,6 +61,9 @@ function MyCirclesPage() {
 
       <CircleTable circleList={joined_circles} type="joined" />
 
+      {/* (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle */}
+      {/* <CircleTableView circlelist={myJoinedCircle} /> */}
+
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>
 

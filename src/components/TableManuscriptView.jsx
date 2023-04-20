@@ -14,7 +14,7 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteOpenManuscriptId, setDeleteOpenManuscriptId] = useState(null);
 
   const handleManuscriptClick = (manuscriptId) => {
     history.push(`/manuscript-read/${manuscriptId}`);
@@ -79,12 +79,12 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
             </td>
             {manuscript?.author && (
               <td>
-                <Button onClick={() => setDeleteOpen(true)}>Unshare</Button>
+                <Button onClick={() => setDeleteOpenManuscriptId(manuscript?.manuscript_id ?? manuscript?.id)}>Unshare</Button>
                 <ConfirmDialog
                   title="Unshare Manuscript?"
                   children="Manuscript will be removed from circle dashboard."
-                  open={deleteOpen}
-                  setOpen={setDeleteOpen}
+                  open={deleteOpenManuscriptId === (manuscript?.manuscript_id ?? manuscript?.id)}
+                  setOpen={() => setDeleteOpenManuscriptId(null)}
                   onConfirm={(e) =>
                     handleUnshareButtonClick(
                       manuscript?.manuscript_id ?? manuscript?.id

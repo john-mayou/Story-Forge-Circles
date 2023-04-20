@@ -7,9 +7,9 @@ const {
 const forbidden = new Error("User is not authenticated");
 forbidden.code = 403;
 
-/**
- * GET children comments by parent id
- */
+
+// * GET children comments by parent id
+
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const getChildrenQuery = `
   SELECT m.*, u.username, 
@@ -31,9 +31,9 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
     });
 });
 
-/**
- * GET threads (base/parent messages) on circles, limit 10
- */
+
+// * GET threads (base/parent messages) on circles, limit 10
+
 router.get("/", rejectUnauthenticated, (req, res) => {
   const getThreadsQuery = `
   SELECT m.*, u.username, 
@@ -56,9 +56,9 @@ router.get("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-/**
- * POST messages on circle message board
- */
+
+// * POST messages on circle message board
+
 router.post("/", rejectUnauthenticated, async (req, res) => {
   // extracting values from req.body
   const { manuscript_id, circle_id, parent_id, message } = req.body;
@@ -71,7 +71,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     const result = await connection.query(
       `
     INSERT INTO messages (created_at, manuscript_id, circle_id, user_id, parent_id, message)
-    VALUES ( NOW(), $1, $2, $3, $4, $5 )
+    VALUES (NOW(), $1, $2, $3, $4, $5)
     RETURNING *
     ;`,
       [manuscript_id, circle_id, req.user.id, parent_id, message]

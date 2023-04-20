@@ -11,11 +11,9 @@ import {
   faChevronDown,
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Header from "../../../layout/Header/Header";
 import dayjs from "dayjs";
-
-import { Button } from "@mui/material";
 
 function MessageBoard() {
   const { circle_id, circleName } = useParams();
@@ -65,7 +63,7 @@ function MessageBoard() {
           </Button>
           <div className="thread-container">
             {addThread ? <MessageBoardForm /> : ""}
-            <ul align="left" style={{ listStyle: "none", marginLeft: "20%" }}>
+            <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
               {messageList?.map((message) => (
                 <li
                   key={message.id}
@@ -74,7 +72,7 @@ function MessageBoard() {
                       ? {
                           // Adding indentation based on path length
                           marginLeft: `${
-                            8 *
+                            4 *
                             (message?.path?.includes(".")
                               ? message?.path?.split(".").length
                               : 1)
@@ -119,22 +117,13 @@ function MessageBoard() {
                     ) : (
                       ""
                     )}
-                    {/* style={{ borderBottom: "1px solid black", padding: "3px 0"}} */}
                     <span>
                       <strong>{`@${message.username}  `}</strong>
                       {dayjs(message.created_at).format("MMM D h:mm A")}
                     </span>
                     {message.message}
                     {/* TEMPORARY DIVIDER OPTIONS */}
-                    <div
-                      style={{
-                        width: "100%",
-                        height: "1px",
-                        backgroundColor: "black",
-                        maxWidth: "90%",
-                      }}
-                    ></div>
-                    {/* <Divider variant="inset" component="li" /> */}
+                    <Divider variant="inset" component="li" />
                     {/* passing message.id as parent_id prop to form component */}
                     {replyId == message.id ? (
                       <MessageBoardForm

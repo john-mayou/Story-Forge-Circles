@@ -5,6 +5,7 @@ import manuscripts from "./manuscript";
 import notifications from "./notification.reducer";
 import circles from "./circles.reducer";
 import messages from "./messageBoard.reducer";
+import comments from "./commentThread.reducer";
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
 // This is imported in index.js as rootSaga
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     circles,
     notifications,
     messages,
+    comments,
 });
 
 export default rootReducer;
