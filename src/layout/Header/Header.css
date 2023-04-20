@@ -2,6 +2,8 @@
   display: flex;
   position: sticky;
   height: 50px;
+  background-color: #ffffff;
+  box-shadow: 7px 3px 3px #e0d4cc;;
 }
 
 .header-empty-div {
