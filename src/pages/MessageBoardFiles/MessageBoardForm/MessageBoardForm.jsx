@@ -4,11 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-<<<<<<< HEAD
 import { TextField, Button } from "@mui/material";
-=======
-import { Button } from "@mui/material";
->>>>>>> main
 
 function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
