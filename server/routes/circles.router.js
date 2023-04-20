@@ -251,11 +251,19 @@ router.delete("/manuscript/:id", async (req, res) => {
 });
 
 // Todo
-router.delete("/close/:id", isCircleOwner, (req, res) => {
+router.delete("/close/:id", isCircleOwner, async (req, res) => {
   const { id: circle_id } = req.params;
 
   try {
-  } catch (error) {}
+    const circleDeletionQuery = `DELETE FROM "circles" WHERE id = $1;`;
+
+    await pool.query(circleDeletionQuery, [circle_id]);
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error("Error deleting shared circle manuscript", error);
+    res.sendStatus(500);
+  }
 });
 
 module.exports = router;

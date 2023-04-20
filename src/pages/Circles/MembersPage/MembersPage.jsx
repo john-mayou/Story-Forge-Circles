@@ -126,7 +126,8 @@ function MembersPage() {
               <button
                 onClick={async () => {
                   await axios.delete(`/api/circles/close/${circleId}`);
-                  await history.push("/circles");
+                  dispatch({ type: "FETCH_USER" });
+                  history.push("/circles");
                 }}
               >
                 Close Circle

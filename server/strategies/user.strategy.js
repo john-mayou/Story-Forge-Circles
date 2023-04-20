@@ -23,7 +23,7 @@ passport.deserializeUser((id, done) => {
           'owner_id', c.owner_id
         )), '[]'::json) AS owned_circles
       FROM "user" AS u
-      LEFT JOIN "circles" AS c ON c.owner_id = u.id
+      JOIN "circles" AS c ON c.owner_id = u.id
       WHERE u.id = $1),
       (SELECT 
         COALESCE ( JSON_AGG(JSON_BUILD_OBJECT(
@@ -33,8 +33,8 @@ passport.deserializeUser((id, done) => {
           'owner_id', c.owner_id
         )), '[]'::json) AS joined_circles
       FROM "user" AS u
-      LEFT JOIN "circle_user" AS cu ON cu.user_id = u.id
-      LEFT JOIN "circles" AS c ON c.id = cu.circle_id
+      JOIN "circle_user" AS cu ON cu.user_id = u.id
+      JOIN "circles" AS c ON c.id = cu.circle_id
       WHERE cu.user_id = $1 AND c.owner_id != $1)
       FROM "user" AS u
       WHERE id = $1;`,
