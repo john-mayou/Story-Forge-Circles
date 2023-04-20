@@ -48,53 +48,71 @@ export default function TableManuscriptView({ circle_id, manuscriptlist }) {
         </tr>
       </thead>
       <tbody>
-        {manuscriptlist?.map((manuscript) => (
-          <tr className='circle-table-row-style' key={manuscript?.id}>
-            <td
-              onClick={() =>
-                handleManuscriptClick(
-                  manuscript?.manuscript_id ?? manuscript?.id
-                )
-              }
-            >
-              {manuscript?.author ?? manuscript?.username}
-            </td>
-            <td
-              onClick={() =>
-                handleManuscriptClick(
-                  manuscript?.manuscript_id ?? manuscript?.id
-                )
-              }
-            >
-              {manuscript?.title}
-            </td>
-            <td
-              onClick={() =>
-                handleManuscriptClick(
-                  manuscript?.manuscript_id ?? manuscript?.id
-                )
-              }
-            >
-              {manuscript?.body}
-            </td>
-            {manuscript?.author && (
-              <td>
-                <Button onClick={() => setDeleteOpenManuscriptId(manuscript?.manuscript_id ?? manuscript?.id)}>Unshare</Button>
-                <ConfirmDialog
-                  title="Unshare Manuscript?"
-                  children="Manuscript will be removed from circle dashboard."
-                  open={deleteOpenManuscriptId === (manuscript?.manuscript_id ?? manuscript?.id)}
-                  setOpen={() => setDeleteOpenManuscriptId(null)}
-                  onConfirm={(e) =>
-                    handleUnshareButtonClick(
-                      manuscript?.manuscript_id ?? manuscript?.id
-                    )
-                  }
-                ></ConfirmDialog>
+        {manuscriptlist?.map((manuscript) => {
+          let preview = manuscript?.body;
+          if (manuscript?.body.length > 200) {
+            preview = manuscript.body.substring(0, 200);
+            preview = preview + "...";
+          }
+          return (
+            <tr className="circle-table-row-style" key={manuscript?.id}>
+              <td
+                onClick={() =>
+                  handleManuscriptClick(
+                    manuscript?.manuscript_id ?? manuscript?.id
+                  )
+                }
+              >
+                {manuscript?.author ?? manuscript?.username}
               </td>
-            )}
-          </tr>
-        ))}
+              <td
+                onClick={() =>
+                  handleManuscriptClick(
+                    manuscript?.manuscript_id ?? manuscript?.id
+                  )
+                }
+              >
+                {manuscript?.title}
+              </td>
+              <td
+                onClick={() =>
+                  handleManuscriptClick(
+                    manuscript?.manuscript_id ?? manuscript?.id
+                  )
+                }
+              >
+                {preview}
+              </td>
+              {manuscript?.author && (
+                <td>
+                  <Button
+                    onClick={() =>
+                      setDeleteOpenManuscriptId(
+                        manuscript?.manuscript_id ?? manuscript?.id
+                      )
+                    }
+                  >
+                    Unshare
+                  </Button>
+                  <ConfirmDialog
+                    title="Unshare Manuscript?"
+                    children="Manuscript will be removed from circle dashboard."
+                    open={
+                      deleteOpenManuscriptId ===
+                      (manuscript?.manuscript_id ?? manuscript?.id)
+                    }
+                    setOpen={() => setDeleteOpenManuscriptId(null)}
+                    onConfirm={(e) =>
+                      handleUnshareButtonClick(
+                        manuscript?.manuscript_id ?? manuscript?.id
+                      )
+                    }
+                  ></ConfirmDialog>
+                </td>
+              )}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
