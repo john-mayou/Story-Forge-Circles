@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
 
-function CommentForm({ manuscript_id, parent_id, setReplyId }) {
+function CommentForm({ manuscript_id, parent_id, setReplyId = () => {}, handleAddThreadClick = () => {}}) {
   // getting user from store
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
@@ -18,11 +18,17 @@ function CommentForm({ manuscript_id, parent_id, setReplyId }) {
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
+    if (comment.comment === '') {
+      return
+    };
+
     dispatch({
       type: "POST_COMMENT",
       payload: comment,
     });
     clearInput();
+    handleAddThreadClick()
+    setReplyId(-1)
   };
 
   // clearing text input field

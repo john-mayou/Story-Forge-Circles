@@ -22,6 +22,8 @@ function ManuscriptCommentThread({ manuscript_id }) {
   const handleAddThreadClick = () => {
     setAddThread(!addThread);
   };
+  
+  console.log('replyId', replyId)
 
   return (
     <>
@@ -31,7 +33,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
           {!addThread ? " Comment" : " Cancel"}
         </Button>
         <div className="thread-container">
-          {addThread ? <CommentForm /> : ""}
+          {addThread ? <CommentForm handleAddThreadClick={handleAddThreadClick} /> : ""}
           <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
             {commentList?.map((comment) => (
               <div
