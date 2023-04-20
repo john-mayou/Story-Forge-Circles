@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
@@ -39,6 +39,10 @@ function MessageBoard() {
     history.push(`/circle-dashboard/${circle_id}/${circleName}`);
   };
 
+  const filterMessageList = useMemo(() => {
+    return messageList.filter((message) => message.circle_id == circle_id);
+  }, [messageList, circle_id]);
+
   return (
     <>
       <Header title={`${circleName} Message Board`} />
@@ -64,8 +68,8 @@ function MessageBoard() {
           <div className="thread-container">
             {addThread ? <MessageBoardForm /> : ""}
             <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
-              {messageList?.map((message) => (
-                <li
+              {filterMessageList?.map((message) => (
+                <div
                   key={message.id}
                   style={
                     message.parent_id
@@ -136,7 +140,7 @@ function MessageBoard() {
                       </Button>
                     )}
                   </div>
-                </li>
+                </div>
               ))}
             </ul>
           </div>
