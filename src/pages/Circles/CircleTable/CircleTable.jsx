@@ -44,12 +44,15 @@ export default function CircleTable({ circleList, type, searchBar }) {
             <th>
               <h3>Description</h3>
             </th>
-            <th>
-              <h3>Join</h3>
-            </th>
-            <th>
-              <h3>Go</h3>
-            </th>
+            {type === "public" ? (
+              <th>
+                <h3>Join</h3>
+              </th>
+            ) : (
+              <th>
+                <h3>Dashboard</h3>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -62,8 +65,9 @@ export default function CircleTable({ circleList, type, searchBar }) {
                 <td>
                   <p>{circle.description}</p>
                 </td>
-                <td>
-                  {type === "public" ? (
+
+                {type === "public" ? (
+                  <td>
                     <Button
                       variant="contained"
                       color="secondary"
@@ -80,25 +84,24 @@ export default function CircleTable({ circleList, type, searchBar }) {
                     >
                       Request to Join
                     </Button>
-                  ) : type === "joined" ? (
-                    <span>Joined</span>
-                  ) : type === "owned" ? (
-                    <span>Owned</span>
-                  ) : (
-                    ""
-                  )}
-                </td>
-                <td
-                  onClick={() =>
-                    history.push(
-                      `/circle-dashboard/${circle.id}/${circle.name}`
-                    )
-                  }
-                >
-                  <Button variant="contained" color="primary">
-                    Go
-                  </Button>
-                </td>
+                  </td>
+                ) : (
+                  ""
+                )}
+
+                {type !== "public" && (
+                  <td
+                    onClick={() =>
+                      history.push(
+                        `/circle-dashboard/${circle.id}/${circle.name}`
+                      )
+                    }
+                  >
+                    <Button variant="contained" color="primary">
+                      Go
+                    </Button>
+                  </td>
+                )}
               </tr>
             );
           })}
