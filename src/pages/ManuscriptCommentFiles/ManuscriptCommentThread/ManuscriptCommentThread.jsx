@@ -22,8 +22,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
   const handleAddThreadClick = () => {
     setAddThread(!addThread);
   };
-  
-  console.log('replyId', replyId)
+
 
   return (
     <>
