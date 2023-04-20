@@ -9,7 +9,6 @@ CREATE TABLE "user" (
 );
 
 
-
 CREATE TABLE "circle_user" (
 	"id" serial NOT NULL,
 	"user_id" int NOT NULL,
@@ -18,7 +17,6 @@ CREATE TABLE "circle_user" (
 ) WITH (
   OIDS=FALSE
 );
-
 
 
 CREATE TABLE "circles" (
@@ -32,7 +30,6 @@ CREATE TABLE "circles" (
 );
 
 
-
 CREATE TABLE "manuscript_shelf" (
 	"id" serial NOT NULL,
 	"shelf_id" int NOT NULL,
@@ -41,7 +38,6 @@ CREATE TABLE "manuscript_shelf" (
 ) WITH (
   OIDS=FALSE
 );
-
 
 
 CREATE TABLE "manuscripts" (
@@ -79,7 +75,6 @@ CREATE TABLE "shelves" (
 );
 
 
-
 CREATE TABLE "messages" (
 	"id" serial NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
@@ -93,6 +88,10 @@ CREATE TABLE "messages" (
   OIDS=FALSE
 );
 
+-- * database query to add 'path' to "messages" table
+-- EXTENSION for ltree
+CREATE EXTENSION IF NOT EXISTS ltree;
+ALTER TABLE "messages" ADD COLUMN path ltree;
 
 
 CREATE TABLE "comments" (
@@ -107,6 +106,10 @@ CREATE TABLE "comments" (
   OIDS=FALSE
 );
 
+-- * database query to add 'path' to "comments" table
+-- CREATE EXTENSION for ltree
+CREATE EXTENSION IF NOT EXISTS ltree;
+ALTER TABLE "comments" ADD COLUMN path ltree;
 
 
 CREATE TABLE "comments_likes" (
@@ -117,7 +120,6 @@ CREATE TABLE "comments_likes" (
 ) WITH (
   OIDS=FALSE
 );
-
 
 
 CREATE TABLE "notifications" (
@@ -133,10 +135,6 @@ CREATE TABLE "notifications" (
   OIDS=FALSE
 );
 
--- database query to add 'path' to "messages" table
--- EXTENSION for ltree
-CREATE EXTENSION IF NOT EXISTS ltree;
-ALTER TABLE "messages" ADD COLUMN path ltree;
 
 CREATE TABLE "nominations" (
 	"id" serial NOT NULL,
@@ -146,8 +144,6 @@ CREATE TABLE "nominations" (
 ) WITH (
   OIDS=FALSE
 );
-
-
 
 
 ALTER TABLE "circle_user" ADD CONSTRAINT "circle_user_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
