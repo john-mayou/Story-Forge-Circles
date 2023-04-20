@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
+import SearchMessageBoard from "../SearchMessageBoard/SearchMessageBoard";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +12,21 @@ import {
   faChevronDown,
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button, Divider } from "@mui/material";
+import {
+  Paper,
+  InputBase,
+  Divider,
+  IconButton,
+  Button,
+  ButtonGroup,
+  Typography,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+} from "@mui/material";
 import Header from "../../../layout/Header/Header";
 import dayjs from "dayjs";
 
@@ -43,29 +58,53 @@ function MessageBoard() {
     <>
       <Header title={`${circleName} Message Board`} />
       <div align="center" style={{ backgroundColor: "#FCF5F0" }}>
-        {/* Search bar for message board */}
-        <input
-          type="search"
-          id="message-board-search"
-          name="message-board-input"
-          placeholder="Search..."
-        />
-        <Button>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />{" "}
-        </Button>
+        <SearchMessageBoard />
         <div>
-          <Button variant="contained" onClick={handleAddThreadClick}>
-            <FontAwesomeIcon icon={faPlus} size="sm" />
-            {!addThread ? " Thread" : " Cancel"}
-          </Button>
-          <Button variant="contained" color="secondary" onClick={goToDashboard}>
-            Dashboard
-          </Button>
-          <div className="thread-container">
-            {addThread ? <MessageBoardForm /> : ""}
-            <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
+          {/** +THREAD & DASHBOARD BUTTON **/}
+          <ButtonGroup>
+            <Button variant="contained" onClick={handleAddThreadClick}>
+              <FontAwesomeIcon icon={faPlus} size="sm" />
+              {!addThread ? " Thread" : " Cancel"}
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={goToDashboard}
+            >
+              Dashboard
+            </Button>
+          </ButtonGroup>
+
+          {/** BEGIN THREAD LIST **/}
+          <React.Fragment className="thread-container" />
+          <section className="comment-thread-cards">
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: "80vw",
+                bgcolor: "background.paper",
+              }}
+            >
+              {addThread ? <MessageBoardForm /> : ""}
+              <ListItem
+                alignItems="flex-start"
+                style={{ listStyle: "none", padding: 0 }}
+              >
+                {/** STATIC AVATAR **/}
+                <ListItemAvatar>
+                  <Avatar
+                    className="header-avatar-image"
+                    src="/cat.svg"
+                    alt="Draft Cat"
+                    width="40"
+                    height="49"
+                  />
+                </ListItemAvatar>
+              </ListItem>
+
+              {/** MESSAGE DISPLAY LIST **/}
               {messageList?.map((message) => (
-                <li
+                <ListItem
                   key={message.id}
                   style={
                     message.parent_id
@@ -107,24 +146,32 @@ function MessageBoard() {
                           }
                         }}
                       >
-                        {" "}
                         {expand.includes(message.id) ? (
                           <FontAwesomeIcon icon={faChevronDown} />
                         ) : (
                           <FontAwesomeIcon icon={faChevronRight} />
-                        )}{" "}
+                        )}
                       </Button>
                     ) : (
                       ""
                     )}
-                    <span>
-                      <strong>{`@${message.username}  `}</strong>
-                      {dayjs(message.created_at).format("MMM D h:mm A")}
-                    </span>
-                    {message.message}
-                    {/* TEMPORARY DIVIDER OPTIONS */}
-                    <Divider variant="inset" component="li" />
-                    {/* passing message.id as parent_id prop to form component */}
+                    <ListItemText
+                      primary={`@${message.username}  `}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            sx={{ display: "inline" }}
+                            component="span"
+                            variant="body2"
+                            color="primary.main"
+                          >
+                            {dayjs(message.created_at).format("MMM D h:mm A")}
+                          </Typography>
+                          {message.message}
+                        </React.Fragment>
+                      }
+                    />
+                    {/** passing message.id as parent_id prop to form component **/}
                     {replyId == message.id ? (
                       <MessageBoardForm
                         parent_id={message.id}
@@ -135,11 +182,20 @@ function MessageBoard() {
                         <FontAwesomeIcon icon={faReply} /> Reply
                       </Button>
                     )}
+                    {/* TEMPORARY DIVIDER OPTIONS */}
+                    {/* <Divider variant="inset" component="li" /> */}
+                    <Divider
+                      variant="inset"
+                      component="li"
+                      sx={{ height: "100%", m: 0.3 }}
+                      orientation="horizontal"
+                    />
                   </div>
-                </li>
+                </ListItem>
               ))}
-            </ul>
-          </div>
+            </List>
+          </section>
+          {/** END OF COMMENT LIST **/}
         </div>
       </div>
     </>
