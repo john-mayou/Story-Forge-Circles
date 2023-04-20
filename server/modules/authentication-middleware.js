@@ -11,10 +11,10 @@ const rejectUnauthenticated = (req, res, next) => {
 };
 
 const isCircleOwner = (req, res, next) => {
-  const { id: circle_id } = req.params;
+  const circle_id = Number(req.params.id);
   const { owned_circles } = req.user;
 
-  if (owned_circles.includes(Number(circle_id))) {
+  if (owned_circles.some((circle) => circle.id === circle_id)) {
     next();
   } else {
     res.sendStatus(403);

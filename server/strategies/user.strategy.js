@@ -11,17 +11,33 @@ passport.deserializeUser((id, done) => {
   pool
     .query(
       `SELECT 
-        u.id,
-        u.username,
-        u.password,
-        u.avatar_image,
-        ARRAY_AGG(c.id) AS owned_circles,
-        ARRAY_AGG(cu.circle_id) AS joined_circles
-      FROM "user" AS u 
-        LEFT JOIN "circles" AS c ON c.owner_id = u.id
-        LEFT JOIN "circle_user" AS cu ON cu.user_id = u.id
-      WHERE u.id = $1
-      GROUP BY u.id, u.username, u.password, u.avatar_image;`,
+      u.id,
+      u.username,
+      u.password,
+      u.avatar_image,
+      (SELECT 
+        COALESCE ( JSON_AGG(JSON_BUILD_OBJECT(
+          'id', c.id,
+          'name', c.name,
+          'description', c.description,
+          'owner_id', c.owner_id
+        )), '[]'::json) AS owned_circles
+      FROM "user" AS u
+      JOIN "circles" AS c ON c.owner_id = u.id
+      WHERE u.id = $1),
+      (SELECT 
+        COALESCE ( JSON_AGG(JSON_BUILD_OBJECT(
+          'id', c.id,
+          'name', c.name,
+          'description', c.description,
+          'owner_id', c.owner_id
+        )), '[]'::json) AS joined_circles
+      FROM "user" AS u
+      JOIN "circle_user" AS cu ON cu.user_id = u.id
+      JOIN "circles" AS c ON c.id = cu.circle_id
+      WHERE cu.user_id = $1 AND c.owner_id != $1)
+      FROM "user" AS u
+      WHERE id = $1;`,
       [id]
     )
     .then((result) => {
