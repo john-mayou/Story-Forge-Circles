@@ -62,6 +62,7 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 router.post("/", rejectUnauthenticated, async (req, res) => {
   console.log("req.body:", req.body);
   const { manuscript_id, parent_id, comment } = req.body;
+  console.log('manuscript_id', manuscript_id)
   const connection = await pool.connect();
 
   try {

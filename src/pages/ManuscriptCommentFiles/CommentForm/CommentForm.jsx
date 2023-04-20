@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 
 function CommentForm({ manuscript_id, parent_id, setReplyId = () => {}, handleAddThreadClick = () => {}}) {
   // getting user from store
+
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [comment, setComment] = useState({

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CommentForm from "../CommentForm/CommentForm";
 // font-awesome
@@ -23,6 +23,11 @@ function ManuscriptCommentThread({ manuscript_id }) {
     setAddThread(!addThread);
   };
 
+  const filterCommentList = useMemo(() => {
+    return commentList.filter(
+      (comment) => comment.manuscript_id == manuscript_id
+    );
+  }, [commentList, manuscript_id]);
 
   return (
     <>
@@ -32,9 +37,16 @@ function ManuscriptCommentThread({ manuscript_id }) {
           {!addThread ? " Comment" : " Cancel"}
         </Button>
         <div className="thread-container">
-          {addThread ? <CommentForm handleAddThreadClick={handleAddThreadClick} /> : ""}
+          {addThread ? (
+            <CommentForm
+              manuscript_id={manuscript_id}
+              handleAddThreadClick={handleAddThreadClick}
+            />
+          ) : (
+            ""
+          )}
           <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
-            {commentList?.map((comment) => (
+            {filterCommentList?.map((comment) => (
               <div
                 key={comment.id}
                 style={
