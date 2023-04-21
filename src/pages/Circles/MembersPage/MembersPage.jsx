@@ -61,7 +61,7 @@ function MembersPage() {
     });
   };
 
-  const memberLeaveCircle = async (circle_id) => {
+  const memberLeaveCircle = (circle_id) => {
     setPopupAttributes({
       title: `Are you sure you want to leave this circle?`,
       children:
@@ -70,6 +70,37 @@ function MembersPage() {
       setOpen: () => setPopupAttributes({ open: false }),
       onConfirm: async () => {
         await axios.delete(`/api/circles/${circle_id}/members/remove`);
+        await history.push("/circles");
+        dispatch({ type: "FETCH_USER" });
+      },
+    });
+  };
+
+  const leaderRemoveMember = (circle_id, member) => {
+    setPopupAttributes({
+      title: `Are you sure you want to remove ${member.username} from this circle?`,
+      children:
+        "They will no longer be a part of this circle and be able to share.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/${circle_id}/members/remove`, {
+          data: { user: member.id },
+        });
+        fetchMembers();
+      },
+    });
+  };
+
+  const leaderCloseCircle = () => {
+    setPopupAttributes({
+      title: `Are you sure you want to close this circle?`,
+      children:
+        "Manuscripts, messages and discussions will all be deleted from the circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/close/${circleId}`);
         await history.push("/circles");
         dispatch({ type: "FETCH_USER" });
       },
@@ -118,6 +149,7 @@ function MembersPage() {
     }
   };
 
+  console.log(circleMembers, circleDetails.owner_id === user.id);
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
@@ -164,15 +196,9 @@ function MembersPage() {
           {user.id === circleDetails.owner_id ? (
             // only member in the circle is owner (self)
             circleMembers.length === 1 && (
-              <button
-                onClick={async () => {
-                  await axios.delete(`/api/circles/close/${circleId}`);
-                  dispatch({ type: "FETCH_USER" });
-                  history.push("/circles");
-                }}
-              >
+              <Button color="error" onClick={() => leaderCloseCircle(circleId)}>
                 Close Circle
-              </button>
+              </Button>
             )
           ) : (
             <Button color="error" onClick={() => memberLeaveCircle(circleId)}>
@@ -197,15 +223,7 @@ function MembersPage() {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={async () => {
-                      await axios.delete(
-                        `/api/circles/${circleDetails.id}/members/remove`,
-                        {
-                          data: { user: member.id },
-                        }
-                      );
-                      fetchMembers();
-                    }}
+                    onClick={() => leaderRemoveMember(circleId, member)}
                   >
                     Remove
                   </Button>
