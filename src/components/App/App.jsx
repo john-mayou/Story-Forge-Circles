@@ -10,12 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
-// Notification Actions (REMOVE LATER)
-import NotificationActionsPage from "../../utils/NotificationActionsPage";
-
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
-import Header from "../../layout/Header/Header";
 
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
@@ -91,11 +87,11 @@ function App() {
             <ProtectedRoute exact path="/manuscript-read/:id">
               <ReadManuscriptPage />
             </ProtectedRoute>
-  
-          {/* Keep until comment thread functionality is complete */}
-          <ProtectedRoute exact path="/manuscript-comment-thread">
-            <ManuscriptCommentThread/>
-          </ProtectedRoute> 
+
+            {/* Keep until comment thread functionality is complete */}
+            <ProtectedRoute exact path="/manuscript-comment-thread">
+              <ManuscriptCommentThread />
+            </ProtectedRoute>
 
             <ProtectedRoute exact path="/writers-desk">
               <WritersDeskPage />
