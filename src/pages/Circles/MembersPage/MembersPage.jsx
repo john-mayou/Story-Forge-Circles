@@ -34,6 +34,42 @@ function MembersPage() {
     setCircleMembers(circlesResponse.data);
   };
 
+  const inviteNewMember = async (initiator) => {
+    if (!newMember) {
+      return;
+    }
+    const userExistsResult = await axios.get(
+      `/api/notification/user-exists/${newMember}`
+    );
+
+    let payload;
+    if (initiator === "leader") {
+      payload = {
+        circle_id: circleDetails.id,
+        recipient_id: userExistsResult.data[0].id,
+        type: "leader invite member - user action",
+      };
+    } else if (initiator === "member") {
+      payload = {
+        circle_id: circleDetails.id,
+        recipient_id: circleDetails.owner_id,
+        type: "member nomination - leader action",
+        new_nomination: userExistsResult.data[0].id,
+      };
+    } else {
+      console.log("Invalid initiator for sending user invite");
+    }
+
+    if (userExistsResult.data.length) {
+      dispatch({
+        type: "CREATE_NEW_NOTIFICATION",
+        payload: payload,
+      });
+    } else {
+      setUserExistsError(true);
+    }
+  };
+
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
@@ -46,28 +82,7 @@ function MembersPage() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={async () => {
-                  if (!newMember) {
-                    return;
-                  }
-
-                  const userExistsResult = await axios.get(
-                    `/api/notification/user-exists/${newMember}`
-                  );
-
-                  if (userExistsResult.data.length) {
-                    dispatch({
-                      type: "CREATE_NEW_NOTIFICATION",
-                      payload: {
-                        circle_id: circleDetails.id,
-                        recipient_id: userExistsResult.data[0].id,
-                        type: "leader invite member - user action",
-                      },
-                    });
-                  } else {
-                    setUserExistsError(true);
-                  }
-                }}
+                onClick={() => inviteNewMember("leader")}
               >
                 Add Member
               </Button>
@@ -84,29 +99,7 @@ function MembersPage() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={async () => {
-                  if (!newMember) {
-                    return;
-                  }
-
-                  const userExistsResult = await axios.get(
-                    `/api/notification/user-exists/${newMember}`
-                  );
-
-                  if (userExistsResult.data.length) {
-                    dispatch({
-                      type: "CREATE_NEW_NOTIFICATION",
-                      payload: {
-                        circle_id: circleDetails.id,
-                        recipient_id: circleDetails.owner_id,
-                        type: "member nomination - leader action",
-                        new_nomination: userExistsResult.data[0].id,
-                      },
-                    });
-                  } else {
-                    setUserExistsError(true);
-                  }
-                }}
+                onClick={() => inviteNewMember("member")}
               >
                 Invite Member
               </Button>
