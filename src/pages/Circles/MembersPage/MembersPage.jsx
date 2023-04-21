@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Header from "../../../layout/Header/Header";
 import Snackbar from "@mui/material/Snackbar";
+import ConfirmDialog from "../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
 
 function MembersPage() {
   const dispatch = useDispatch();
@@ -17,8 +18,13 @@ function MembersPage() {
   const [newMember, setNewMember] = useState("");
   const [userExitsError, setUserExistsError] = useState(false);
   const [circleDetails, setCircleDetails] = useState([]);
+
+  // Local State Popups and Confirmation Dialogs
   const [successOpen, setSuccessOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [popupAttributes, setPopupAttributes] = useState({
+    open: false,
+  });
 
   useEffect(() => {
     fetchMembers();
@@ -35,6 +41,39 @@ function MembersPage() {
   const fetchMembers = async () => {
     const circlesResponse = await axios.get(`/api/circles/${circleId}/members`);
     setCircleMembers(circlesResponse.data);
+  };
+
+  const promoteToLeader = (circle_id, member) => {
+    setPopupAttributes({
+      title: `Are you sure you want to promote ${member.username} to leader?`,
+      children: "You will no longer be the leader of this circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: () =>
+        dispatch({
+          type: "CREATE_NEW_NOTIFICATION",
+          payload: {
+            circle_id,
+            recipient_id: member.id,
+            type: "leader nominate leader - user action",
+          },
+        }),
+    });
+  };
+
+  const memberLeaveCircle = async (circle_id) => {
+    setPopupAttributes({
+      title: `Are you sure you want to leave this circle?`,
+      children:
+        "You will no longer be able to see manuscripts and messages from this circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/${circle_id}/members/remove`);
+        await history.push("/circles");
+        dispatch({ type: "FETCH_USER" });
+      },
+    });
   };
 
   const inviteNewMember = async (initiator) => {
@@ -136,15 +175,7 @@ function MembersPage() {
               </button>
             )
           ) : (
-            <Button
-              color="error"
-              onClick={async () => {
-                await axios.delete(
-                  `/api/circles/${circleDetails.id}/members/remove`
-                );
-                await history.push("/circles");
-              }}
-            >
+            <Button color="error" onClick={() => memberLeaveCircle(circleId)}>
               Leave Circle
             </Button>
           )}
@@ -181,16 +212,7 @@ function MembersPage() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() =>
-                      dispatch({
-                        type: "CREATE_NEW_NOTIFICATION",
-                        payload: {
-                          circle_id: circleDetails.id,
-                          recipient_id: member.id,
-                          type: "leader nominate leader - user action",
-                        },
-                      })
-                    }
+                    onClick={() => promoteToLeader(circleDetails.id, member)}
                   >
                     Promote To Leader
                   </Button>
@@ -200,6 +222,13 @@ function MembersPage() {
           );
         })}
       </div>
+      <ConfirmDialog
+        title={popupAttributes.title}
+        children={popupAttributes.description}
+        open={popupAttributes.open}
+        setOpen={popupAttributes.setOpen}
+        onConfirm={popupAttributes.onConfirm}
+      ></ConfirmDialog>
       <Snackbar
         message={successMessage}
         autoHideDuration={6000}
