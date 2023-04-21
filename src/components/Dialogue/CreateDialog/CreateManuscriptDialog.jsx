@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -43,6 +43,35 @@ const CreateManuscriptDialog = (props) => {
     setIsChecked,
   } = props;
 
+  const [isValidSubmission, setIsValidSubmission] = useState({
+    inputOne: true,
+    inputTwo: true,
+  });
+
+  const cancelSubmission = () => {
+    setOpen(false);
+    setInputOne("");
+    setInputTwo("");
+    setIsChecked(false);
+    setIsValidSubmission({
+      inputOne: true,
+      inputTwo: true,
+    });
+  };
+
+  const handleSubmitNewManuscript = () => {
+    if (inputOne && inputTwo) {
+      setOpen(false);
+      setIsValidSubmission({
+        inputOne: true,
+        inputTwo: true,
+      });
+      onConfirm();
+    } else {
+      setIsValidSubmission({ inputOne: !!inputOne, inputTwo: !!inputTwo });
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -53,6 +82,11 @@ const CreateManuscriptDialog = (props) => {
       <DialogContent>
         <DialogContentText>{children}</DialogContentText>
         <TextField
+          style={{
+            border: !isValidSubmission.inputOne
+              ? "1px solid red"
+              : "1px solid black",
+          }}
           autoFocus
           margin="dense"
           id="title"
@@ -66,7 +100,12 @@ const CreateManuscriptDialog = (props) => {
         />
         <TextareaAutosize
           minRows={20}
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            border: !isValidSubmission.inputTwo
+              ? "1px solid red"
+              : "1px solid black",
+          }}
           autoFocus
           margin="dense"
           id="description"
@@ -93,22 +132,11 @@ const CreateManuscriptDialog = (props) => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => {
-            setOpen(false);
-            setInputOne("");
-            setInputTwo("");
-            setIsChecked(false);
-          }}
+          onClick={cancelSubmission}
         >
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setOpen(false);
-            onConfirm();
-          }}
-        >
+        <Button variant="contained" onClick={handleSubmitNewManuscript}>
           Submit
         </Button>
       </DialogActions>
