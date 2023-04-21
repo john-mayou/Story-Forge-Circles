@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import Header from "../../../../layout/Header/Header";
-import SearchForm from "../../../Search/SearchForm";
 import ManuscriptList from "../../../../components/ManuscriptList";
+import useSearch from "../../../../hooks/useSearch";
+import SearchBar from "../../../../components/SearchBar";
+import { searchKeySelector } from "../../../../utils/searchUtils";
 
 function ReadingListPage() {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const publicManuscriptList = useSelector(
     (store) => store.manuscripts.publicManuscriptList
@@ -19,18 +19,17 @@ function ReadingListPage() {
     });
   }, []);
 
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/manuscripts/publicManuscriptList?term=${searchTerm}`);
-  };
+
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(publicManuscriptList, searchKeySelector);
 
   return (
     <main className="content-main">
       <div align="center">
         <Header title={"Reading List"} />
-        <SearchForm onSearch={handleSearch} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 
-      <ManuscriptList manuscripts={publicManuscriptList}/>
+      <ManuscriptList manuscripts={filteredData}/>
 
     </main>
   );
