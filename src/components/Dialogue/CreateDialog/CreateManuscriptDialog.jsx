@@ -84,8 +84,8 @@ const CreateManuscriptDialog = (props) => {
         <TextField
           style={{
             border: !isValidSubmission.inputOne
-              ? "1px solid red"
-              : "1px solid black",
+              ? "2px solid red"
+              : "2px solid gray",
           }}
           autoFocus
           margin="dense"
@@ -103,8 +103,8 @@ const CreateManuscriptDialog = (props) => {
           style={{
             width: "100%",
             border: !isValidSubmission.inputTwo
-              ? "1px solid red"
-              : "1px solid black",
+              ? "2px solid red"
+              : "2px solid gray",
           }}
           autoFocus
           margin="dense"
