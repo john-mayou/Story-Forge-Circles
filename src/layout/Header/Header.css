@@ -93,3 +93,19 @@
   background-color: rgb(255, 79, 79);
   color: #f0f0f0;
 }
+
+
+
+/* Small Screen - Phones */
+@media only screen and (max-width: 600px) {
+
+  .header-title {
+    font-weight: 600;
+    font-size: 1em;
+  }
+
+  .header-avatar-image {
+    border-radius: 50%;
+    width: 2em;
+  }
+}

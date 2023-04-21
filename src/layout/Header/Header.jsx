@@ -40,13 +40,7 @@ function Header({ title }) {
 
   return (
     <header id="content-header">
-      <div className="header-empty-div"></div>
-      <div className="header-title-box">
-        <h1 className="header-title">{title}</h1>
-      </div>
-      <div className="header-right-end-container">
-        <NestedModal />
-        <div className="header-profile-container">
+              <div className="header-profile-container">
           <img
             className="header-avatar-image"
             src="/cat.svg"
@@ -55,7 +49,14 @@ function Header({ title }) {
           />
           <p className="header-username">{user?.username}</p>
         </div>
+
+      <div className="header-title-box">
+        <h1 className="header-title">{title}</h1>
       </div>
+      <div className="header-right-end-container">
+        <NestedModal />
+      </div>
+      <div className="header-empty-div"></div>
     </header>
   );
 }
