@@ -5,6 +5,7 @@ import {
   faBell,
   faTrashCan,
   faArrowRight,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -13,6 +14,14 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
+import { useHistory } from "react-router-dom";
+
+/**
+ * There are 3 components in this file
+ * 1.) Header
+ * 2.) Nested Modal (notification list)
+ * 3.) Child Modal (individual notification)
+ */
 
 // base style for modals
 const style = {
@@ -32,6 +41,7 @@ const style = {
 
 function Header({ title }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((store) => store.user);
 
   useEffect(() => {
@@ -40,7 +50,17 @@ function Header({ title }) {
 
   return (
     <header id="content-header">
-      <div className="header-empty-div"></div>
+      <div className="header-back-btn-box">
+        <Button
+          sx={{ marginLeft: "20px", fontSize: "11px" }}
+          variant="contained"
+          color="secondary"
+          onClick={history.goBack}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: "5px" }} />{" "}
+          Back
+        </Button>
+      </div>
       <div className="header-title-box">
         <h1 className="header-title">{title}</h1>
       </div>
