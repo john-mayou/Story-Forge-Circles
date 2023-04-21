@@ -41,10 +41,33 @@ const CreateCircleDialog = (props) => {
     onConfirm,
   } = props;
 
+  const [inputOneValid, setInputOneValid] = useState(true);
+  const [inputTwoValid, setInputTwoValid] = useState(true);
+
+  const handleConfirm = () => {
+    // Validate input fields
+    if (!inputOne) {
+      setInputOneValid(false);
+    }
+    if (!inputTwo) {
+      setInputTwoValid(false);
+    }
+    if (inputOne && inputTwo) {
+      onConfirm();
+      handleClose();
+    }
+  };
+
+  const handleClose = () => {
+    setInputOneValid(true);
+    setInputTwoValid(true);
+    setOpen(false);
+  };
+
   return (
     <Dialog
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       aria-labelledby="create-dialog"
     >
       <DialogTitle id="create-dialog">{title}</DialogTitle>
@@ -56,12 +79,16 @@ const CreateCircleDialog = (props) => {
           id="Name"
           label="Name"
           type="text"
+          required
           placeholder="My Circle name..."
           value={inputOne}
           onChange={(e) => {
             setInputOne(e.target.value);
+            setInputOneValid(true); // mark input as valid again when user types
           }}
           fullWidth
+          error={!inputOneValid} // show error if input is invalid
+          helperText={!inputOneValid && "Please enter a circle name."} // error message
         />
         <TextField
           autoFocus
@@ -69,25 +96,23 @@ const CreateCircleDialog = (props) => {
           id="description"
           label="Description"
           type="text"
+          required
           placeholder="My Writing Circle is for..."
           value={inputTwo}
           onChange={(e) => {
             setInputTwo(e.target.value);
+            setInputTwoValid(true); // mark input as valid again when user types
           }}
           fullWidth
+          error={!inputTwoValid} // show error if input is invalid
+          helperText={!inputTwoValid && "Please enter a circle description."} // error message
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>
+        <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setOpen(false);
-            onConfirm();
-          }}
-        >
+        <Button variant="contained" onClick={handleConfirm}>
           Create
         </Button>
       </DialogActions>

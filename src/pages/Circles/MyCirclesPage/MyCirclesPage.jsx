@@ -19,12 +19,6 @@ function MyCirclesPage() {
   const [circleDescription, setCircleDescription] = useState("");
 
   const handleCreateCircle = () => {
-    // Check if the inputs are not empty
-    if (!circleName || !circleDescription) {
-      alert("Please enter a value for both Circle Name and Description");
-      return;
-    }
-
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
