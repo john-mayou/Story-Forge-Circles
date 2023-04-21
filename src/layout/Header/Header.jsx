@@ -43,6 +43,9 @@ function Header({ title }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((store) => store.user);
+  const isOnReadingListPage = new RegExp(`reading-list$`).test(
+    window.location.href
+  );
 
   useEffect(() => {
     dispatch({ type: "FETCH_NOTIFICATIONS" });
@@ -51,15 +54,20 @@ function Header({ title }) {
   return (
     <header id="content-header">
       <div className="header-back-btn-box">
-        <Button
-          sx={{ marginLeft: "20px", fontSize: "11px" }}
-          variant="contained"
-          color="secondary"
-          onClick={history.goBack}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: "5px" }} />{" "}
-          Back
-        </Button>
+        {!isOnReadingListPage && (
+          <Button
+            sx={{ marginLeft: "20px", fontSize: "11px" }}
+            variant="contained"
+            color="secondary"
+            onClick={history.goBack}
+          >
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              style={{ marginRight: "5px" }}
+            />{" "}
+            Back
+          </Button>
+        )}
       </div>
       <div className="header-title-box">
         <h1 className="header-title">{title}</h1>
