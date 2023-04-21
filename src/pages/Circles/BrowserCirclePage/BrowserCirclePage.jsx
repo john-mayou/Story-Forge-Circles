@@ -16,7 +16,6 @@ function BrowserCirclePage() {
     setPublicCircles(circleResult.data);
   };
 
-  console.log("outside ", publicCircles);
   return (
     <main className="content-main">
       <Header title={"Public Circles"} />
