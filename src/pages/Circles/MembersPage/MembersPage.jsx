@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import Header from "../../../layout/Header/Header";
+import Snackbar from "@mui/material/Snackbar";
 
 function MembersPage() {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ function MembersPage() {
   const [newMember, setNewMember] = useState("");
   const [userExitsError, setUserExistsError] = useState(false);
   const [circleDetails, setCircleDetails] = useState([]);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     fetchMembers();
@@ -43,12 +46,14 @@ function MembersPage() {
     );
 
     let payload;
+    let successMessage;
     if (initiator === "leader") {
       payload = {
         circle_id: circleDetails.id,
         recipient_id: userExistsResult.data[0].id,
         type: "leader invite member - user action",
       };
+      successMessage = "Successfully sent invitation to new member";
     } else if (initiator === "member") {
       payload = {
         circle_id: circleDetails.id,
@@ -56,6 +61,7 @@ function MembersPage() {
         type: "member nomination - leader action",
         new_nomination: userExistsResult.data[0].id,
       };
+      successMessage = "Successfully sent nomination to circle leader";
     } else {
       console.log("Invalid initiator for sending user invite");
     }
@@ -65,6 +71,9 @@ function MembersPage() {
         type: "CREATE_NEW_NOTIFICATION",
         payload: payload,
       });
+      setSuccessMessage(successMessage);
+      setSuccessOpen(true);
+      setNewMember("");
     } else {
       setUserExistsError(true);
     }
@@ -191,6 +200,12 @@ function MembersPage() {
           );
         })}
       </div>
+      <Snackbar
+        message={successMessage}
+        autoHideDuration={6000}
+        open={successOpen}
+        onClose={() => setSuccessOpen(false)}
+      />
     </main>
   );
 }
