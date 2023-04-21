@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
-import SearchForm from "../../../Search/SearchForm";
 import Header from "../../../../layout/Header/Header";
 import "../../ManuscriptStyling.css";
 import ManuscriptList from "../../../../components/ManuscriptList";
+import SearchBar from "../../../../components/SearchBar";
+import { searchKeySelector } from "../../../../utils/searchUtils";
+import useSearch from "../../../../hooks/useSearch";
 
 function WritersDeskPage() {
   const writersDeskManuscriptList = useSelector(
     (store) => store.manuscripts.writersDeskManuscriptList
   );
 
-  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,14 +44,8 @@ function WritersDeskPage() {
     setNewTitle("");
     setNewBody("");
   };
-
-
-  const handleSearch = (searchTerm) => {
-    history.push(
-      `/search/manuscripts/writersDeskManuscriptList?term=${searchTerm}`
-    );
-  };
   
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(writersDeskManuscriptList, searchKeySelector);
 
   return (
     <main className="content-main">
@@ -73,11 +67,11 @@ function WritersDeskPage() {
           setIsChecked={setIsChecked}
           onConfirm={() => handleSubmit()}
         ></CreateManuscriptDialog>
-        <SearchForm onSearch={handleSearch} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 
       {/* List of Manuscripts Created by User */}
-      <ManuscriptList manuscripts={writersDeskManuscriptList} isWritersDeskView={true}/>
+      <ManuscriptList manuscripts={filteredData} isWritersDeskView={true}/>
 
     </main>
   );

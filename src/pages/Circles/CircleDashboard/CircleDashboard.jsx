@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
-import SearchForm from "../../Search/SearchForm";
 import Header from "../../../layout/Header/Header";
-
 import { Button } from "@mui/material";
 import ManuscriptList from "../../../components/ManuscriptList";
+import SearchBar from "../../../components/SearchBar";
+import useSearch from "../../../hooks/useSearch";
+import { searchKeySelector } from "../../../utils/searchUtils";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -49,13 +50,11 @@ export default function CircleDashboard() {
     });
   };
 
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/circles/circleManuscriptsList?term=${searchTerm}`);
-  };
-
   const goToMessageBoard = () => {
     history.push(`/message-board/${circle_id}/${circleName}`);
   };
+
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(circleManuscriptsList, searchKeySelector);
 
   return (
     <main className="content-main">
@@ -65,7 +64,7 @@ export default function CircleDashboard() {
             circleName.charAt(0).toUpperCase() + circleName.slice(1)
           } Dashboard`}
         />
-        <SearchForm onSearch={handleSearch} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <h2>SHARED MANUSCRIPTS LIST</h2>
         <Button
           variant="contained"
@@ -104,7 +103,7 @@ export default function CircleDashboard() {
         <br></br>
       </div>
       <ManuscriptList
-        manuscripts={circleManuscriptsList}
+        manuscripts={filteredData}
         circle_id={circle_id}
       />
     </main>

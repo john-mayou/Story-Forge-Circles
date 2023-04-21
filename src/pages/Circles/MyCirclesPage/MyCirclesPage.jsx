@@ -1,8 +1,7 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTable from "../CircleTable/CircleTable";
-import SearchForm from "../../Search/SearchForm";
 import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
 import { Button } from "@mui/material";
 import Header from "../../../layout/Header/Header";
@@ -60,9 +59,6 @@ function MyCirclesPage() {
       </div>
 
       <CircleTable circleList={joined_circles} type="joined" />
-
-      {/* (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle */}
-      {/* <CircleTableView circlelist={myJoinedCircle} /> */}
 
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>

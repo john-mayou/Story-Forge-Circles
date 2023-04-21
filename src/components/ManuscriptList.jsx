@@ -59,7 +59,7 @@ export default function ManuscriptList({
           onClick={() =>
             handleDetails(manuscript?.manuscript_id ?? manuscript?.id)
           }
-          style={{ cursor: "pointer", textDecoration: "underline" }}
+          style={{ cursor: "pointer", textDecoration: "underline" }} //REMOVE as neccessary when styling
         >
           {manuscript.title}
         </h2>
