@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // font-awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 function MessageBoardForm({ parent_id, setReplyId }) {
   const { circle_id } = useParams();
@@ -36,16 +36,17 @@ function MessageBoardForm({ parent_id, setReplyId }) {
 
   return (
     <>
-      <div className="messages-container">
-        <form onSubmit={handleSubmitComment}>
-          <input
+      <form onSubmit={handleSubmitComment}>
+        <div className="messages-container">
+          <TextField
             type="text"
+            className="reply-input"
             value={message.message}
             onChange={(e) =>
               setMessage({ ...message, message: e.target.value })
             }
             placeholder={parent_id ? "Reply" : "New Thread"}
-            style={{ width: "40%", marginLeft: "5rem", marginRight: "0rem" }}
+            // style={{ width: "30%", marginLeft: "5rem", marginRight: "0rem" }}
           />
           <Button type="submit">
             <FontAwesomeIcon icon={faReply} />
@@ -57,8 +58,8 @@ function MessageBoardForm({ parent_id, setReplyId }) {
           ) : (
             ""
           )}
-        </form>
-      </div>
+        </div>
+      </form>
     </>
   );
 }

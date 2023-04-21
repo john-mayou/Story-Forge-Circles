@@ -6,8 +6,10 @@
   box-shadow: 7px 3px 3px #e0d4cc;;
 }
 
-.header-empty-div {
+.header-back-btn-box {
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .header-title-box {

@@ -1,8 +1,7 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CircleTable from "../CircleTable/CircleTable";
-import SearchForm from "../../Search/SearchForm";
 import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
 import { Button } from "@mui/material";
 import Header from "../../../layout/Header/Header";
@@ -20,12 +19,6 @@ function MyCirclesPage() {
   const [circleDescription, setCircleDescription] = useState("");
 
   const handleCreateCircle = () => {
-    // Check if the inputs are not empty
-    if (!circleName || !circleDescription) {
-      alert("Please enter a value for both Circle Name and Description");
-      return;
-    }
-
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
@@ -60,9 +53,6 @@ function MyCirclesPage() {
       </div>
 
       <CircleTable circleList={joined_circles} type="joined" />
-
-      {/* (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle */}
-      {/* <CircleTableView circlelist={myJoinedCircle} /> */}
 
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>

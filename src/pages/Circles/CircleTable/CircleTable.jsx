@@ -1,8 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
 import "../../../assets/styles/global/TableStyling.css";
 
 export default function CircleTable({ circleList, type, searchBar }) {
@@ -12,6 +13,7 @@ export default function CircleTable({ circleList, type, searchBar }) {
   // Local State
   const [filter, setFilter] = useState("");
   const [filteredCircles, setFilteredCircles] = useState([]);
+  const [successOpen, setSuccessOpen] = useState(false);
 
   useEffect(() => {
     setFilteredCircles(circleList);
@@ -71,7 +73,7 @@ export default function CircleTable({ circleList, type, searchBar }) {
                     <Button
                       variant="contained"
                       color="secondary"
-                      onClick={() =>
+                      onClick={() => {
                         dispatch({
                           type: "CREATE_NEW_NOTIFICATION",
                           payload: {
@@ -79,8 +81,9 @@ export default function CircleTable({ circleList, type, searchBar }) {
                             recipient_id: circle.owner_id,
                             type: "request to join - leader action",
                           },
-                        })
-                      }
+                        });
+                        setSuccessOpen(true);
+                      }}
                     >
                       Request to Join
                     </Button>
@@ -107,6 +110,12 @@ export default function CircleTable({ circleList, type, searchBar }) {
           })}
         </tbody>
       </table>
+      <Snackbar
+        message="Successfully sent request to circle leader"
+        autoHideDuration={6000}
+        open={successOpen}
+        onClose={() => setSuccessOpen(false)}
+      />
     </>
   );
 }

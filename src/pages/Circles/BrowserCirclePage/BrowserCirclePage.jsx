@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CircleTable from "../CircleTable/CircleTable";
-import SearchForm from "../../Search/SearchForm";
 import Header from "../../../layout/Header/Header";
 
 function BrowserCirclePage() {
@@ -16,12 +15,10 @@ function BrowserCirclePage() {
     setPublicCircles(circleResult.data);
   };
 
-  console.log("outside ", publicCircles);
   return (
     <main className="content-main">
       <Header title={"Public Circles"} />
       <div align="center">
-        {/* <SearchForm onSearch={handleSearch} /> */}
         {publicCircles && (
           <CircleTable
             circleList={publicCircles}

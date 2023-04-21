@@ -6,10 +6,6 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import Header from "../../../../layout/Header/Header";
 
-// font-awesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
 function WriteManuscriptPage() {
   const history = useHistory();
   const manuscript = useSelector(
@@ -56,9 +52,6 @@ function WriteManuscriptPage() {
   return (
     <main className="content-main">
       <Header title={`Write Mode`} />
-      <Button variant="contained" color="secondary" onClick={history.goBack}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Button>
       <div align="center">
         <br></br>
         <form onSubmit={handleSubmit}>
