@@ -55,50 +55,54 @@ export default function ManuscriptList({
 
     return (
       <div key={manuscript?.manuscript_id ?? manuscript?.id}>
-        <h2
+        <div
+          className="manuscript-list-text-wrapper"
           onClick={() =>
             handleDetails(manuscript?.manuscript_id ?? manuscript?.id)
           }
-          style={{ cursor: "pointer", textDecoration: "underline" }} //REMOVE as neccessary when styling
         >
-          {manuscript.title}
-        </h2>
-        <h3>{manuscript.username ?? manuscript.author}</h3>
-        <p>{preview}</p>
-        {isWritersDeskView && (
-          <>
+          <h2 className="manuscript-list-title">{manuscript.title}</h2>
+          <h3 className="manuscript-list-author">
+            {manuscript.username ?? manuscript.author}
+          </h3>
+          <p>{preview}</p>
+        </div>
+        <div className="manuscript-list-button-wrapper">
+          {isWritersDeskView && (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleEdit(manuscript)}
+              >
+                Edit
+              </Button>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() =>
+                  handleDeleteClick(manuscript?.manuscript_id ?? manuscript?.id)
+                }
+              >
+                Delete
+              </Button>
+            </>
+          )}
+          {circle_id && (
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleEdit(manuscript)}
-            >
-              Edit
-            </Button>
-
-            <Button
-              variant="contained"
-              color="secondary"
               onClick={() =>
-                handleDeleteClick(manuscript?.manuscript_id ?? manuscript?.id)
+                setUnshareManuscriptId(
+                  manuscript?.manuscript_id ?? manuscript?.id
+                )
               }
             >
-              Delete
+              Unshare
             </Button>
-          </>
-        )}
-        {circle_id && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              setUnshareManuscriptId(
-                manuscript?.manuscript_id ?? manuscript?.id
-              )
-            }
-          >
-            Unshare
-          </Button>
-        )}
+          )}
+        </div>
       </div>
     );
   });

@@ -13,20 +13,38 @@
   margin: 0;
 }
 
-.ManuscriptListItem {
-  display: grid;
-  grid-template-columns: 0.5fr 0.5fr 1fr;
+.manuscript-list-text-wrapper {
+  display: flex;
+  flex-direction: column;
   margin-left: 10%;
   margin-right: 10%;
   background-color: #ffffff;
   margin-top: 4px;
   margin-bottom: 4px;
+  padding-left: .5%;
   box-shadow: 7px 3px 3px #e0d4cc;
 }
 
-.ManuscriptListItem:hover {
+.manuscript-list-text-wrapper:hover {
   cursor: pointer;
   box-shadow: 9px 4px 4px #d3c8c1;
+}
+
+.manuscript-list-title {
+    text-decoration: underline;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.manuscript-list-author {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.manuscript-list-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-left: 10%;
 }
 
 .title {
