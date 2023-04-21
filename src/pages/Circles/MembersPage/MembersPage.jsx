@@ -149,7 +149,6 @@ function MembersPage() {
     }
   };
 
-  console.log(circleMembers, circleDetails.owner_id === user.id);
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
