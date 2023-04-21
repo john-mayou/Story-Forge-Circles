@@ -16,6 +16,13 @@ import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 import { useHistory } from "react-router-dom";
 
+/**
+ * There are 3 components in this file
+ * 1.) Header
+ * 2.) Nested Modal (notification list)
+ * 3.) Child Modal (individual notification)
+ */
+
 // base style for modals
 const style = {
   position: "absolute",
