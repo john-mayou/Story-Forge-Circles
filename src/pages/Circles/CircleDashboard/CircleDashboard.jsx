@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import TableManuscriptView from "../../../components/TableManuscriptView";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
 import SearchForm from "../../Search/SearchForm";
 import Header from "../../../layout/Header/Header";
 
 import { Button } from "@mui/material";
+import ManuscriptList from "../../../components/ManuscriptList";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -103,9 +103,9 @@ export default function CircleDashboard() {
         <br></br>
         <br></br>
       </div>
-      <TableManuscriptView
+      <ManuscriptList
+        manuscripts={circleManuscriptsList}
         circle_id={circle_id}
-        manuscriptlist={circleManuscriptsList}
       />
     </main>
   );
