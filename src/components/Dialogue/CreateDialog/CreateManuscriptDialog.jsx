@@ -12,7 +12,6 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-
 /**
  *
  * @param {*} props
@@ -67,7 +66,7 @@ const CreateManuscriptDialog = (props) => {
         />
         <TextareaAutosize
           minRows={20}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           autoFocus
           margin="dense"
           id="description"
@@ -91,7 +90,16 @@ const CreateManuscriptDialog = (props) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            setOpen(false);
+            setInputOne("");
+            setInputTwo("");
+            setIsChecked(false);
+          }}
+        >
           Cancel
         </Button>
         <Button
