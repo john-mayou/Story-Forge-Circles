@@ -10,7 +10,7 @@ forbidden.code = 403;
 
 // * GET children comments by parent id
 
-router.get("/:id", rejectUnauthenticated, (req, res) => {
+router.get("/children/:id", rejectUnauthenticated, (req, res) => {
   const getChildrenQuery = `
   SELECT m.*, u.username, 
   EXISTS (SELECT parent_id from "messages" 
@@ -34,19 +34,19 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
 
 // * GET threads (base/parent messages) on circles, limit 10
 
-router.get("/", rejectUnauthenticated, (req, res) => {
+router.get("/:id", rejectUnauthenticated, (req, res) => {
   const getThreadsQuery = `
   SELECT m.*, u.username, 
   EXISTS (SELECT parent_id from "messages" 
   WHERE parent_id = m.id) AS has_children
   FROM "messages" m 
   JOIN "user" u on u.id = m.user_id 
-  WHERE path='' 
+  WHERE path='' AND circle_id = $1
   ORDER BY created_at ASC 
   LIMIT 10
   ;`;
   pool
-    .query(getThreadsQuery)
+    .query(getThreadsQuery, [req.params.id])
     .then((dbRes) => {
       res.send(dbRes.rows);
     })

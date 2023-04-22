@@ -43,6 +43,7 @@ function MessageBoard() {
   useEffect(() => {
     dispatch({
       type: "FETCH_BASE_MESSAGES",
+      payload: circle_id
     });
   }, []);
 

@@ -2,10 +2,10 @@ import { put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 // * Get all base messages saga: fires on `FETCH_BASE_MESSAGES`
-function* fetchBaseMessages() {
+function* fetchBaseMessages(action) {
   try {
       // ask for base messages from db
-      let messagesResponse = yield axios.get(`/api/messages`)
+      let messagesResponse = yield axios.get(`/api/messages/${action.payload}`)
       // once received, send to messageBoard Reducer
       yield put({ type: 'SET_ALL_MESSAGES', payload: messagesResponse.data })
   } catch (err) {
@@ -17,7 +17,7 @@ function* fetchBaseMessages() {
 function* fetchChildrenMessages(action) {
   try {
     // ask for children messages
-    const response = yield axios.get(`/api/messages/${action.payload}`)
+    const response = yield axios.get(`/api/messages/children/${action.payload}`)
     console.log("Response.data", response.data);
     // once received, send to messageBoard Reducer
     yield put({ type: 'ADD_CHILDREN_MESSAGES', payload: response.data })
