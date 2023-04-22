@@ -10,7 +10,7 @@ forbidden.code = 403;
 
 // * GET children comments by parent id
 
-router.get("/:id", rejectUnauthenticated, (req, res) => {
+router.get("/children/:id", rejectUnauthenticated, (req, res) => {
   const getChildrenQuery = `
     SELECT c.*, u.username, 
     EXISTS (SELECT parent_id from "comments" 
@@ -34,20 +34,21 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
 
 // * GET threads (base/parent comments) on manuscripts
 
-router.get("/", rejectUnauthenticated, (req, res) => {
-  const getThreadsQuery = `
+router.get("/:id", rejectUnauthenticated, (req, res) => {
+const getThreadsQuery = `
   SELECT c.*, u.username, 
   EXISTS (SELECT parent_id from "comments" 
   WHERE parent_id = c.id) AS has_children
   FROM "comments" c 
   JOIN "user" u on u.id = c.user_id 
-  WHERE path='' 
+  WHERE path='' AND manuscript_id = $1
   ORDER BY created_at ASC 
   LIMIT 10
   ;`;
   pool
-    .query(getThreadsQuery)
+    .query(getThreadsQuery, [req.params.id])
     .then((dbRes) => {
+      console.log(dbRes.rows)
       res.send(dbRes.rows);
     })
     .catch((err) => {

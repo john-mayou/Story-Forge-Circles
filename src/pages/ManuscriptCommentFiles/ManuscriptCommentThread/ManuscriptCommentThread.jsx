@@ -35,7 +35,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
               handleAddThreadClick={handleAddThreadClick} /> : '' }
           <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
             {commentList?.map((comment) => (
-              <li
+              <div
                 key={comment.id}
                 style={
                   comment.parent_id
@@ -108,7 +108,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
                     </Button>
                   )}
                 </div>
-              </li>
+              </div>
             ))}
           </ul>
         </div>
