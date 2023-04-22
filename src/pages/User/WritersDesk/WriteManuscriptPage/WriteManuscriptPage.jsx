@@ -97,6 +97,11 @@ function WriteManuscriptPage() {
             checked={isChecked}
           />
           <br></br>
+          {Object.values(isValidSubmission).some((field) => !field) && (
+            <p style={{ color: "red" }}>
+              Please populate all fields to save manuscript.
+            </p>
+          )}
 
           <Button
             variant="contained"
@@ -104,7 +109,7 @@ function WriteManuscriptPage() {
             className="submit-button"
             type="submit"
           >
-            Submit
+            Save
           </Button>
         </form>
 

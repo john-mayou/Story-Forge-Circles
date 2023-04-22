@@ -127,6 +127,11 @@ const CreateManuscriptDialog = (props) => {
           }
           label="Public"
         />
+        {Object.values(isValidSubmission).some((field) => !field) && (
+          <p style={{ color: "red" }}>
+            Please populate all fields for submission.
+          </p>
+        )}
       </DialogContent>
       <DialogActions>
         <Button
