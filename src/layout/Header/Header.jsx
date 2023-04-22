@@ -86,7 +86,7 @@ function NestedModal({ avatar }) {
       <Badge badgeContent={notifications.length} color="error">
         <img
           className="header-avatar-image"
-          src="/cat.svg" // {avatar}
+          src={avatar}
           width="40"
           height="49"
           onClick={handleOpen}
