@@ -54,18 +54,22 @@ export default function CircleDashboard() {
     history.push(`/message-board/${circle_id}/${circleName}`);
   };
 
-  const { filteredData, searchTerm, setSearchTerm } = useSearch(circleManuscriptsList, searchKeySelector);
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(
+    circleManuscriptsList,
+    searchKeySelector
+  );
 
   return (
     <main className="content-main">
-      <div align="center">
-        <Header
-          title={`${
-            circleName.charAt(0).toUpperCase() + circleName.slice(1)
-          } Dashboard`}
-        />
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <h2>SHARED MANUSCRIPTS LIST</h2>
+      <Header
+        title={`${
+          circleName.charAt(0).toUpperCase() + circleName.slice(1)
+        } Dashboard`}
+      />
+      <div className="sub-header-wrapper" align="center">
+
+
+        <div>
         <Button
           variant="contained"
           color="primary"
@@ -73,6 +77,8 @@ export default function CircleDashboard() {
         >
           Share Manuscript
         </Button>
+
+
 
         <Button
           variant="contained"
@@ -82,6 +88,8 @@ export default function CircleDashboard() {
           Members
         </Button>
 
+
+
         <Button
           variant="contained"
           color="secondary"
@@ -89,6 +97,7 @@ export default function CircleDashboard() {
         >
           Message Board
         </Button>
+
 
         <ShareManuscriptDialog
           manuscripts={userManuscriptNotInCircle}
@@ -99,13 +108,12 @@ export default function CircleDashboard() {
             handleShareManuscript(selectedManuscriptsId)
           }
         />
-        <br></br>
-        <br></br>
+        </div>
+
+        <h2>SHARED MANUSCRIPTS LIST</h2>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
-      <ManuscriptList
-        manuscripts={filteredData}
-        circle_id={circle_id}
-      />
+      <ManuscriptList manuscripts={filteredData} circle_id={circle_id} />
     </main>
   );
 }

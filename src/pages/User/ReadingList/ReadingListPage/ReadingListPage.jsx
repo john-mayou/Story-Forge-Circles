@@ -27,7 +27,8 @@ function ReadingListPage() {
   return (
     <main className="content-main">
       <Header title={"Reading List"} />
-      <div className="" align="center">
+
+      <div className="sub-header-wrapper" align="center">
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 

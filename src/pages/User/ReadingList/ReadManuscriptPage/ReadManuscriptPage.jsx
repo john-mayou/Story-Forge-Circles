@@ -6,7 +6,7 @@ import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptC
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@mui/material";
-import "../../ManuscriptStyling.css";
+import "../../../PageStyling.css"
 import Header from "../../../../layout/Header/Header";
 
 function ReadManuscriptPage() {
