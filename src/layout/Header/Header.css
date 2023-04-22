@@ -5,17 +5,25 @@
   z-index: 100;
   height: 50px;
   background-color: #ffffff;
-  box-shadow: 7px 3px 3px #e0d4cc;;
+  box-shadow: 7px 3px 3px #e0d4cc;
+}
+
+#content-header > * {
+  flex: 0 0 calc(100% / 3);
 }
 
 .header-back-btn-box {
-  flex: 1;
   display: flex;
   align-items: center;
 }
 
+.header-back-btn-icon {
+  margin-left: 5px;
+  font-size: 20px;
+  color: black;
+}
+
 .header-title-box {
-  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,34 +31,24 @@
 
 .header-title {
   font-weight: 600;
-}
-
-.header-notification-bell {
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-
-.header-right-end-container {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 2rem;
+  font-size: 28px;
 }
 
 .header-profile-container {
+  padding-right: 10px;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: 10px;
 }
 
 .header-avatar-image {
+  cursor: pointer;
   border-radius: 50%;
+  width: 36px;
 }
 
 .header-username {
-  text-transform: uppercase;
   font-weight: 600;
 }
 
@@ -59,9 +57,6 @@
   padding: 5px 0;
   display: flex;
   justify-content: space-between;
-}
-
-.notification-text {
 }
 
 .complete-notification-btn {
@@ -98,18 +93,17 @@
   color: #f0f0f0;
 }
 
-
-
 /* Small Screen - Phones */
-@media only screen and (max-width: 600px) {
-
-  .header-title {
-    font-weight: 600;
-    font-size: 1em;
+@media only screen and (max-width: 800px) {
+  #content-header > * {
+    flex: none;
   }
 
-  .header-avatar-image {
-    border-radius: 50%;
-    width: 2em;
+  .header-profile-container {
+    margin-left: auto;
+  }
+
+  .header-title {
+    font-size: 24px;
   }
 }

@@ -99,7 +99,7 @@ Main Content
 .content-main {
   margin-left: 5rem;
   height: 100vh;
-  width: 100%;
+  width: calc(100% - 5rem);
   position: fixed;
   overflow: scroll;
 }
@@ -107,6 +107,7 @@ Main Content
 @media only screen and (max-width: 600px) {
   .content-main {
     margin-left: 0;
+    width: 100%;
     padding-bottom: 5rem;
   }
 }
