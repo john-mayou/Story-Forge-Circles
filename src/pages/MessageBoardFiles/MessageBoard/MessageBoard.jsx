@@ -121,7 +121,7 @@ function MessageBoard() {
                     {/* <pre>{JSON.stringify(message)}</pre> */}
                     <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     {message.has_children ? (
-                      <Button
+                        <Button sx={{width: "1rem"}}
                         onClick={() => {
                           if (expand.includes(message.id)) {
                             setExpand(

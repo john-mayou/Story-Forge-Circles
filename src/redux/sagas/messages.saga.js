@@ -35,6 +35,7 @@ function* postMessage(action) {
     const response = yield axios.post(`/api/messages`, action.payload);
     const user = yield select(userSelector)
     response.data.username = user.username;
+    response.data.avatar_image = user.avatar_image
     if (response.data.parent_id) {
       yield put({
         type: "ADD_CHILDREN_MESSAGES",
