@@ -32,10 +32,6 @@ function ReadManuscriptPage() {
   return (
     <main className="content-main">
       <Header title={`Read Mode`} />
-      <Button variant="contained" color="secondary" onClick={history.goBack}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Button>
-
       <div align="center">
         <div className="manuscript">
           <h1>{manuscript.title}</h1>

@@ -67,13 +67,9 @@ function RegisterPage() {
           >
             Register
           </Button>
-        </div>
-      </form>
 
-      <center>
-        <Button
-          variant="contained"
-          color="secondary"
+          <Button
+          color="primary"
           type="button"
           className="btn btn_asLink"
           onClick={() => {
@@ -82,6 +78,11 @@ function RegisterPage() {
         >
           Login
         </Button>
+        </div>
+      </form>
+
+      <center>
+
       </center>
     </div>
   );
