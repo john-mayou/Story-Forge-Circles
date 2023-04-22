@@ -19,18 +19,19 @@ function ReadingListPage() {
     });
   }, []);
 
-
-  const { filteredData, searchTerm, setSearchTerm } = useSearch(publicManuscriptList, searchKeySelector);
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(
+    publicManuscriptList,
+    searchKeySelector
+  );
 
   return (
     <main className="content-main">
-      <div align="center">
-        <Header title={"Reading List"} />
+      <Header title={"Reading List"} />
+      <div className="" align="center">
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 
-      <ManuscriptList manuscripts={filteredData}/>
-
+      <ManuscriptList manuscripts={filteredData} />
     </main>
   );
 }

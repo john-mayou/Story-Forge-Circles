@@ -56,16 +56,13 @@ function Header({ title }) {
       <div className="header-back-btn-box">
         {!isOnReadingListPage && (
           <Button
-            sx={{ marginLeft: "20px", fontSize: "11px" }}
-            variant="contained"
-            color="secondary"
+            sx={{ marginLeft: "20px", fontSize: "1.25em", color: "black" }}
             onClick={history.goBack}
           >
             <FontAwesomeIcon
               icon={faArrowLeft}
               style={{ marginRight: "5px" }}
             />{" "}
-            Back
           </Button>
         )}
       </div>
@@ -84,6 +81,7 @@ function Header({ title }) {
           <p className="header-username">{user?.username}</p>
         </div>
       </div>
+      <div className="header-empty-div"></div>
     </header>
   );
 }

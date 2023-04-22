@@ -75,7 +75,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
           {user.id && <Sidebar />}
           <Switch>
             <Redirect exact from="/" to="/reading-list" />
@@ -159,7 +158,6 @@ function App() {
               <h1>404</h1>
             </Route>
           </Switch>
-        </div>
       </Router>
     </ThemeProvider>
   );

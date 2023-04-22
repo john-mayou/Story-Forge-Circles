@@ -112,11 +112,6 @@ function WriteManuscriptPage() {
             Save
           </Button>
         </form>
-
-        <h4>Comments</h4>
-        <Button variant="contained" color="primary">
-          +Comment
-        </Button>
       </div>
     </main>
   );
