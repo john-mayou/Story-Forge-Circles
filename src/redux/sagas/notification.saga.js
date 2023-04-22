@@ -41,6 +41,7 @@ function* completeNotification(action) {
   try {
     yield axios.put(`/api/notification/complete/${action.payload}`);
     yield put({ type: "FETCH_NOTIFICATIONS" });
+    yield put({ type: "FETCH_USER" });
   } catch (error) {
     console.log("Error update new circle leader", error);
   }
