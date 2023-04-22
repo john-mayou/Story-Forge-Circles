@@ -55,38 +55,26 @@ function Header({ title }) {
     <header id="content-header">
       <div className="header-back-btn-box">
         {!isOnReadingListPage && (
-          <Button
-            sx={{ marginLeft: "20px", fontSize: "1.25em", color: "black" }}
-            onClick={history.goBack}
-          >
+          <Button onClick={history.goBack}>
             <FontAwesomeIcon
               icon={faArrowLeft}
-              style={{ marginRight: "5px" }}
-            />{" "}
+              className="header-back-btn-icon"
+            />
           </Button>
         )}
       </div>
       <div className="header-title-box">
         <h1 className="header-title">{title}</h1>
       </div>
-      <div className="header-right-end-container">
-        <NestedModal />
-        <div className="header-profile-container">
-          <img
-            className="header-avatar-image"
-            src="/cat.svg"
-            width="40"
-            height="49"
-          />
-          <p className="header-username">{user?.username}</p>
-        </div>
+      <div className="header-profile-container">
+        <NestedModal avatar={user.avatar_image} />
+        <p className="header-username">{user?.username}</p>
       </div>
-      <div className="header-empty-div"></div>
     </header>
   );
 }
 
-function NestedModal() {
+function NestedModal({ avatar }) {
   const notifications = useSelector((store) => store.notifications);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
@@ -101,9 +89,11 @@ function NestedModal() {
   return (
     <div>
       <Badge badgeContent={notifications.length} color="error">
-        <FontAwesomeIcon
-          icon={faBell}
-          className="header-notification-bell"
+        <img
+          className="header-avatar-image"
+          src={avatar}
+          width="40"
+          height="49"
           onClick={handleOpen}
         />
       </Badge>

@@ -44,8 +44,11 @@ function WritersDeskPage() {
     setNewTitle("");
     setNewBody("");
   };
-  
-  const { filteredData, searchTerm, setSearchTerm } = useSearch(writersDeskManuscriptList, searchKeySelector);
+
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(
+    writersDeskManuscriptList,
+    searchKeySelector
+  );
 
   return (
     <main className="content-main">
@@ -71,8 +74,7 @@ function WritersDeskPage() {
       </div>
 
       {/* List of Manuscripts Created by User */}
-      <ManuscriptList manuscripts={filteredData} isWritersDeskView={true}/>
-
+      <ManuscriptList manuscripts={filteredData} isWritersDeskView={true} />
     </main>
   );
 }
