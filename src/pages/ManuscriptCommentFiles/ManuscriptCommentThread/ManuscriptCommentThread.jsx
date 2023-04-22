@@ -31,7 +31,8 @@ function ManuscriptCommentThread({ manuscript_id }) {
           {!addThread ? " Comment" : " Cancel"}
         </Button>
         <div className="thread-container">
-          {addThread ? <CommentForm /> : ""}
+          {addThread ? <CommentForm manuscript_id={manuscript_id}
+              handleAddThreadClick={handleAddThreadClick} /> : '' }
           <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
             {commentList?.map((comment) => (
               <li

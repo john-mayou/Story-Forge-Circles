@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
@@ -54,6 +54,10 @@ function MessageBoard() {
     history.push(`/circle-dashboard/${circle_id}/${circleName}`);
   };
 
+  const filterMessageList = useMemo(() => {
+    return messageList.filter((message) => message.circle_id == circle_id);
+  }, [messageList, circle_id]);
+
   return (
     <>
       <Header title={`${circleName} Message Board`} />
@@ -103,7 +107,7 @@ function MessageBoard() {
               </ListItem>
 
               {/** MESSAGE DISPLAY LIST **/}
-              {messageList?.map((message) => (
+              {filterMessageList?.map((message) => (
                 <ListItem
                   key={message.id}
                   style={
@@ -153,7 +157,7 @@ function MessageBoard() {
                         )}
                       </Button>
                     ) : (
-                      ""
+                      ''
                     )}
                     <ListItemText
                       primary={`@${message.username}  `}
@@ -182,8 +186,6 @@ function MessageBoard() {
                         <FontAwesomeIcon icon={faReply} /> Reply
                       </Button>
                     )}
-                    {/* TEMPORARY DIVIDER OPTIONS */}
-                    {/* <Divider variant="inset" component="li" /> */}
                     <Divider
                       variant="inset"
                       component="li"
