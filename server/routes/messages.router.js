@@ -12,7 +12,7 @@ forbidden.code = 403;
 
 router.get("/children/:id", rejectUnauthenticated, (req, res) => {
   const getChildrenQuery = `
-  SELECT m.*, u.username, 
+  SELECT m.*, u.username, u.avatar_image, 
   EXISTS (SELECT parent_id from "messages" 
   WHERE parent_id = m.id) AS has_children
   FROM "messages" m
@@ -36,7 +36,7 @@ router.get("/children/:id", rejectUnauthenticated, (req, res) => {
 
 router.get("/:id", rejectUnauthenticated, (req, res) => {
   const getThreadsQuery = `
-  SELECT m.*, u.username, 
+  SELECT m.*, u.username, u.avatar_image, 
   EXISTS (SELECT parent_id from "messages" 
   WHERE parent_id = m.id) AS has_children
   FROM "messages" m 

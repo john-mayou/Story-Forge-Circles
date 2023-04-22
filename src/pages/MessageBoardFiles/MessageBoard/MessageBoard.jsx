@@ -13,6 +13,7 @@ import {
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  Box,
   Paper,
   InputBase,
   Divider,
@@ -82,7 +83,7 @@ function MessageBoard() {
           </ButtonGroup>
 
           {/** BEGIN THREAD LIST **/}
-          <React.Fragment className="thread-container" />
+          <React.Fragment/>
           <section className="comment-thread-cards">
             <List
               sx={{
@@ -96,16 +97,6 @@ function MessageBoard() {
                 alignItems="flex-start"
                 style={{ listStyle: "none", padding: 0 }}
               >
-                {/** STATIC AVATAR **/}
-                <ListItemAvatar>
-                  <Avatar
-                    className="header-avatar-image"
-                    src="/cat.svg"
-                    alt="Draft Cat"
-                    width="40"
-                    height="49"
-                  />
-                </ListItemAvatar>
               </ListItem>
 
               {/** MESSAGE DISPLAY LIST **/}
@@ -128,6 +119,7 @@ function MessageBoard() {
                 >
                   <div>
                     {/* <pre>{JSON.stringify(message)}</pre> */}
+                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     {message.has_children ? (
                       <Button
                         onClick={() => {
@@ -161,40 +153,55 @@ function MessageBoard() {
                     ) : (
                       ''
                     )}
+                  {/** DYNAMIC AVATAR **/}
+                    <Avatar
+                      className="header-avatar-image"
+                      src={message.avatar_image}
+                      alt="Draft Cat"
+                      width="40"
+                      height="49"
+                    />
                     <ListItemText
-                      sx={{color: message.username == user.username ? "#21929F" : "#000000"}}
-                      primary={`@${message.username}  `}
-                      secondary={
-                        <React.Fragment>
+                      sx={{color: message.username == user.username ? "#21929F" : "#000000", ml: "1rem"}}
+                        primary={
+                          <Box sx={{display: "flex", flexDirection: "row"}}>
+                          {message.username}
                           <Typography
-                            sx={{ display: "inline", mr: "1rem" }}
+                            sx={{ display: "inline", mx: "1rem", alignSelf: "center" }}
                             component="span"
                             variant="body2"
                             color="primary.main"
                           >
                             {dayjs(message.created_at).format("MMM D h:mm A")}
-                          </Typography>
-                          {message.message}
-                        </React.Fragment>
+                            </Typography>
+                          </Box>
+                        }
+                      secondary={
+                          <Box sx={{display: "flex", flexDirection: "column"}}>
+                            <Box>
+                              {message.message}
+                            </Box>
+                          {/** passing message.id as parent_id prop to form component **/}
+                          {replyId == message.id ? (
+                            <MessageBoardForm
+                              parent_id={message.id}
+                              setReplyId={setReplyId}
+                              />
+                          ) : (
+                            <Button sx={{alignSelf: "flex-start"}} onClick={() => setReplyId(message.id)}>
+                              <FontAwesomeIcon icon={faReply} /> Reply
+                            </Button>
+                            )}
+                          </Box>
                       }
                     />
-                    {/** passing message.id as parent_id prop to form component **/}
-                    {replyId == message.id ? (
-                      <MessageBoardForm
-                        parent_id={message.id}
-                        setReplyId={setReplyId}
-                      />
-                    ) : (
-                      <Button onClick={() => setReplyId(message.id)}>
-                        <FontAwesomeIcon icon={faReply} /> Reply
-                      </Button>
-                    )}
                     <Divider
                       variant="inset"
                       component="li"
                       sx={{ height: "100%", m: 0.3 }}
                       orientation="horizontal"
-                    />
+                      />
+                    </Box>
                   </div>
                 </ListItem>
               ))}
