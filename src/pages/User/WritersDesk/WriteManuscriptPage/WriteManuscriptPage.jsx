@@ -8,9 +8,6 @@ import Header from "../../../../layout/Header/Header";
 
 function WriteManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector(
-    (store) => store.manuscripts.manuscriptDetails
-  );
   const dispatch = useDispatch();
   const { id: manuscriptId } = useParams();
 
@@ -29,9 +26,19 @@ function WriteManuscriptPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [isValidSubmission, setIsValidSubmission] = useState({
+    newTitle: true,
+    newBody: true,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // validation
+    if (!newTitle || !newBody) {
+      setIsValidSubmission({ newTitle: !!newTitle, newBody: !!newBody });
+      return;
+    }
 
     const newManuscript = {
       id: manuscriptId,
@@ -48,7 +55,6 @@ function WriteManuscriptPage() {
     history.push("/writers-desk");
   };
 
-  console.log(manuscript);
   return (
     <main className="content-main">
       <Header title={`Write Mode`} />
@@ -57,12 +63,22 @@ function WriteManuscriptPage() {
         <form onSubmit={handleSubmit}>
           <label>Title</label>
           <input
+            style={{
+              border: !isValidSubmission.newTitle
+                ? "2px solid red"
+                : "2px solid gray",
+            }}
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
           ></input>
           <br></br>
           <br></br>
           <textarea
+            style={{
+              border: !isValidSubmission.newBody
+                ? "2px solid red"
+                : "2px solid gray",
+            }}
             className="manuscript-text-area"
             rows="25"
             cols="75"
@@ -81,6 +97,11 @@ function WriteManuscriptPage() {
             checked={isChecked}
           />
           <br></br>
+          {Object.values(isValidSubmission).some((field) => !field) && (
+            <p style={{ color: "red" }}>
+              Please populate all fields to save manuscript.
+            </p>
+          )}
 
           <Button
             variant="contained"
@@ -88,7 +109,7 @@ function WriteManuscriptPage() {
             className="submit-button"
             type="submit"
           >
-            Submit
+            Save
           </Button>
         </form>
       </div>
