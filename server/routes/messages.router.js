@@ -60,10 +60,7 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
 // * POST messages on circle message board
 
 router.post("/", rejectUnauthenticated, async (req, res) => {
-  // extracting values from req.body
   const { manuscript_id, circle_id, parent_id, message } = req.body;
-  console.log("in req.body", req.body);
-
   const connection = await pool.connect();
 
   try {
@@ -76,8 +73,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     ;`,
       [manuscript_id, circle_id, req.user.id, parent_id, message]
     );
-    // if parent id exists, update path
-    // if (parent_id) {
+
     let pathQuery = `
       WITH RECURSIVE messages_cte (id, path) 
       AS (SELECT m.id,''
@@ -94,19 +90,19 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
     const path = pathResponse.rows[0].path.substr(1);
     result.rows[0].path = path;
-    console.log("path:", path);
+
     // Making new query to set path (ltree type) for reply
     const updateQuery = `UPDATE messages SET path = $1 WHERE id = $2;`;
     const updateResponse = await connection.query(updateQuery, [
       path,
       result.rows[0].id,
     ]);
-    // }
+
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {
     await connection.query("ROLLBACK");
-    console.log(`Transaction Error - Rolling back transfer`, err);
+    console.error(`Transaction Error - Rolling back transfer`, err);
     res.sendStatus(500).json({ message: "Error occurring with messages." });
   } finally {
     connection.release();

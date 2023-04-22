@@ -61,7 +61,6 @@ const getThreadsQuery = `
 // * POST post comments on manuscripts
 
 router.post("/", rejectUnauthenticated, async (req, res) => {
-  console.log("req.body:", req.body);
   const { manuscript_id, parent_id, comment } = req.body;
   const connection = await pool.connect();
 
@@ -74,8 +73,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     ;`,
       [manuscript_id, req.user.id, parent_id, comment]
     );
-    // if parent id exists, update path
-    // if (parent_id) {
+
     let pathQuery = `
         WITH RECURSIVE comments_cte (id, path) 
         AS (SELECT c.id,''
@@ -96,7 +94,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     // Making new query to set path (ltree type) for reply
     const updateQuery = `UPDATE comments SET path = $1 WHERE id = $2;`;
     const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
-    // }
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {
