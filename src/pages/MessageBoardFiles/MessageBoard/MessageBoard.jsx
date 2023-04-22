@@ -35,6 +35,7 @@ function MessageBoard() {
   const dispatch = useDispatch();
   const history = useHistory();
   const messageList = useSelector((store) => store.messages);
+  const user = useSelector((store) => store.user);
   const [addThread, setAddThread] = useState(false);
   const [expand, setExpand] = useState([]);
   const [replyId, setReplyId] = useState(-1);
@@ -161,11 +162,12 @@ function MessageBoard() {
                       ''
                     )}
                     <ListItemText
+                      sx={{color: message.username == user.username ? "#21929F" : "#000000"}}
                       primary={`@${message.username}  `}
                       secondary={
                         <React.Fragment>
                           <Typography
-                            sx={{ display: "inline" }}
+                            sx={{ display: "inline", mr: "1rem" }}
                             component="span"
                             variant="body2"
                             color="primary.main"
