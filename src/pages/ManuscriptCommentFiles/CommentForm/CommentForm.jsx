@@ -8,8 +8,8 @@ import { Button } from "@mui/material";
 function CommentForm({
   manuscript_id,
   parent_id,
-  setReplyId = () => {},
-  handleAddThreadClick = () => {},
+  setReplyId,
+  handleAddThreadClick,
 }) {
   // getting user from store
   const user = useSelector((store) => store.user);
@@ -31,7 +31,9 @@ function CommentForm({
       payload: comment,
     });
     clearInput();
-    handleAddThreadClick();
+    if (handleAddThreadClick) {
+      handleAddThreadClick();
+    }
     setReplyId(-1);
   };
 

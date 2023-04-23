@@ -32,7 +32,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
         </Button>
         <div className="thread-container">
           {addThread ? <CommentForm manuscript_id={manuscript_id}
-              handleAddThreadClick={handleAddThreadClick} /> : '' }
+              handleAddThreadClick={handleAddThreadClick} setReplyId={setReplyId} /> : '' }
           <ul align="left" style={{ listStyle: "none", marginLeft: "10%" }}>
             {commentList?.map((comment) => (
               <div
