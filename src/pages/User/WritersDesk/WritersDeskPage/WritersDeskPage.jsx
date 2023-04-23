@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import CreateManuscriptDialog from "../../../../components/Dialogue/CreateDialog/CreateManuscriptDialog";
 import { Button } from "@mui/material";
 import Header from "../../../../layout/Header/Header";
-import "../../ManuscriptStyling.css";
 import ManuscriptList from "../../../../components/ManuscriptList";
 import SearchBar from "../../../../components/SearchBar";
 import { searchKeySelector } from "../../../../utils/searchUtils";
 import useSearch from "../../../../hooks/useSearch";
+import '../../../PageStyling.css'
 
 function WritersDeskPage() {
   const writersDeskManuscriptList = useSelector(
@@ -53,24 +53,27 @@ function WritersDeskPage() {
   return (
     <main className="content-main">
       <Header title={"My Shelf"} />
-      <div align="center">
-        <h2>Start Writing!</h2>
-        <Button variant="contained" onClick={() => setCreateOpen(true)}>
-          + New Manuscript
-        </Button>
-        <CreateManuscriptDialog
-          title="Create Manuscript"
-          open={createOpen}
-          setOpen={setCreateOpen}
-          inputOne={newTitle}
-          setInputOne={setNewTitle}
-          inputTwo={newBody}
-          setInputTwo={setNewBody}
-          isChecked={isChecked}
-          setIsChecked={setIsChecked}
-          onConfirm={() => handleSubmit()}
-        ></CreateManuscriptDialog>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className="sub-header-wrapper" align="center">
+        <div>
+          <Button variant="contained" onClick={() => setCreateOpen(true)}>
+            + New Manuscript
+          </Button>
+          <CreateManuscriptDialog
+            title="Create Manuscript"
+            open={createOpen}
+            setOpen={setCreateOpen}
+            inputOne={newTitle}
+            setInputOne={setNewTitle}
+            inputTwo={newBody}
+            setInputTwo={setNewBody}
+            isChecked={isChecked}
+            setIsChecked={setIsChecked}
+            onConfirm={() => handleSubmit()}
+          ></CreateManuscriptDialog>
+        </div>
+        <div>
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </div>
       </div>
 
       {/* List of Manuscripts Created by User */}

@@ -18,7 +18,7 @@ function BrowserCirclePage() {
   return (
     <main className="content-main">
       <Header title={"Public Circles"} />
-      <div align="center">
+      <div style={{marginTop: '1em'}} align="center">
         {publicCircles && (
           <CircleTable
             circleList={publicCircles}

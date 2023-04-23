@@ -64,8 +64,10 @@ function MessageBoard() {
   return (
     <>
       <Header title={`${circleName} Message Board`} />
-      <div align="center" style={{ backgroundColor: "#FCF5F0", marginLeft: "6vw" }}>
+      <div align="center" className="sub-header-wrapper" style={{ backgroundColor: "#FCF5F0" }}>
+        <div>
         <SearchMessageBoard />
+        </div>
         <div>
           {/** +THREAD & DASHBOARD BUTTON **/}
           <ButtonGroup sx={{my: 1}}>
@@ -81,6 +83,7 @@ function MessageBoard() {
               Dashboard
             </Button>
           </ButtonGroup>
+          </div>
 
           {/** BEGIN THREAD LIST **/}
           <React.Fragment />
@@ -234,7 +237,6 @@ function MessageBoard() {
           </section>
           {/** END OF COMMENT LIST **/}
         </div>
-      </div>
     </>
   );
 }

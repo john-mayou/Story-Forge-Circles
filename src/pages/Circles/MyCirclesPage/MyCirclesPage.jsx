@@ -37,7 +37,8 @@ function MyCirclesPage() {
   return (
     <main className="content-main">
       <Header title={"My Circles"} />
-      <div align="center">
+      <div className="sub-header-wrapper" align="center">
+        <div>
         <Button
           variant="contained"
           color="secondary"
@@ -46,11 +47,10 @@ function MyCirclesPage() {
         >
           Circle Browser
         </Button>
-        <br />
-        <br />
-
-        <h2>JOINED CIRCLES</h2>
+        </div>
       </div>
+
+      <h2 align="center">JOINED CIRCLES</h2>
 
       <CircleTable circleList={joined_circles} type="joined" />
 

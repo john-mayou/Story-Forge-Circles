@@ -152,12 +152,12 @@ function MembersPage() {
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
-      <div align="center">
+      <div className="sub-header-wrapper" align="center">
         {userExitsError && <p>User doesnt exist... Try again</p>}
-        <div>
+        <div className="inline-flex-wrapper">
           {/* if user is circle owner */}
           {user.id === circleDetails.owner_id ? (
-            <>
+            <div className="inline-flex-wrapper">
               <Button
                 variant="contained"
                 color="primary"
@@ -172,9 +172,9 @@ function MembersPage() {
                   setNewMember(e.target.value);
                 }}
               />
-            </>
+            </div>
           ) : (
-            <>
+            <div className="inline-flex-wrapper">
               <Button
                 variant="contained"
                 color="primary"
@@ -189,7 +189,7 @@ function MembersPage() {
                   setNewMember(e.target.value);
                 }}
               />
-            </>
+            </div>
           )}
           {/* if user circle owner */}
           {user.id === circleDetails.owner_id ? (
@@ -212,10 +212,11 @@ function MembersPage() {
           }
 
           return (
-            <div key={member.id}>
+            <div className="inline-flex-wrapper"  key={member.id}>
               <span>
-                {member.id} {member.username}{" "}
-                {member.avatar_image || "null image"}
+                {/* {member.id}  */}
+                <p>{member.username}{" "}</p>
+                {/* {member.avatar_image || "null image"} */}
               </span>
               {user.id === circleDetails.owner_id && (
                 <>
