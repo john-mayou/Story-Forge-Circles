@@ -137,8 +137,8 @@ function ManuscriptCommentThread({ manuscript_id }) {
                         className="header-avatar-image"
                         src={comment.avatar_image}
                         alt="Draft Cat"
-                        width="50"
-                        height="59"
+                        width="40"
+                        height="49"
                       />
                       <ListItemText
                         sx={{

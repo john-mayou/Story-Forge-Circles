@@ -18,7 +18,6 @@ function* fetchChildrenMessages(action) {
   try {
     // ask for children messages
     const response = yield axios.get(`/api/messages/children/${action.payload}`)
-    console.log("Response.data", response.data);
     // once received, send to messageBoard Reducer
     yield put({ type: 'ADD_CHILDREN_MESSAGES', payload: response.data })
   } catch (err) {

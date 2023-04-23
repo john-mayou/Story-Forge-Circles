@@ -6,7 +6,6 @@ function* fetchBaseComments(action) {
   try {
       // ask for comment data from db
     let commentsResponse = yield axios.get(`/api/comments/${action.payload}`)
-    console.log(commentsResponse)
       // once received, send to comments Reducer
       yield put({ type: 'SET_ALL_COMMENTS', payload: commentsResponse.data })
   } catch (err) {
@@ -36,6 +35,7 @@ function* postComment(action) {
     const response = yield axios.post(`/api/comments`, action.payload);
     const user = yield select(userSelector)
     response.data.username = user.username;
+    response.data.avatar_image = user.avatar_image
     if (response.data.parent_id) {
       yield put({
         type: "ADD_CHILDREN_COMMENTS",

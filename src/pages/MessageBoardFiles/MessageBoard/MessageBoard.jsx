@@ -171,8 +171,8 @@ function MessageBoard() {
                         className="header-avatar-image"
                         src={message.avatar_image}
                         alt="Draft Cat"
-                        width="50"
-                        height="59"
+                        width="40"
+                        height="49"
                       />
                       <ListItemText
                         sx={{
