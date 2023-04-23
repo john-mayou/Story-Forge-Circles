@@ -49,7 +49,6 @@ function MessageBoardForm({ parent_id, setReplyId, handleAddThreadClick }) {
               setMessage({ ...message, message: e.target.value })
             }
             placeholder={parent_id ? "Reply" : "New Thread"}
-            // style={{ width: "30%", marginLeft: "5rem", marginRight: "0rem" }}
           />
           <Button type="submit">
             <FontAwesomeIcon icon={faReply} />

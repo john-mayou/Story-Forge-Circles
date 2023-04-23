@@ -47,6 +47,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
     <>
       <div align="center">
         {/** COMMENT BUTTON **/}
+        {/* if viewing own manuscript view feedback, else leave feedback */}
         {user.id == manuscript.user_id ? (
           <Button
             variant="contained"
@@ -112,7 +113,6 @@ function ManuscriptCommentThread({ manuscript_id }) {
                       }
                     >
                       <div>
-                        {/* <pre>{JSON.stringify(comment)}</pre> */}
                         <Box
                           sx={{
                             display: "flex",

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 // font-awesome / mui
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 function CommentForm({
   manuscript_id,
@@ -29,9 +29,6 @@ function CommentForm({
     });
     clearInput();
     setReplyId(-1);
-    if (handleAddThreadClick) {
-      handleAddThreadClick();
-    }
   };
 
   // clearing text input field
@@ -44,7 +41,7 @@ function CommentForm({
     <>
       <div className="comments-container">
         <form onSubmit={handleSubmitComment}>
-          <input
+          <TextField
             type="text"
             value={comment.comment}
             onChange={(e) =>
