@@ -11,8 +11,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Box,
-  Paper,
-  InputBase,
   Divider,
   IconButton,
   Button,
@@ -20,7 +18,6 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
   ListItemAvatar,
   Avatar,
@@ -77,8 +74,8 @@ function ManuscriptCommentThread({ manuscript_id }) {
                 <List
                   sx={{
                     width: "100%",
-                    maxWidth: "80vw",
                     bgcolor: "background.paper",
+                    overflow: "auto"
                   }}
                 >
                   {addThread ? (
@@ -186,7 +183,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
                                   color="primary.main"
                                 >
                                   {dayjs(comment.created_at).format(
-                                    "MMM D h:mm A"
+                                    "MMM D h:mmA"
                                   )}
                                 </Typography>
                               </Box>
@@ -199,7 +196,6 @@ function ManuscriptCommentThread({ manuscript_id }) {
                                 }}
                               >
                                 <Box>{comment.comment}</Box>
-                                <Divider variant="inset" component="li" />
                                 {/* passing comment.id as parent_id prop to form component */}
                                 {replyId == comment.id ? (
                                   <CommentForm
@@ -219,7 +215,7 @@ function ManuscriptCommentThread({ manuscript_id }) {
                           />
                           <Divider
                             variant="inset"
-                            component="li"
+                            // component="li"
                             sx={{ height: "100%", m: 0.3 }}
                             orientation="horizontal"
                           />

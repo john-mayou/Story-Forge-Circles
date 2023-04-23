@@ -64,11 +64,11 @@ function MessageBoard() {
   return (
     <>
       <Header title={`${circleName} Message Board`} />
-      <div align="center" style={{ backgroundColor: "#FCF5F0" }}>
+      <div align="center" style={{ backgroundColor: "#FCF5F0", marginLeft: "6vw" }}>
         <SearchMessageBoard />
         <div>
           {/** +THREAD & DASHBOARD BUTTON **/}
-          <ButtonGroup>
+          <ButtonGroup sx={{my: 1}}>
             <Button variant="contained" onClick={handleAddThreadClick}>
               <FontAwesomeIcon icon={faPlus} size="sm" />
               {!addThread ? " Thread" : " Cancel"}
@@ -88,8 +88,8 @@ function MessageBoard() {
             <List
               sx={{
                 width: "100%",
-                maxWidth: "80vw",
                 bgcolor: "background.paper",
+                overflow: "auto",
               }}
             >
               {addThread ? (
@@ -124,7 +124,6 @@ function MessageBoard() {
                   }
                 >
                   <div>
-                    {/* <pre>{JSON.stringify(message)}</pre> */}
                     <Box
                       sx={{
                         display: "flex",
@@ -195,7 +194,7 @@ function MessageBoard() {
                               variant="body2"
                               color="primary.main"
                             >
-                              {dayjs(message.created_at).format("MMM D h:mm A")}
+                              {dayjs(message.created_at).format("MMM D h:mmA")}
                             </Typography>
                           </Box>
                         }

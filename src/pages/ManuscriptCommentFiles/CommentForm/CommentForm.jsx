@@ -52,7 +52,7 @@ function CommentForm({
           />
           <Button type="submit">
             <FontAwesomeIcon icon={faReply} />
-            {parent_id ? " Reply" : " Post New Feedback"}
+            {parent_id ? " Reply" : " Post"}
           </Button>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ? (
