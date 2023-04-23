@@ -11,8 +11,6 @@ function CommentForm({
   setReplyId,
   handleAddThreadClick,
 }) {
-  // getting user from store
-  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [comment, setComment] = useState({
     manuscript_id,
@@ -25,16 +23,15 @@ function CommentForm({
     if (comment.comment === "") {
       return;
     }
-
     dispatch({
       type: "POST_COMMENT",
       payload: comment,
     });
     clearInput();
+    setReplyId(-1);
     if (handleAddThreadClick) {
       handleAddThreadClick();
     }
-    setReplyId(-1);
   };
 
   // clearing text input field

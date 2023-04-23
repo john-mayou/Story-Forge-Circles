@@ -45,7 +45,7 @@ function MessageBoard() {
   useEffect(() => {
     dispatch({
       type: "FETCH_BASE_MESSAGES",
-      payload: circle_id
+      payload: circle_id,
     });
   }, []);
 
@@ -83,7 +83,7 @@ function MessageBoard() {
           </ButtonGroup>
 
           {/** BEGIN THREAD LIST **/}
-          <React.Fragment/>
+          <React.Fragment />
           <section className="comment-thread-cards">
             <List
               sx={{
@@ -92,12 +92,18 @@ function MessageBoard() {
                 bgcolor: "background.paper",
               }}
             >
-              {addThread ? <MessageBoardForm /> : ""}
+              {addThread ? (
+                <MessageBoardForm
+                  setReplyId={setReplyId}
+                  handleAddThreadClick={handleAddThreadClick}
+                />
+              ) : (
+                ""
+              )}
               <ListItem
                 alignItems="flex-start"
                 style={{ listStyle: "none", padding: 0 }}
-              >
-              </ListItem>
+              ></ListItem>
 
               {/** MESSAGE DISPLAY LIST **/}
               {filterMessageList?.map((message) => (
@@ -119,87 +125,107 @@ function MessageBoard() {
                 >
                   <div>
                     {/* <pre>{JSON.stringify(message)}</pre> */}
-                    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    {message.has_children ? (
-                        <Button sx={{width: "1rem"}}
-                        onClick={() => {
-                          if (expand.includes(message.id)) {
-                            setExpand(
-                              expand.filter((id) => {
-                                if (id != message.id) {
-                                  return id;
-                                }
-                              })
-                            );
-                            dispatch({
-                              type: "REMOVE_CHILDREN",
-                              payload: message.id,
-                            });
-                          } else {
-                            setExpand([...expand, message.id]);
-                            dispatch({
-                              type: "FETCH_CHILDREN",
-                              payload: message.id,
-                            });
-                          }
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      {message.has_children ? (
+                        <Button
+                          sx={{ width: "1rem" }}
+                          onClick={() => {
+                            if (expand.includes(message.id)) {
+                              setExpand(
+                                expand.filter((id) => {
+                                  if (id != message.id) {
+                                    return id;
+                                  }
+                                })
+                              );
+                              dispatch({
+                                type: "REMOVE_CHILDREN",
+                                payload: message.id,
+                              });
+                            } else {
+                              setExpand([...expand, message.id]);
+                              dispatch({
+                                type: "FETCH_CHILDREN",
+                                payload: message.id,
+                              });
+                            }
+                          }}
+                        >
+                          {expand.includes(message.id) ? (
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          ) : (
+                            <FontAwesomeIcon icon={faChevronRight} />
+                          )}
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                      {/** DYNAMIC AVATAR **/}
+                      <Avatar
+                        className="header-avatar-image"
+                        src={message.avatar_image}
+                        alt="Draft Cat"
+                        width="40"
+                        height="49"
+                      />
+                      <ListItemText
+                        sx={{
+                          color:
+                            message.username == user.username
+                              ? "#21929F"
+                              : "#000000",
+                          ml: "1rem",
                         }}
-                      >
-                        {expand.includes(message.id) ? (
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        ) : (
-                          <FontAwesomeIcon icon={faChevronRight} />
-                        )}
-                      </Button>
-                    ) : (
-                      ''
-                    )}
-                  {/** DYNAMIC AVATAR **/}
-                    <Avatar
-                      className="header-avatar-image"
-                      src={message.avatar_image}
-                      alt="Draft Cat"
-                      width="40"
-                      height="49"
-                    />
-                    <ListItemText
-                      sx={{color: message.username == user.username ? "#21929F" : "#000000", ml: "1rem"}}
                         primary={
-                          <Box sx={{display: "flex", flexDirection: "row"}}>
-                          {message.username}
-                          <Typography
-                            sx={{ display: "inline", mx: "1rem", alignSelf: "center" }}
-                            component="span"
-                            variant="body2"
-                            color="primary.main"
-                          >
-                            {dayjs(message.created_at).format("MMM D h:mm A")}
+                          <Box sx={{ display: "flex", flexDirection: "row" }}>
+                            {message.username}
+                            <Typography
+                              sx={{
+                                display: "inline",
+                                mx: "1rem",
+                                alignSelf: "center",
+                              }}
+                              component="span"
+                              variant="body2"
+                              color="primary.main"
+                            >
+                              {dayjs(message.created_at).format("MMM D h:mm A")}
                             </Typography>
                           </Box>
                         }
-                      secondary={
-                          <Box sx={{display: "flex", flexDirection: "column"}}>
-                            <Box>
-                              {message.message}
-                            </Box>
-                          {/** passing message.id as parent_id prop to form component **/}
-                          {replyId == message.id ? (
-                            <MessageBoardForm
-                              parent_id={message.id}
-                              setReplyId={setReplyId}
+                        secondary={
+                          <Box
+                            sx={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <Box>{message.message}</Box>
+                            {/** passing message.id as parent_id prop to form component **/}
+                            {replyId == message.id ? (
+                              <MessageBoardForm
+                                parent_id={message.id}
+                                setReplyId={setReplyId}
                               />
-                          ) : (
-                            <Button sx={{alignSelf: "flex-start"}} onClick={() => setReplyId(message.id)}>
-                              <FontAwesomeIcon icon={faReply} /> Reply
-                            </Button>
+                            ) : (
+                              <Button
+                                sx={{ alignSelf: "flex-start" }}
+                                onClick={() => setReplyId(message.id)}
+                              >
+                                <FontAwesomeIcon icon={faReply} /> Reply
+                              </Button>
                             )}
                           </Box>
-                      }
-                    />
-                    <Divider
-                      variant="inset"
-                      component="li"
-                      sx={{ height: "100%", m: 0.3 }}
-                      orientation="horizontal"
+                        }
+                      />
+                      <Divider
+                        variant="inset"
+                        component="li"
+                        sx={{ height: "100%", m: 0.3 }}
+                        orientation="horizontal"
                       />
                     </Box>
                   </div>

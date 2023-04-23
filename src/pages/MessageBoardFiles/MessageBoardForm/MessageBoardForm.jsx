@@ -6,13 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import { TextField, Button } from "@mui/material";
 
-function MessageBoardForm({ parent_id, setReplyId }) {
-  const { circle_id } = useParams();
-  console.log("circle_id", circle_id);
-  // getting user from store
-  const user = useSelector((store) => store.user);
+function MessageBoardForm({ parent_id, setReplyId, handleAddThreadClick }) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const { circle_id } = useParams();
   const [message, setMessage] = useState({
     circle_id,
     parent_id,
@@ -21,11 +17,18 @@ function MessageBoardForm({ parent_id, setReplyId }) {
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
+    if (message.message === "") {
+      return;
+    }
     dispatch({
       type: "POST_MESSAGE",
       payload: message,
     });
     clearInput();
+    setReplyId(-1);
+    if (handleAddThreadClick) {
+      handleAddThreadClick();
+    }
   };
 
   // clearing text input field
