@@ -64,6 +64,7 @@ router.get("/public", async (req, res) => {
       SELECT c.* FROM "circles" AS c
         LEFT JOIN "circle_user" AS cu ON cu.circle_id = c.id
       WHERE cu.user_id != $1 AND c.owner_id != $1
+      GROUP BY c.id
     `;
 
     const circles = await pool.query(publicCirclesQuery, [req.user.id]);

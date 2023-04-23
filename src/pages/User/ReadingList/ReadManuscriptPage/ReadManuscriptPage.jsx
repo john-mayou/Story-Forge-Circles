@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
-import "../../ManuscriptStyling.css";
+import "../../../PageStyling.css"
 import Header from "../../../../layout/Header/Header";
 
 function ReadManuscriptPage() {
