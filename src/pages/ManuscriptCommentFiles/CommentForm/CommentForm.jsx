@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
-// font-awesome
+// font-awesome / mui
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
-function CommentForm({ manuscript_id, parent_id, setReplyId }) {
-  // getting user from store
-  const user = useSelector((store) => store.user);
+function CommentForm({
+  manuscript_id,
+  parent_id,
+  setReplyId,
+  handleAddThreadClick,
+}) {
   const dispatch = useDispatch();
   const [comment, setComment] = useState({
     manuscript_id,
@@ -18,11 +20,15 @@ function CommentForm({ manuscript_id, parent_id, setReplyId }) {
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
+    if (comment.comment === "") {
+      return;
+    }
     dispatch({
       type: "POST_COMMENT",
       payload: comment,
     });
     clearInput();
+    setReplyId(-1);
   };
 
   // clearing text input field
@@ -35,7 +41,7 @@ function CommentForm({ manuscript_id, parent_id, setReplyId }) {
     <>
       <div className="comments-container">
         <form onSubmit={handleSubmitComment}>
-          <input
+          <TextField
             type="text"
             value={comment.comment}
             onChange={(e) =>
@@ -46,7 +52,7 @@ function CommentForm({ manuscript_id, parent_id, setReplyId }) {
           />
           <Button type="submit">
             <FontAwesomeIcon icon={faReply} />
-            {parent_id ? " Reply" : " Post New Feedback"}
+            {parent_id ? " Reply" : " Post"}
           </Button>
           {/* Conditionally rendering cancel button if parent id exists */}
           {parent_id ? (
