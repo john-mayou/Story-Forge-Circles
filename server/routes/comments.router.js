@@ -10,9 +10,9 @@ forbidden.code = 403;
 
 // * GET children comments by parent id
 
-router.get("/:id", rejectUnauthenticated, (req, res) => {
+router.get("/children/:id", rejectUnauthenticated, (req, res) => {
   const getChildrenQuery = `
-    SELECT c.*, u.username, 
+    SELECT c.*, u.username, u.avatar_image,
     EXISTS (SELECT parent_id from "comments" 
     WHERE parent_id = c.id) AS has_children
     FROM "comments" c
@@ -34,20 +34,21 @@ router.get("/:id", rejectUnauthenticated, (req, res) => {
 
 // * GET threads (base/parent comments) on manuscripts
 
-router.get("/", rejectUnauthenticated, (req, res) => {
-  const getThreadsQuery = `
-  SELECT c.*, u.username, 
+router.get("/:id", rejectUnauthenticated, (req, res) => {
+const getThreadsQuery = `
+  SELECT c.*, u.username, u.avatar_image,
   EXISTS (SELECT parent_id from "comments" 
   WHERE parent_id = c.id) AS has_children
   FROM "comments" c 
   JOIN "user" u on u.id = c.user_id 
-  WHERE path='' 
+  WHERE path='' AND manuscript_id = $1
   ORDER BY created_at ASC 
   LIMIT 10
   ;`;
   pool
-    .query(getThreadsQuery)
+    .query(getThreadsQuery, [req.params.id])
     .then((dbRes) => {
+      console.log(dbRes.rows)
       res.send(dbRes.rows);
     })
     .catch((err) => {
@@ -60,7 +61,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
 // * POST post comments on manuscripts
 
 router.post("/", rejectUnauthenticated, async (req, res) => {
-  console.log("req.body:", req.body);
   const { manuscript_id, parent_id, comment } = req.body;
   const connection = await pool.connect();
 
@@ -73,8 +73,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     ;`,
       [manuscript_id, req.user.id, parent_id, comment]
     );
-    // if parent id exists, update path
-    // if (parent_id) {
+
     let pathQuery = `
         WITH RECURSIVE comments_cte (id, path) 
         AS (SELECT c.id,''
@@ -95,7 +94,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     // Making new query to set path (ltree type) for reply
     const updateQuery = `UPDATE comments SET path = $1 WHERE id = $2;`;
     const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);
-    // }
     await connection.query("COMMIT");
     res.send(result.rows[0]);
   } catch (err) {

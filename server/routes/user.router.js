@@ -21,25 +21,34 @@ router.post("/register", async (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
+  // Generating random avatar
+  const avatarPaths = ["/cat.svg", "/kitty.svg", "/raven.svg"];
+  const randomIntFromInterval = (
+    min,
+    max // min and max included
+  ) => Math.floor(Math.random() * (max - min + 1) + min);
+  const avatar = avatarPaths[randomIntFromInterval(0, 2)];
+
   const connection = await pool.connect();
   try {
     await connection.query("BEGIN");
 
     // First Query Creates the user in the database
-    const userQueryText = `INSERT INTO "user" (username, password)
-    VALUES ($1, $2) RETURNING id`;
+    const userQueryText = `INSERT INTO "user" (username, password, avatar_image)
+    VALUES ($1, $2, $3) RETURNING id`;
 
     //Returns UserId to create shelf tied to user.
     const userResult = await connection.query(userQueryText, [
       username,
       password,
+      avatar,
     ]);
     const userID = userResult.rows[0].id;
 
     //creates shelf name by concatinating username with shelf
     const shelfName = username + "_shelf";
 
-    //Second query creates a shelf with a shelf name and a foreign key pointing to previously created user ID 
+    //Second query creates a shelf with a shelf name and a foreign key pointing to previously created user ID
     const newShelfQueryText = `
       INSERT INTO "shelves" ("user_id", "name")
       VALUES ($1, $2);
