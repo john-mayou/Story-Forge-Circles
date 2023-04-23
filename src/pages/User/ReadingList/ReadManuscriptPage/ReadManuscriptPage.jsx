@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
@@ -17,12 +17,19 @@ function ReadManuscriptPage() {
       type: "FETCH_MANUSCRIPT",
       payload: params.id,
     });
-    // fetch all base comments on page load
-    dispatch({
-      type: "FETCH_BASE_COMMENTS",
-    });
   }, []);
 
+  useEffect(() => {
+    if (manuscript.id) {
+      // fetch all base comments on page load
+      dispatch({
+        type: "FETCH_BASE_COMMENTS",
+        payload: manuscript.id
+      });
+    }
+  },[manuscript])
+
+console.log(manuscript)
   return (
     <main className="content-main">
       <Header title={`Read Mode`} />

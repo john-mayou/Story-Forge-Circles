@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import MessageBoardForm from "../MessageBoardForm/MessageBoardForm";
@@ -13,6 +13,7 @@ import {
   faReply,
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  Box,
   Paper,
   InputBase,
   Divider,
@@ -35,6 +36,7 @@ function MessageBoard() {
   const dispatch = useDispatch();
   const history = useHistory();
   const messageList = useSelector((store) => store.messages);
+  const user = useSelector((store) => store.user);
   const [addThread, setAddThread] = useState(false);
   const [expand, setExpand] = useState([]);
   const [replyId, setReplyId] = useState(-1);
@@ -43,6 +45,7 @@ function MessageBoard() {
   useEffect(() => {
     dispatch({
       type: "FETCH_BASE_MESSAGES",
+      payload: circle_id,
     });
   }, []);
 
@@ -53,6 +56,10 @@ function MessageBoard() {
   const goToDashboard = () => {
     history.push(`/circle-dashboard/${circle_id}/${circleName}`);
   };
+
+  const filterMessageList = useMemo(() => {
+    return messageList.filter((message) => message.circle_id == circle_id);
+  }, [messageList, circle_id]);
 
   return (
     <>

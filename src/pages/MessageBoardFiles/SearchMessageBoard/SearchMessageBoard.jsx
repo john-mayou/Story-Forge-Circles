@@ -21,6 +21,7 @@ function SearchMessageBoard(props) {
         className="search-form"
         sx={{
           p: "2px 4px",
+          mt: 1,
           display: "flex",
           alignItems: "center",
           width: 300,
