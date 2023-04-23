@@ -43,6 +43,9 @@ function Header({ title }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((store) => store.user);
+  const isOnReadingListPage = new RegExp(`reading-list$`).test(
+    window.location.href
+  );
 
   useEffect(() => {
     dispatch({ type: "FETCH_NOTIFICATIONS" });
@@ -51,34 +54,27 @@ function Header({ title }) {
   return (
     <header id="content-header">
       <div className="header-back-btn-box">
-        <Button
-          sx={{ marginLeft: "20px", fontSize: "1.25em", color: 'black' }}
-          onClick={history.goBack}
-        >
-          <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: "5px" }} />{" "}
-        </Button>
+        {!isOnReadingListPage && (
+          <Button onClick={history.goBack}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              className="header-back-btn-icon"
+            />
+          </Button>
+        )}
       </div>
       <div className="header-title-box">
         <h1 className="header-title">{title}</h1>
       </div>
-      <div className="header-right-end-container">
-        <NestedModal />
-        <div className="header-profile-container">
-          <img
-            className="header-avatar-image"
-            src="/cat.svg"
-            width="40"
-            height="49"
-          />
-          <p className="header-username">{user?.username}</p>
-        </div>
+      <div className="header-profile-container">
+        <NestedModal avatar={user.avatar_image} />
+        <p className="header-username">{user?.username}</p>
       </div>
-      <div className="header-empty-div"></div>
     </header>
   );
 }
 
-function NestedModal() {
+function NestedModal({ avatar }) {
   const notifications = useSelector((store) => store.notifications);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
@@ -93,9 +89,11 @@ function NestedModal() {
   return (
     <div>
       <Badge badgeContent={notifications.length} color="error">
-        <FontAwesomeIcon
-          icon={faBell}
-          className="header-notification-bell"
+        <img
+          className="header-avatar-image"
+          src={avatar}
+          width="40"
+          height="49"
           onClick={handleOpen}
         />
       </Badge>

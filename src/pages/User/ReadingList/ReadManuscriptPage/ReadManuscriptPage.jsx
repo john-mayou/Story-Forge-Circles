@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
-// font-awesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@mui/material";
 import "../../ManuscriptStyling.css";
 import Header from "../../../../layout/Header/Header";
 
 function ReadManuscriptPage() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
   const manuscript = useSelector(
@@ -44,7 +39,7 @@ console.log(manuscript)
           <h3>By: {manuscript.username}</h3>
           <p>{manuscript.body}</p>
         </div>
-        <ManuscriptCommentThread manuscript_id={params.id}/>
+        <ManuscriptCommentThread manuscript_id={params.id} />
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,7 +11,6 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-
 
 /**
  *
@@ -44,6 +43,35 @@ const CreateManuscriptDialog = (props) => {
     setIsChecked,
   } = props;
 
+  const [isValidSubmission, setIsValidSubmission] = useState({
+    inputOne: true,
+    inputTwo: true,
+  });
+
+  const cancelSubmission = () => {
+    setOpen(false);
+    setInputOne("");
+    setInputTwo("");
+    setIsChecked(false);
+    setIsValidSubmission({
+      inputOne: true,
+      inputTwo: true,
+    });
+  };
+
+  const handleSubmitNewManuscript = () => {
+    if (inputOne && inputTwo) {
+      setOpen(false);
+      setIsValidSubmission({
+        inputOne: true,
+        inputTwo: true,
+      });
+      onConfirm();
+    } else {
+      setIsValidSubmission({ inputOne: !!inputOne, inputTwo: !!inputTwo });
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -54,6 +82,11 @@ const CreateManuscriptDialog = (props) => {
       <DialogContent>
         <DialogContentText>{children}</DialogContentText>
         <TextField
+          style={{
+            border: !isValidSubmission.inputOne
+              ? "2px solid red"
+              : "2px solid gray",
+          }}
           autoFocus
           margin="dense"
           id="title"
@@ -67,7 +100,12 @@ const CreateManuscriptDialog = (props) => {
         />
         <TextareaAutosize
           minRows={20}
-          style={{ width: '100%' }}
+          style={{
+            width: "100%",
+            border: !isValidSubmission.inputTwo
+              ? "2px solid red"
+              : "2px solid gray",
+          }}
           autoFocus
           margin="dense"
           id="description"
@@ -89,18 +127,21 @@ const CreateManuscriptDialog = (props) => {
           }
           label="Public"
         />
+        {Object.values(isValidSubmission).some((field) => !field) && (
+          <p style={{ color: "red" }}>
+            Please populate all fields for submission.
+          </p>
+        )}
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="secondary" onClick={() => setOpen(false)}>
-          Cancel
-        </Button>
         <Button
           variant="contained"
-          onClick={() => {
-            setOpen(false);
-            onConfirm();
-          }}
+          color="secondary"
+          onClick={cancelSubmission}
         >
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={handleSubmitNewManuscript}>
           Submit
         </Button>
       </DialogActions>
