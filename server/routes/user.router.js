@@ -22,7 +22,14 @@ router.post("/register", async (req, res, next) => {
   const password = encryptLib.encryptPassword(req.body.password);
 
   // Generating random avatar
-  const avatarPaths = ["/cat.svg", "/kitty.svg", "/raven.svg"];
+  const avatarPaths = [
+    "/avatars/cat.svg",
+    "/avatars/kitty.svg",
+    "/avatars/raven.svg",
+    "/avatars/narwhal.svg",
+    "/avatars/panda.svg",
+    "/avatars/sloth.svg",
+  ];
   const randomIntFromInterval = (
     min,
     max // min and max included
