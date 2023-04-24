@@ -57,7 +57,7 @@ function WriteManuscriptPage() {
 
   return (
     <main className="content-main">
-      <Header title={`Write Mode`} />
+      <Header title={`Write`} />
       <div align="center">
         <br></br>
         <form onSubmit={handleSubmit}>

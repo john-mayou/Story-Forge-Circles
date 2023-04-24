@@ -36,17 +36,17 @@ function MyCirclesPage() {
 
   return (
     <main className="content-main">
-      <Header title={"My Circles"} />
+      <Header title={"Writer's Circles"} />
       <div className="sub-header-wrapper" align="center">
         <div>
-        <Button
-          variant="contained"
-          color="secondary"
-          className="browse-joinable-btn"
-          onClick={() => history.push(`/circles-browser`)}
-        >
-          Circle Browser
-        </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className="browse-joinable-btn"
+            onClick={() => history.push(`/circles-browser`)}
+          >
+            Circle Browser
+          </Button>
         </div>
       </div>
 

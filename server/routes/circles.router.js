@@ -170,10 +170,10 @@ router.get("/manuscript", async (req, res) => {
     const { id } = req.query;
 
     const circleManuscriptsList = await pool.query(
-      `SELECT circle_manuscript.*, manuscriptTables.title, manuscriptTables.body, manuscriptTables.username AS author
+      `SELECT circle_manuscript.*, manuscriptTables.title, manuscriptTables.body, manuscriptTables.author_id, manuscriptTables.author
       FROM circle_manuscript
       JOIN (
-        SELECT manuscripts.title, manuscripts.body, manuscriptShelvesTable.* FROM manuscripts 
+        SELECT manuscripts.title, manuscripts.body, manuscripts.user_id AS author_id, manuscriptShelvesTable.username AS author, manuscriptShelvesTable.manuscript_id FROM manuscripts 
         INNER JOIN (
           SELECT shelvesTable.username, manuscript_shelf.manuscript_id FROM manuscript_shelf 
           INNER JOIN (
@@ -181,7 +181,7 @@ router.get("/manuscript", async (req, res) => {
             INNER JOIN (
               SELECT * FROM "user"
             ) AS userTables 
-            On shelves.user_id = userTables.id
+            ON shelves.user_id = userTables.id
           ) shelvesTable 
           ON manuscript_shelf.shelf_id = shelvesTable.id
         ) manuscriptShelvesTable 
@@ -192,6 +192,7 @@ router.get("/manuscript", async (req, res) => {
       `,
       [id]
     );
+    
 
     res.json(circleManuscriptsList.rows);
   } catch (error) {

@@ -26,7 +26,7 @@ function ReadingListPage() {
 
   return (
     <main className="content-main">
-      <Header title={"Reading List"} />
+      <Header title={"Reading Nook"} />
 
       <div className="sub-header-wrapper" align="center">
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
