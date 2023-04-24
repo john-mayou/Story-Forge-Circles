@@ -69,6 +69,10 @@ const CreateCircleDialog = (props) => {
       open={open}
       onClose={handleClose}
       aria-labelledby="create-dialog"
+      onClick={() => {
+        setInputOne(`Sci-Fi Fantasy`);
+        setInputTwo(`Transport us to a magical world! 🪄🛸`);
+      }}
     >
       <DialogTitle id="create-dialog">{title}</DialogTitle>
       <DialogContent>

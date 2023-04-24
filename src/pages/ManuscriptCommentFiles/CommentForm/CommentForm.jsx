@@ -42,6 +42,9 @@ function CommentForm({
       <div className="comments-container">
         <form onSubmit={handleSubmitComment}>
           <TextField
+            onClick={() => {
+              setComment({ ...comment, comment: `Wow that was great work! I appreciate your style! Please, don't hesitate to take the user on a journey! Don’t be afraid to be more descriptive!`});
+            }}
             type="text"
             value={comment.comment}
             onChange={(e) =>

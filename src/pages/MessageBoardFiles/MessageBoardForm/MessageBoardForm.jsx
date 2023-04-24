@@ -42,6 +42,12 @@ function MessageBoardForm({ parent_id, setReplyId, handleAddThreadClick }) {
       <form onSubmit={handleSubmitComment}>
         <div className="messages-container">
           <TextField
+            onClick={() => {
+              setMessage({
+                ...message,
+                message: `Congratulations! 🎉 😁😁😁😁😁😁😁😁! You Deserve it SO much! 🥳`,
+              });
+            }}
             type="text"
             className="reply-input"
             value={message.message}
