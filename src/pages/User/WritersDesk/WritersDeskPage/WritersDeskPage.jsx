@@ -7,7 +7,7 @@ import ManuscriptList from "../../../../components/ManuscriptList";
 import SearchBar from "../../../../components/SearchBar";
 import { searchKeySelector } from "../../../../utils/searchUtils";
 import useSearch from "../../../../hooks/useSearch";
-import '../../../PageStyling.css'
+import "../../../PageStyling.css";
 
 function WritersDeskPage() {
   const writersDeskManuscriptList = useSelector(
@@ -52,7 +52,7 @@ function WritersDeskPage() {
 
   return (
     <main className="content-main">
-      <Header title={"My Shelf"} />
+      <Header title={"Writer's Desk"} />
       <div className="sub-header-wrapper" align="center">
         <div>
           <Button variant="contained" onClick={() => setCreateOpen(true)}>

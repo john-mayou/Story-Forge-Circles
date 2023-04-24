@@ -54,13 +54,15 @@ function Header({ title }) {
   return (
     <header id="content-header">
       <div className="header-back-btn-box">
-        {!isOnReadingListPage && (
+        {!isOnReadingListPage ? (
           <Button onClick={history.goBack}>
             <FontAwesomeIcon
               icon={faArrowLeft}
               className="header-back-btn-icon"
             />
           </Button>
+        ) : (
+          <span style={{ marginLeft: "12px" }}></span>
         )}
       </div>
       <div className="header-title-box">

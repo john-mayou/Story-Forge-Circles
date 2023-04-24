@@ -39,8 +39,12 @@ function SearchMessageBoard(props) {
             display: "flex",
             alignItems: "center",
           }}
-              />
-       <br></br>
+        />
+        <br></br>
+        <Divider
+          sx={{ height: 28, m: 0.5, ml: "auto" }}
+          orientation="vertical"
+        />
         <IconButton
           variant="contained"
           color="primary"
@@ -51,7 +55,6 @@ function SearchMessageBoard(props) {
         >
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </IconButton>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       </Paper>
     </>
   );

@@ -62,52 +62,43 @@ export default function CircleDashboard() {
   return (
     <main className="content-main">
       <Header
-        title={`${
-          circleName.charAt(0).toUpperCase() + circleName.slice(1)
-        } Dashboard`}
+        title={`${circleName.charAt(0).toUpperCase() + circleName.slice(1)}`}
       />
       <div className="sub-header-wrapper" align="center">
-
-
         <div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => getUserAllManuscriptList()}
-        >
-          Share Manuscript
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => getUserAllManuscriptList()}
+          >
+            Share Manuscript
+          </Button>
 
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => history.push(`/circles/${circle_id}/members`)}
+          >
+            Members
+          </Button>
 
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={goToMessageBoard}
+          >
+            Message Board
+          </Button>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => history.push(`/circles/${circle_id}/members`)}
-        >
-          Members
-        </Button>
-
-
-
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={goToMessageBoard}
-        >
-          Message Board
-        </Button>
-
-
-        <ShareManuscriptDialog
-          manuscripts={userManuscriptNotInCircle}
-          open={showShareModal}
-          setOpen={setShowShareModal}
-          circleId={circle_id}
-          onShare={(selectedManuscriptsId) =>
-            handleShareManuscript(selectedManuscriptsId)
-          }
-        />
+          <ShareManuscriptDialog
+            manuscripts={userManuscriptNotInCircle}
+            open={showShareModal}
+            setOpen={setShowShareModal}
+            circleId={circle_id}
+            onShare={(selectedManuscriptsId) =>
+              handleShareManuscript(selectedManuscriptsId)
+            }
+          />
         </div>
 
         <h2>SHARED MANUSCRIPTS LIST</h2>

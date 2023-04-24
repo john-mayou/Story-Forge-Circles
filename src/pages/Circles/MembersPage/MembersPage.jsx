@@ -5,7 +5,9 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Header from "../../../layout/Header/Header";
 import Snackbar from "@mui/material/Snackbar";
+import Portal from "@mui/material/Portal";
 import ConfirmDialog from "../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
+import "../../../assets/styles/global/SnackBarStyling.css";
 
 function MembersPage() {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ function MembersPage() {
   // Local State Popups and Confirmation Dialogs
   const [successOpen, setSuccessOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [poputTitle, setPopupTitle] = useState("");
   const [popupAttributes, setPopupAttributes] = useState({
     open: false,
   });
@@ -45,8 +48,6 @@ function MembersPage() {
 
   const promoteToLeader = (circle_id, member) => {
     setPopupAttributes({
-      title: `Are you sure you want to promote ${member.username} to leader?`,
-      children: "You will no longer be the leader of this circle.",
       open: true,
       setOpen: () => setPopupAttributes({ open: false }),
       onConfirm: () =>
@@ -59,13 +60,13 @@ function MembersPage() {
           },
         }),
     });
+    setPopupTitle(
+      `Are you sure you want to promote ${member.username} to leader?`
+    );
   };
 
   const memberLeaveCircle = (circle_id) => {
     setPopupAttributes({
-      title: `Are you sure you want to leave this circle?`,
-      children:
-        "You will no longer be able to see manuscripts and messages from this circle.",
       open: true,
       setOpen: () => setPopupAttributes({ open: false }),
       onConfirm: async () => {
@@ -74,13 +75,11 @@ function MembersPage() {
         dispatch({ type: "FETCH_USER" });
       },
     });
+    setPopupTitle(`Are you sure you want to leave this circle?`);
   };
 
   const leaderRemoveMember = (circle_id, member) => {
     setPopupAttributes({
-      title: `Are you sure you want to remove ${member.username} from this circle?`,
-      children:
-        "They will no longer be a part of this circle and be able to share.",
       open: true,
       setOpen: () => setPopupAttributes({ open: false }),
       onConfirm: async () => {
@@ -90,13 +89,13 @@ function MembersPage() {
         fetchMembers();
       },
     });
+    setPopupTitle(
+      `Are you sure you want to remove ${member.username} from this circle?`
+    );
   };
 
   const leaderCloseCircle = () => {
     setPopupAttributes({
-      title: `Are you sure you want to close this circle?`,
-      children:
-        "Manuscripts, messages and discussions will all be deleted from the circle.",
       open: true,
       setOpen: () => setPopupAttributes({ open: false }),
       onConfirm: async () => {
@@ -105,6 +104,7 @@ function MembersPage() {
         dispatch({ type: "FETCH_USER" });
       },
     });
+    setPopupTitle(`Are you sure you want to close this circle?`);
   };
 
   const inviteNewMember = async (initiator) => {
@@ -151,7 +151,7 @@ function MembersPage() {
 
   return (
     <main className="content-main">
-      <Header title={`${circleDetails.name} Members`} />
+      <Header title={`Members`} />
       <div className="sub-header-wrapper" align="center">
         {userExitsError && <p>User doesnt exist... Try again</p>}
         <div className="inline-flex-wrapper">
@@ -212,10 +212,10 @@ function MembersPage() {
           }
 
           return (
-            <div className="inline-flex-wrapper"  key={member.id}>
+            <div className="inline-flex-wrapper" key={member.id}>
               <span>
                 {/* {member.id}  */}
-                <p>{member.username}{" "}</p>
+                <p>{member.username} </p>
                 {/* {member.avatar_image || "null image"} */}
               </span>
               {user.id === circleDetails.owner_id && (
@@ -241,18 +241,19 @@ function MembersPage() {
         })}
       </div>
       <ConfirmDialog
-        title={popupAttributes.title}
-        children={popupAttributes.description}
+        title={poputTitle}
         open={popupAttributes.open}
         setOpen={popupAttributes.setOpen}
         onConfirm={popupAttributes.onConfirm}
       ></ConfirmDialog>
-      <Snackbar
-        message={successMessage}
-        autoHideDuration={6000}
-        open={successOpen}
-        onClose={() => setSuccessOpen(false)}
-      />
+      <Portal>
+        <Snackbar
+          message={successMessage}
+          autoHideDuration={6000}
+          open={successOpen}
+          onClose={() => setSuccessOpen(false)}
+        />
+      </Portal>
     </main>
   );
 }
