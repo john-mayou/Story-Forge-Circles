@@ -2,7 +2,7 @@ import { useState } from "react";
 import ConfirmDialog from "./Dialogue/ConfirmDialog/ConfirmDialog";
 import { Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ManuscriptList({
   manuscripts,
@@ -13,6 +13,8 @@ export default function ManuscriptList({
   const dispatch = useDispatch();
   const [deleteId, setDeleteId] = useState(null);
   const [unshareManuscriptId, setUnshareManuscriptId] = useState(null);
+  const { id: userId } = useSelector((store) => store.user);
+
 
   const handleEdit = (manuscript) => {
     history.push(`/manuscript-write/${manuscript.id}`);
@@ -53,6 +55,9 @@ export default function ManuscriptList({
       preview = preview + "...";
     }
 
+    const canUnshareManuscript = circle_id && userId === manuscript.author_id
+
+
     return (
       <div key={manuscript?.manuscript_id ?? manuscript?.id}>
         <div
@@ -89,7 +94,7 @@ export default function ManuscriptList({
               </Button>
             </>
           )}
-          {circle_id && (
+          {canUnshareManuscript && (
             <Button
               variant="contained"
               color="primary"
