@@ -43,7 +43,7 @@ function Sidebar() {
                         />
                         <span className="link-text">
                             Reading{" "}
-                            <span className="remove-for-mobile">List</span>
+                            <span className="remove-for-mobile">Nook</span>
                         </span>
                     </a>
                 </li>
