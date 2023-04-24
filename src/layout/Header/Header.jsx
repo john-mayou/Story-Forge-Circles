@@ -5,6 +5,7 @@ import {
   faBell,
   faTrashCan,
   faArrowRight,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -12,6 +13,15 @@ import notificationsObject from "../../utils/notifications";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
+import { useHistory } from "react-router-dom";
+
+/**
+ * There are 3 components in this file
+ * 1.) Header
+ * 2.) Nested Modal (notification list)
+ * 3.) Child Modal (individual notification)
+ */
 
 // base style for modals
 const style = {
@@ -31,7 +41,11 @@ const style = {
 
 function Header({ title }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((store) => store.user);
+  const isOnReadingListPage = new RegExp(`reading-list$`).test(
+    window.location.href
+  );
 
   useEffect(() => {
     dispatch({ type: "FETCH_NOTIFICATIONS" });
@@ -39,27 +53,28 @@ function Header({ title }) {
 
   return (
     <header id="content-header">
-      <div className="header-empty-div"></div>
+      <div className="header-back-btn-box">
+        {!isOnReadingListPage && (
+          <Button onClick={history.goBack}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              className="header-back-btn-icon"
+            />
+          </Button>
+        )}
+      </div>
       <div className="header-title-box">
         <h1 className="header-title">{title}</h1>
       </div>
-      <div className="header-right-end-container">
-        <NestedModal />
-        <div className="header-profile-container">
-          <img
-            className="header-avatar-image"
-            src="/cat.svg"
-            width="40"
-            height="49"
-          />
-          <p className="header-username">{user?.username}</p>
-        </div>
+      <div className="header-profile-container">
+        <NestedModal avatar={user.avatar_image} />
+        <p className="header-username">{user?.username}</p>
       </div>
     </header>
   );
 }
 
-function NestedModal() {
+function NestedModal({ avatar }) {
   const notifications = useSelector((store) => store.notifications);
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
@@ -73,11 +88,15 @@ function NestedModal() {
 
   return (
     <div>
-      <FontAwesomeIcon
-        icon={faBell}
-        className="header-notification-bell"
-        onClick={handleOpen}
-      />
+      <Badge badgeContent={notifications.length} color="error">
+        <img
+          className="header-avatar-image"
+          src={avatar}
+          width="40"
+          height="49"
+          onClick={handleOpen}
+        />
+      </Badge>
       <Modal
         open={open}
         onClose={handleClose}

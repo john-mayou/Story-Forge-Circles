@@ -1,54 +1,24 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import CircleTableView from "../CircleTableView";
-import SearchForm from "../../Search/SearchForm";
+import CircleTable from "../CircleTable/CircleTable";
 import CreateCircleDialog from "../../../components/Dialogue/CreateDialog/CreateCircleDialog";
 import { Button } from "@mui/material";
 import Header from "../../../layout/Header/Header";
 
 function MyCirclesPage() {
-  const { id } = useSelector((store) => store.user);
-  const { myJoinedCircleList, myCreatedCircleList } = useSelector(
-    (store) => store.circles
-  );
-
-  // (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle
-  // Uses useMemo to filter circles in myJoinedCircleList based on owner_id
-  // const myJoinedCircle = useMemo(() => {
-  //   return myJoinedCircleList.filter(circle => circle.owner_id !== id);
-  // }, [myJoinedCircleList, id]);
-
   const dispatch = useDispatch();
   const history = useHistory();
+  const { id, owned_circles, joined_circles } = useSelector(
+    (store) => store.user
+  );
 
+  // Local State
   const [showModal, setShowModal] = useState(false);
   const [circleName, setCircleName] = useState("");
   const [circleDescription, setCircleDescription] = useState("");
 
-  useEffect(() => {
-    dispatch({
-      type: "FETCH_MY_JOINED_CIRCLES",
-      payload: id,
-    });
-
-    dispatch({
-      type: "FETCH_MY_CREATED_CIRCLES",
-      payload: id,
-    });
-  }, [id, dispatch]);
-
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/circles/myJoinedCircleList?term=${searchTerm}`);
-  };
-
   const handleCreateCircle = () => {
-    // Check if the inputs are not empty
-    if (!circleName || !circleDescription) {
-      alert("Please enter a value for both Circle Name and Description");
-      return;
-    }
-
     dispatch({
       type: "CREATE_NEW_CIRCLE",
       payload: {
@@ -67,8 +37,8 @@ function MyCirclesPage() {
   return (
     <main className="content-main">
       <Header title={"My Circles"} />
-      <div align="center">
-        <h2>Joined Circles</h2>
+      <div className="sub-header-wrapper" align="center">
+        <div>
         <Button
           variant="contained"
           color="secondary"
@@ -77,18 +47,12 @@ function MyCirclesPage() {
         >
           Circle Browser
         </Button>
-        <br />
-        <br />
-
-        <SearchForm onSearch={handleSearch} />
-        <h2>JOINED CIRCLES</h2>
+        </div>
       </div>
 
-      <CircleTableView circlelist={myJoinedCircleList} />
+      <h2 align="center">JOINED CIRCLES</h2>
 
-{/* (remove later if not use) ALTERNATIVE SOLUTION: to resolve new circle added & auto inject into joined circle */}
-      {/* <CircleTableView circlelist={myJoinedCircle} /> */}
-
+      <CircleTable circleList={joined_circles} type="joined" />
 
       <div align="center">
         <h2>MY OWNED CIRCLES</h2>
@@ -115,7 +79,7 @@ function MyCirclesPage() {
         <br></br>
       </div>
 
-      <CircleTableView circlelist={myCreatedCircleList} />
+      <CircleTable circleList={owned_circles} type="owned" />
     </main>
   );
 }

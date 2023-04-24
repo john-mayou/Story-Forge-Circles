@@ -10,12 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import ProtectedRoute from "../../utils/ProtectedRoute";
 
-// Notification Actions (REMOVE LATER)
-import NotificationActionsPage from "../../utils/NotificationActionsPage";
-
 // Layout Components
 import Sidebar from "../../layout/Sidebar/Sidebar";
-import Header from "../../layout/Header/Header";
 
 // User / Admin Pages
 import ReadingListPage from "../../pages/User/ReadingList/ReadingListPage/ReadingListPage";
@@ -28,7 +24,6 @@ import MyCirclesPage from "../../pages/Circles/MyCirclesPage/MyCirclesPage";
 import BrowserCirclePage from "../../pages/Circles/BrowserCirclePage/BrowserCirclePage";
 import MembersPage from "../../pages/Circles/MembersPage/MembersPage";
 import MessageBoard from "../../pages/MessageBoardFiles/MessageBoard/MessageBoard";
-import SearchPage from "../../pages/Search/SearchPage";
 import CircleDashboard from "../../pages/Circles/CircleDashboard/CircleDashboard";
 import ManuscriptCommentThread from "../../pages/ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
 // Login Pages
@@ -80,7 +75,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
           {user.id && <Sidebar />}
           <Switch>
             <Redirect exact from="/" to="/reading-list" />
@@ -92,11 +86,11 @@ function App() {
             <ProtectedRoute exact path="/manuscript-read/:id">
               <ReadManuscriptPage />
             </ProtectedRoute>
-  
-          {/* Keep until comment thread functionality is complete */}
-          <ProtectedRoute exact path="/manuscript-comment-thread">
-            <ManuscriptCommentThread/>
-          </ProtectedRoute> 
+
+            {/* Keep until comment thread functionality is complete */}
+            <ProtectedRoute exact path="/manuscript-comment-thread">
+              <ManuscriptCommentThread />
+            </ProtectedRoute>
 
             <ProtectedRoute exact path="/writers-desk">
               <WritersDeskPage />
@@ -120,10 +114,6 @@ function App() {
 
             <ProtectedRoute exact path="/circles-browser">
               <BrowserCirclePage />
-            </ProtectedRoute>
-
-            <ProtectedRoute exact path="/search/:content/:type">
-              <SearchPage />
             </ProtectedRoute>
 
             <ProtectedRoute
@@ -168,7 +158,6 @@ function App() {
               <h1>404</h1>
             </Route>
           </Switch>
-        </div>
       </Router>
     </ThemeProvider>
   );

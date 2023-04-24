@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ManuscriptCommentThread from "../../../ManuscriptCommentFiles/ManuscriptCommentThread/ManuscriptCommentThread";
-// font-awesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@mui/material";
-import "../../ManuscriptStyling.css";
+import "../../../PageStyling.css"
 import Header from "../../../../layout/Header/Header";
 
 function ReadManuscriptPage() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
   const manuscript = useSelector(
@@ -22,27 +17,29 @@ function ReadManuscriptPage() {
       type: "FETCH_MANUSCRIPT",
       payload: params.id,
     });
-    // fetch all base comments on page load
-    dispatch({
-      type: "FETCH_BASE_COMMENTS",
-    });
   }, []);
 
+  useEffect(() => {
+    if (manuscript.id) {
+      // fetch all base comments on page load
+      dispatch({
+        type: "FETCH_BASE_COMMENTS",
+        payload: manuscript.id
+      });
+    }
+  },[manuscript])
 
+console.log(manuscript)
   return (
     <main className="content-main">
-      <Header title={`${manuscript.title} Manuscript`} />
-      <Button variant="contained" color="secondary" onClick={history.goBack}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Button>
-
+      <Header title={`Read Mode`} />
       <div align="center">
         <div className="manuscript">
           <h1>{manuscript.title}</h1>
           <h3>By: {manuscript.username}</h3>
           <p>{manuscript.body}</p>
         </div>
-        <ManuscriptCommentThread manuscript_id={params.id}/>
+        <ManuscriptCommentThread manuscript_id={params.id} />
       </div>
     </main>
   );

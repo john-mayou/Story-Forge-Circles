@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import Header from "../../../layout/Header/Header";
+import Snackbar from "@mui/material/Snackbar";
+import ConfirmDialog from "../../../components/Dialogue/ConfirmDialog/ConfirmDialog";
 
 function MembersPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id: circleId } = useParams();
   const user = useSelector((store) => store.user);
 
@@ -15,6 +18,13 @@ function MembersPage() {
   const [newMember, setNewMember] = useState("");
   const [userExitsError, setUserExistsError] = useState(false);
   const [circleDetails, setCircleDetails] = useState([]);
+
+  // Local State Popups and Confirmation Dialogs
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [popupAttributes, setPopupAttributes] = useState({
+    open: false,
+  });
 
   useEffect(() => {
     fetchMembers();
@@ -33,47 +43,125 @@ function MembersPage() {
     setCircleMembers(circlesResponse.data);
   };
 
-  const removeMember = async (memberId) => {
-    await axios.delete(`/api/circles/${circleDetails.id}/members`, {
-      data: { user: memberId },
+  const promoteToLeader = (circle_id, member) => {
+    setPopupAttributes({
+      title: `Are you sure you want to promote ${member.username} to leader?`,
+      children: "You will no longer be the leader of this circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: () =>
+        dispatch({
+          type: "CREATE_NEW_NOTIFICATION",
+          payload: {
+            circle_id,
+            recipient_id: member.id,
+            type: "leader nominate leader - user action",
+          },
+        }),
     });
-    fetchMembers();
+  };
+
+  const memberLeaveCircle = (circle_id) => {
+    setPopupAttributes({
+      title: `Are you sure you want to leave this circle?`,
+      children:
+        "You will no longer be able to see manuscripts and messages from this circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/${circle_id}/members/remove`);
+        await history.push("/circles");
+        dispatch({ type: "FETCH_USER" });
+      },
+    });
+  };
+
+  const leaderRemoveMember = (circle_id, member) => {
+    setPopupAttributes({
+      title: `Are you sure you want to remove ${member.username} from this circle?`,
+      children:
+        "They will no longer be a part of this circle and be able to share.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/${circle_id}/members/remove`, {
+          data: { user: member.id },
+        });
+        fetchMembers();
+      },
+    });
+  };
+
+  const leaderCloseCircle = () => {
+    setPopupAttributes({
+      title: `Are you sure you want to close this circle?`,
+      children:
+        "Manuscripts, messages and discussions will all be deleted from the circle.",
+      open: true,
+      setOpen: () => setPopupAttributes({ open: false }),
+      onConfirm: async () => {
+        await axios.delete(`/api/circles/close/${circleId}`);
+        await history.push("/circles");
+        dispatch({ type: "FETCH_USER" });
+      },
+    });
+  };
+
+  const inviteNewMember = async (initiator) => {
+    if (!newMember) {
+      return;
+    }
+    const userExistsResult = await axios.get(
+      `/api/notification/user-exists/${newMember}`
+    );
+
+    let payload;
+    let successMessage;
+    if (initiator === "leader") {
+      payload = {
+        circle_id: circleDetails.id,
+        recipient_id: userExistsResult.data[0].id,
+        type: "leader invite member - user action",
+      };
+      successMessage = "Successfully sent invitation to new member";
+    } else if (initiator === "member") {
+      payload = {
+        circle_id: circleDetails.id,
+        recipient_id: circleDetails.owner_id,
+        type: "member nomination - leader action",
+        new_nomination: userExistsResult.data[0].id,
+      };
+      successMessage = "Successfully sent nomination to circle leader";
+    } else {
+      console.log("Invalid initiator for sending user invite");
+    }
+
+    if (userExistsResult.data.length) {
+      dispatch({
+        type: "CREATE_NEW_NOTIFICATION",
+        payload: payload,
+      });
+      setSuccessMessage(successMessage);
+      setSuccessOpen(true);
+      setNewMember("");
+    } else {
+      setUserExistsError(true);
+    }
   };
 
   return (
     <main className="content-main">
       <Header title={`${circleDetails.name} Members`} />
-      <div align="center">
+      <div className="sub-header-wrapper" align="center">
         {userExitsError && <p>User doesnt exist... Try again</p>}
-        <div>
+        <div className="inline-flex-wrapper">
           {/* if user is circle owner */}
           {user.id === circleDetails.owner_id ? (
-            <>
+            <div className="inline-flex-wrapper">
               <Button
                 variant="contained"
                 color="primary"
-                onClick={async () => {
-                  if (!newMember) {
-                    return;
-                  }
-
-                  const userExistsResult = await axios.get(
-                    `/api/notification/user-exists/${newMember}`
-                  );
-
-                  if (userExistsResult.data.length) {
-                    dispatch({
-                      type: "CREATE_NEW_NOTIFICATION",
-                      payload: {
-                        circle_id: circleDetails.id,
-                        recipient_id: userExistsResult.data[0].id,
-                        type: "leader invite member - user action",
-                      },
-                    });
-                  } else {
-                    setUserExistsError(true);
-                  }
-                }}
+                onClick={() => inviteNewMember("leader")}
               >
                 Add Member
               </Button>
@@ -84,35 +172,13 @@ function MembersPage() {
                   setNewMember(e.target.value);
                 }}
               />
-            </>
+            </div>
           ) : (
-            <>
+            <div className="inline-flex-wrapper">
               <Button
                 variant="contained"
                 color="primary"
-                onClick={async () => {
-                  if (!newMember) {
-                    return;
-                  }
-
-                  const userExistsResult = await axios.get(
-                    `/api/notification/user-exists/${newMember}`
-                  );
-
-                  if (userExistsResult.data.length) {
-                    dispatch({
-                      type: "CREATE_NEW_NOTIFICATION",
-                      payload: {
-                        circle_id: circleDetails.id,
-                        recipient_id: circleDetails.owner_id,
-                        type: "member nomination - leader action",
-                        new_nomination: userExistsResult.data[0].id,
-                      },
-                    });
-                  } else {
-                    setUserExistsError(true);
-                  }
-                }}
+                onClick={() => inviteNewMember("member")}
               >
                 Invite Member
               </Button>
@@ -123,45 +189,48 @@ function MembersPage() {
                   setNewMember(e.target.value);
                 }}
               />
-            </>
+            </div>
           )}
           {/* if user circle owner */}
           {user.id === circleDetails.owner_id ? (
-            // and there are no members in the circle
-            circleMembers.length === 0 && <button>Close Circle</button>
+            // only member in the circle is owner (self)
+            circleMembers.length === 1 && (
+              <Button color="error" onClick={() => leaderCloseCircle(circleId)}>
+                Close Circle
+              </Button>
+            )
           ) : (
-            <Button color="error">Leave Circle</Button>
+            <Button color="error" onClick={() => memberLeaveCircle(circleId)}>
+              Leave Circle
+            </Button>
           )}
         </div>
 
         {circleMembers.map((member) => {
+          if (member.id === user.id) {
+            return; // do not show self
+          }
+
           return (
-            <div key={member.id}>
-              <p>{member.id}</p>
-              <p>{member.username}</p>
-              <p>{member.avatar_image || "null image"}</p>
+            <div className="inline-flex-wrapper"  key={member.id}>
+              <span>
+                {/* {member.id}  */}
+                <p>{member.username}{" "}</p>
+                {/* {member.avatar_image || "null image"} */}
+              </span>
               {user.id === circleDetails.owner_id && (
                 <>
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={() => removeMember(member.id)}
+                    onClick={() => leaderRemoveMember(circleId, member)}
                   >
                     Remove
                   </Button>
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() =>
-                      dispatch({
-                        type: "CREATE_NEW_NOTIFICATION",
-                        payload: {
-                          circle_id: circleDetails.id,
-                          recipient_id: member.id,
-                          type: "leader nominate leader - user action",
-                        },
-                      })
-                    }
+                    onClick={() => promoteToLeader(circleDetails.id, member)}
                   >
                     Promote To Leader
                   </Button>
@@ -171,6 +240,19 @@ function MembersPage() {
           );
         })}
       </div>
+      <ConfirmDialog
+        title={popupAttributes.title}
+        children={popupAttributes.description}
+        open={popupAttributes.open}
+        setOpen={popupAttributes.setOpen}
+        onConfirm={popupAttributes.onConfirm}
+      ></ConfirmDialog>
+      <Snackbar
+        message={successMessage}
+        autoHideDuration={6000}
+        open={successOpen}
+        onClose={() => setSuccessOpen(false)}
+      />
     </main>
   );
 }

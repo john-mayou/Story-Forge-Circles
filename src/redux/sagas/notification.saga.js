@@ -16,7 +16,6 @@ function* fetchNotifications() {
 function* createNewNotification(action) {
   try {
     yield axios.post("api/notification/new", action.payload);
-    yield console.log("Successfully created new notification");
   } catch (error) {
     console.log("Error creating new notification", error);
   }
@@ -25,7 +24,6 @@ function* createNewNotification(action) {
 function* addUserToCircle(action) {
   try {
     yield axios.post("/api/notification/add-member", action.payload);
-    yield console.log("Successfully added member");
   } catch (error) {
     console.log("Error completing notification", error);
   }
@@ -34,7 +32,6 @@ function* addUserToCircle(action) {
 function* updateNewCircleLeader(action) {
   try {
     yield axios.put("api/notification/new-leader", action.payload);
-    yield console.log("Successfully updated circle leader");
   } catch (error) {
     console.log("Error adding user to circle", error);
   }
@@ -44,7 +41,7 @@ function* completeNotification(action) {
   try {
     yield axios.put(`/api/notification/complete/${action.payload}`);
     yield put({ type: "FETCH_NOTIFICATIONS" });
-    yield console.log("Successfully completed notification");
+    yield put({ type: "FETCH_USER" });
   } catch (error) {
     console.log("Error update new circle leader", error);
   }

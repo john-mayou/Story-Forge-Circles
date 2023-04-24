@@ -1,32 +1,31 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import CircleTableView from "../CircleTableView";
-import SearchForm from "../../Search/SearchForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import CircleTable from "../CircleTable/CircleTable";
 import Header from "../../../layout/Header/Header";
 
 function BrowserCirclePage() {
-  const { allPublicCirclesList } = useSelector((store) => store.circles);
-
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const [publicCircles, setPublicCircles] = useState([]);
 
   useEffect(() => {
-    dispatch({
-      type: "FETCH_ALL_PUBLIC_CIRCLES",
-    });
-  }, [dispatch]);
+    fetchPublicCircles();
+  }, []);
 
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/circles/allPublicCirclesList?term=${searchTerm}`);
+  const fetchPublicCircles = async () => {
+    const circleResult = await axios.get("/api/circles/public");
+    setPublicCircles(circleResult.data);
   };
 
   return (
     <main className="content-main">
       <Header title={"Public Circles"} />
-      <div align="center">
-        <SearchForm onSearch={handleSearch} />
-        <CircleTableView circlelist={allPublicCirclesList} isJoined={true} />
+      <div style={{marginTop: '1em'}} align="center">
+        {publicCircles && (
+          <CircleTable
+            circleList={publicCircles}
+            type="public"
+            searchBar={true}
+          />
+        )}
       </div>
     </main>
   );

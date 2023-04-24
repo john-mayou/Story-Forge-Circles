@@ -6,15 +6,8 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import Header from "../../../../layout/Header/Header";
 
-// font-awesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
 function WriteManuscriptPage() {
   const history = useHistory();
-  const manuscript = useSelector(
-    (store) => store.manuscripts.manuscriptDetails
-  );
   const dispatch = useDispatch();
   const { id: manuscriptId } = useParams();
 
@@ -33,9 +26,19 @@ function WriteManuscriptPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [isValidSubmission, setIsValidSubmission] = useState({
+    newTitle: true,
+    newBody: true,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // validation
+    if (!newTitle || !newBody) {
+      setIsValidSubmission({ newTitle: !!newTitle, newBody: !!newBody });
+      return;
+    }
 
     const newManuscript = {
       id: manuscriptId,
@@ -54,21 +57,28 @@ function WriteManuscriptPage() {
 
   return (
     <main className="content-main">
-      <Header title={`${manuscript.title} Editing`} />
-      <Button variant="contained" color="secondary" onClick={history.goBack}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Button>
+      <Header title={`Write Mode`} />
       <div align="center">
         <br></br>
         <form onSubmit={handleSubmit}>
           <label>Title</label>
           <input
+            style={{
+              border: !isValidSubmission.newTitle
+                ? "2px solid red"
+                : "2px solid gray",
+            }}
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
           ></input>
           <br></br>
           <br></br>
           <textarea
+            style={{
+              border: !isValidSubmission.newBody
+                ? "2px solid red"
+                : "2px solid gray",
+            }}
             className="manuscript-text-area"
             rows="25"
             cols="75"
@@ -87,6 +97,11 @@ function WriteManuscriptPage() {
             checked={isChecked}
           />
           <br></br>
+          {Object.values(isValidSubmission).some((field) => !field) && (
+            <p style={{ color: "red" }}>
+              Please populate all fields to save manuscript.
+            </p>
+          )}
 
           <Button
             variant="contained"
@@ -94,14 +109,9 @@ function WriteManuscriptPage() {
             className="submit-button"
             type="submit"
           >
-            Submit
+            Save
           </Button>
         </form>
-
-        <h4>Comments</h4>
-        <Button variant="contained" color="primary">
-          +Comment
-        </Button>
       </div>
     </main>
   );

@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import TableManuscriptView from "../../../components/TableManuscriptView";
 import ShareManuscriptDialog from "../../../components/Dialogue/ShareManuscriptDialog/ShareManuscriptDialog";
-import SearchForm from "../../Search/SearchForm";
 import Header from "../../../layout/Header/Header";
-
 import { Button } from "@mui/material";
+import ManuscriptList from "../../../components/ManuscriptList";
+import SearchBar from "../../../components/SearchBar";
+import useSearch from "../../../hooks/useSearch";
+import { searchKeySelector } from "../../../utils/searchUtils";
 
 export default function CircleDashboard() {
   const dispatch = useDispatch();
@@ -49,24 +50,26 @@ export default function CircleDashboard() {
     });
   };
 
-  const handleSearch = (searchTerm) => {
-    history.push(`/search/circles/circleManuscriptsList?term=${searchTerm}`);
-  };
-
   const goToMessageBoard = () => {
     history.push(`/message-board/${circle_id}/${circleName}`);
   };
 
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(
+    circleManuscriptsList,
+    searchKeySelector
+  );
+
   return (
     <main className="content-main">
-      <div align="center">
-        <Header
-          title={`${
-            circleName.charAt(0).toUpperCase() + circleName.slice(1)
-          } Dashboard`}
-        />
-        <SearchForm onSearch={handleSearch} />
-        <h2>SHARED MANUSCRIPTS LIST</h2>
+      <Header
+        title={`${
+          circleName.charAt(0).toUpperCase() + circleName.slice(1)
+        } Dashboard`}
+      />
+      <div className="sub-header-wrapper" align="center">
+
+
+        <div>
         <Button
           variant="contained"
           color="primary"
@@ -74,6 +77,8 @@ export default function CircleDashboard() {
         >
           Share Manuscript
         </Button>
+
+
 
         <Button
           variant="contained"
@@ -83,6 +88,8 @@ export default function CircleDashboard() {
           Members
         </Button>
 
+
+
         <Button
           variant="contained"
           color="secondary"
@@ -90,6 +97,7 @@ export default function CircleDashboard() {
         >
           Message Board
         </Button>
+
 
         <ShareManuscriptDialog
           manuscripts={userManuscriptNotInCircle}
@@ -100,13 +108,12 @@ export default function CircleDashboard() {
             handleShareManuscript(selectedManuscriptsId)
           }
         />
-        <br></br>
-        <br></br>
+        </div>
+
+        <h2>SHARED MANUSCRIPTS LIST</h2>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
-      <TableManuscriptView
-        circle_id={circle_id}
-        manuscriptlist={circleManuscriptsList}
-      />
+      <ManuscriptList manuscripts={filteredData} circle_id={circle_id} />
     </main>
   );
 }
