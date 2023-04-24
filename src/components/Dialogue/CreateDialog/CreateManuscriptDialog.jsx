@@ -73,7 +73,8 @@ const CreateManuscriptDialog = (props) => {
   };
 
   return (
-    <Dialog onClick={() => {
+    <Dialog 
+    onClick={() => {
       setInputOne(`Vivik`);
       setInputTwo(`Vivik’s first memory was waking up in a forest under a tree with the face of a man watching over him. It only sad “I, Silvanus, send you to preserve balance.”  
       The face closed its eyes, and said nor more. Vivik survived on his own for a time. eating game. Soon he was found by aboriginal humans living in the forest. They called him “son of ‘man’ and ‘angel’ fallen from the sky”. He stayed with them until adulthood learning all he could of Silvanus, the Forest Father.
