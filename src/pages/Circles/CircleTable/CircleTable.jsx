@@ -4,7 +4,15 @@ import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
+import Paper from "@mui/material/Paper";
+import InputBase from "@mui/material/InputBase";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Portal from "@mui/material/Portal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import "../../../assets/styles/global/TableStyling.css";
+import "../../../assets/styles/global/SnackBarStyling.css";
 
 export default function CircleTable({ circleList, type, searchBar }) {
   const dispatch = useDispatch();
@@ -22,20 +30,45 @@ export default function CircleTable({ circleList, type, searchBar }) {
   return (
     <>
       {searchBar && (
-        <input
-          className="circle-filter-input"
-          placeholder="Search"
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-            setFilteredCircles(
-              circleList.filter(({ name, description }) => {
-                const regex = new RegExp(`${e.target.value}`, "i");
-                return regex.test(name) || regex.test(description);
-              })
-            );
+        <Paper
+          className="search-component"
+          sx={{
+            p: "2px 4px",
+            my: 1,
+            display: "flex",
+            alignItems: "center",
+            width: 350,
+            height: 50,
           }}
-        />
+        >
+          <InputBase
+            className="search-input"
+            type="text"
+            placeholder="Search..."
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+              setFilteredCircles(
+                circleList.filter(({ name, description }) => {
+                  const regex = new RegExp(`${e.target.value}`, "i");
+                  return regex.test(name) || regex.test(description);
+                })
+              );
+            }}
+            sx={{ ml: 1, flex: 1 }}
+          />
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <IconButton
+            variant="contained"
+            color="primary"
+            className="search-btn"
+            type="button"
+            sx={{ p: "10px" }}
+            aria-label="search"
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </IconButton>
+        </Paper>
       )}
       <table className="circle-Table">
         <thead>
@@ -110,12 +143,14 @@ export default function CircleTable({ circleList, type, searchBar }) {
           })}
         </tbody>
       </table>
-      <Snackbar
-        message="Successfully sent request to circle leader"
-        autoHideDuration={6000}
-        open={successOpen}
-        onClose={() => setSuccessOpen(false)}
-      />
+      <Portal>
+        <Snackbar
+          message="Successfully sent request to circle leader"
+          autoHideDuration={6000}
+          open={successOpen}
+          onClose={() => setSuccessOpen(false)}
+        />
+      </Portal>
     </>
   );
 }
