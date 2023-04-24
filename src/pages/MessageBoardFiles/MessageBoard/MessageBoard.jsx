@@ -62,76 +62,81 @@ function MessageBoard() {
   }, [messageList, circle_id]);
 
   return (
-    <>
-      <main className="content-main">
-        <Header title={`${circleName} Message Board`} />
-        <div align="center" style={{ backgroundColor: "#FCF5F0" }}>
-          <SearchMessageBoard />
-          <div>
-            {/** +THREAD & DASHBOARD BUTTON **/}
-            <ButtonGroup>
-              <Button variant="contained" onClick={handleAddThreadClick}>
-                <FontAwesomeIcon icon={faPlus} size="sm" />
-                {!addThread ? " Thread" : " Cancel"}
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={goToDashboard}
-              >
-                Dashboard
-              </Button>
-            </ButtonGroup>
+    <main className="content-main">
+      <Header title={`${circleName} Message Board`} />
+      <div align="center" className="sub-header-wrapper" style={{ backgroundColor: "#FCF5F0" }}>
+        <div>
+        <SearchMessageBoard />
+        </div>
+        <div>
+          {/** +THREAD & DASHBOARD BUTTON **/}
+          <ButtonGroup sx={{my: 1}}>
+            <Button variant="contained" onClick={handleAddThreadClick}>
+              <FontAwesomeIcon icon={faPlus} size="sm" />
+              {!addThread ? " Thread" : " Cancel"}
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={goToDashboard}
+            >
+              Dashboard
+            </Button>
+          </ButtonGroup>
+          </div>
 
-            {/** BEGIN THREAD LIST **/}
-            <React.Fragment className="thread-container" />
-            <section className="comment-thread-cards">
-              <List
-                sx={{
-                  width: "100%",
-                  maxWidth: "80vw",
-                  bgcolor: "background.paper",
-                }}
-              >
-                {addThread ? <MessageBoardForm /> : ""}
+          {/** BEGIN THREAD LIST **/}
+          <React.Fragment />
+          <section className="comment-thread-cards">
+            <List
+              sx={{
+                width: "100%",
+                bgcolor: "background.paper",
+                overflow: "auto",
+              }}
+            >
+              {addThread ? (
+                <MessageBoardForm
+                  setReplyId={setReplyId}
+                  handleAddThreadClick={handleAddThreadClick}
+                />
+              ) : (
+                ""
+              )}
+              <ListItem
+                alignItems="flex-start"
+                style={{ listStyle: "none", padding: 0 }}
+              ></ListItem>
+
+              {/** MESSAGE DISPLAY LIST **/}
+              {filterMessageList?.map((message) => (
                 <ListItem
-                  alignItems="flex-start"
-                  style={{ listStyle: "none", padding: 0 }}
+                  key={message.id}
+                  style={
+                    message.parent_id
+                      ? {
+                          // Adding indentation based on path length
+                          marginLeft: `${
+                            4 *
+                            (message?.path?.includes(".")
+                              ? message?.path?.split(".").length
+                              : 1)
+                          }rem`,
+                        }
+                      : {}
+                  }
                 >
-                  {/** STATIC AVATAR **/}
-                  <ListItemAvatar>
-                    <Avatar
-                      className="header-avatar-image"
-                      src="/cat.svg"
-                      alt="Draft Cat"
-                      width="40"
-                      height="49"
-                    />
-                  </ListItemAvatar>
-                </ListItem>
-
-                {/** MESSAGE DISPLAY LIST **/}
-                {messageList?.map((message) => (
-                  <ListItem
-                    key={message.id}
-                    style={
-                      message.parent_id
-                        ? {
-                            // Adding indentation based on path length
-                            marginLeft: `${
-                              4 *
-                              (message?.path?.includes(".")
-                                ? message?.path?.split(".").length
-                                : 1)
-                            }rem`,
-                          }
-                        : {}
-                    }
-                  >
-                    <div>
-                      {/* <pre>{JSON.stringify(message)}</pre> */}
+                  <div>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
                       {message.has_children ? (
                         <Button
+                          sx={{ width: "1rem" }}
                           onClick={() => {
                             if (expand.includes(message.id)) {
                               setExpand(
@@ -163,51 +168,76 @@ function MessageBoard() {
                       ) : (
                         ""
                       )}
+                      {/** DYNAMIC AVATAR **/}
+                      <Avatar
+                        className="header-avatar-image"
+                        src={message.avatar_image}
+                        alt="Draft Cat"
+                        width="40"
+                        height="49"
+                      />
                       <ListItemText
-                        primary={`@${message.username}  `}
-                        secondary={
-                          <React.Fragment>
+                        sx={{
+                          color:
+                            message.username == user.username
+                              ? "#21929F"
+                              : "#000000",
+                          ml: "1rem",
+                        }}
+                        primary={
+                          <Box sx={{ display: "flex", flexDirection: "row" }}>
+                            {message.username}
                             <Typography
-                              sx={{ display: "inline" }}
+                              sx={{
+                                display: "inline",
+                                mx: "1rem",
+                                alignSelf: "center",
+                              }}
                               component="span"
                               variant="body2"
                               color="primary.main"
                             >
-                              {dayjs(message.created_at).format("MMM D h:mm A")}
+                              {dayjs(message.created_at).format("MMM D h:mmA")}
                             </Typography>
-                            {message.message}
-                          </React.Fragment>
+                          </Box>
+                        }
+                        secondary={
+                          <Box
+                            sx={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <Box>{message.message}</Box>
+                            {/** passing message.id as parent_id prop to form component **/}
+                            {replyId == message.id ? (
+                              <MessageBoardForm
+                                parent_id={message.id}
+                                setReplyId={setReplyId}
+                              />
+                            ) : (
+                              <Button
+                                sx={{ alignSelf: "flex-start" }}
+                                onClick={() => setReplyId(message.id)}
+                              >
+                                <FontAwesomeIcon icon={faReply} /> Reply
+                              </Button>
+                            )}
+                          </Box>
                         }
                       />
-                      {/** passing message.id as parent_id prop to form component **/}
-                      {replyId == message.id ? (
-                        <MessageBoardForm
-                          parent_id={message.id}
-                          setReplyId={setReplyId}
-                        />
-                      ) : (
-                        <Button onClick={() => setReplyId(message.id)}>
-                          <FontAwesomeIcon icon={faReply} /> Reply
-                        </Button>
-                      )}
-                      {/* TEMPORARY DIVIDER OPTIONS */}
-                      {/* <Divider variant="inset" component="li" /> */}
                       <Divider
                         variant="inset"
                         component="li"
                         sx={{ height: "100%", m: 0.3 }}
                         orientation="horizontal"
                       />
-                    </div>
-                  </ListItem>
-                ))}
-              </List>
-            </section>
-            {/** END OF COMMENT LIST **/}
-          </div>
+                    </Box>
+                  </div>
+                </ListItem>
+              ))}
+            </List>
+          </section>
+          {/** END OF COMMENT LIST **/}
         </div>
-      </main>
-    </>
+    </main>
   );
 }
 
