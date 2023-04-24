@@ -62,7 +62,7 @@ function MessageBoard() {
   }, [messageList, circle_id]);
 
   return (
-    <>
+    <main className="content-main">
       <Header title={`${circleName} Message Board`} />
       <div align="center" className="sub-header-wrapper" style={{ backgroundColor: "#FCF5F0" }}>
         <div>
@@ -237,7 +237,7 @@ function MessageBoard() {
           </section>
           {/** END OF COMMENT LIST **/}
         </div>
-    </>
+    </main>
   );
 }
 
