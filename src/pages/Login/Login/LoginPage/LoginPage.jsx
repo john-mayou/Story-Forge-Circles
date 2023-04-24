@@ -53,6 +53,9 @@ function LoginPage() {
           <label htmlFor="password">
             Password:
             <input
+              onClick={(e) => {
+                setPassword(`!@#$%^&*`);
+              }}
               type="password"
               name="password"
               required

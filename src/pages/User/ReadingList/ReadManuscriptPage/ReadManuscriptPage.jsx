@@ -37,7 +37,7 @@ function ReadManuscriptPage() {
         <div className="manuscript">
           <h1>{manuscript.title}</h1>
           <h3>By: {manuscript.username}</h3>
-          <p>{manuscript.body}</p>
+          <p align="left">{manuscript.body}</p>
         </div>
         <ManuscriptCommentThread manuscript_id={params.id} />
       </div>
