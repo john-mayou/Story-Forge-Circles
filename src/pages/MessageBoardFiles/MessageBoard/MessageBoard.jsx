@@ -121,7 +121,7 @@ function MessageBoard() {
                     ? {
                         // Adding indentation based on path length
                         marginLeft: `${
-                          4 *
+                          8 *
                           (message?.path?.includes(".")
                             ? message?.path?.split(".").length
                             : 1)
@@ -170,7 +170,9 @@ function MessageBoard() {
                         )}
                       </Button>
                     ) : (
-                      ""
+                      <Button disabled>
+                        <FontAwesomeIcon icon={faChevronRight} />
+                      </Button>
                     )}
                     {/** DYNAMIC AVATAR **/}
                     <Avatar
