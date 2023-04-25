@@ -77,7 +77,7 @@ const CreateManuscriptDialog = (props) => {
     onClick={() => {
       setInputOne(`Vivik`);
       setInputTwo(`Vivik’s first memory was waking up in a forest under a tree with the face of a man watching over him. It only sad “I, Silvanus, send you to preserve balance.”  
-      The face closed its eyes, and said nor more. Vivik survived on his own for a time. eating game. Soon he was found by aboriginal humans living in the forest. They called him “son of ‘man’ and ‘angel’ fallen from the sky”. He stayed with them until adulthood learning all he could of Silvanus, the Forest Father.
+      The face closed its eyes, and said nor more. Vivik survived on his own for a time eating game. Soon he was found by humans living in the forest. They called him “son of ‘man’ and ‘angel’ fallen from the sky”. He stayed with them until adulthood learning all he could of Silvanus, the Forest Father.
        When he felt ready, he left the forest. He has wandered the wilderness ever since as a spiritual hermit. Vivik provides travelers spritual console and guidances through the forest lands. 
        When asked he replies, “I am merely an old soul seeking to preserve balance.”`);
     }}
