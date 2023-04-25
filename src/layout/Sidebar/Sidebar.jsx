@@ -57,7 +57,7 @@ function Sidebar() {
                             className="link-icon"
                         />
                         <span className="link-text">
-                            Writers{" "}
+                            Writer's{" "}
                             <span className="remove-for-mobile">Desk</span>
                         </span>
                     </a>
@@ -71,7 +71,7 @@ function Sidebar() {
                             icon={faCircleNotch}
                             className="link-icon"
                         />
-                        <span className="link-text">Circles</span>
+                        <span className="link-text"> Writer's Circles</span>
                     </a>
                 </li>
                 <li
