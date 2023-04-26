@@ -8,7 +8,7 @@ const {
 /**
  * GET PUBLIC Manuscripts route
  */
-router.get("/", (req, res) => {
+router.get("/", rejectUnauthenticated, (req, res) => {
   const query = `SELECT "manuscripts".id, "manuscripts".title, "manuscripts".body, "user".username FROM "manuscripts"
     JOIN "manuscript_shelf" ON "manuscript_shelf".manuscript_id = "manuscripts".id
     JOIN "shelves" ON "shelves".id = "manuscript_shelf".shelf_id
@@ -54,7 +54,7 @@ router.get("/writersdesk", rejectUnauthenticated, (req, res) => {
 /**
  * GET Single  Manuscripts route
  */
-router.get("/:id", (req, res) => {
+router.get("/:id", rejectUnauthenticated, (req, res) => {
   const id = req.params.id;
 
   const query = `SELECT "manuscripts".*, "user".username FROM "manuscripts"
@@ -82,7 +82,7 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
   const title = req.body.title;
   const body = req.body.body;
   const public = req.body.public;
-  const user_id = req.user.id
+  const user_id = req.user.id;
 
   const connection = await pool.connect();
   try {
@@ -141,7 +141,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
  * PUT Manuscript route
  */
 router.put("/:id", rejectUnauthenticated, async (req, res) => {
-
   const manuscriptId = req.params.id;
   const title = req.body.payload.title;
   const body = req.body.payload.body;
@@ -187,7 +186,7 @@ router.put("/:id", rejectUnauthenticated, async (req, res) => {
       body,
       public,
       manuscriptId,
-      user_id
+      user_id,
     ]);
 
     await connection.query("COMMIT");
@@ -238,8 +237,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
       return;
     }
 
-
-
     const deleteManuscriptShelvesQueryText = `
     DELETE FROM "manuscript_shelf" 
     WHERE "manuscript_shelf".manuscript_id = $1`;
@@ -252,8 +249,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     `;
 
     await connection.query(deleteManuscriptQueryText, [manuscriptId, user_Id]);
-
-
 
     await connection.query("COMMIT");
     res.sendStatus(204);
@@ -268,7 +263,6 @@ router.delete("/:id", rejectUnauthenticated, async (req, res) => {
     connection.release();
   }
 });
-
 
 /**
  * GET shared Manuscripts route
