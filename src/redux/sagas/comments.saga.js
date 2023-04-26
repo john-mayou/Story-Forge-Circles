@@ -18,7 +18,6 @@ function* fetchChildrenComments(action) {
   try {
     // ask for children comments
     const response = yield axios.get(`/api/comments/children/${action.payload}`)
-    console.log("Response.data", response.data);
     // once received, send to commentThread Reducer
     yield put({ type: 'ADD_CHILDREN_COMMENTS', payload: response.data })
   } catch (err) {

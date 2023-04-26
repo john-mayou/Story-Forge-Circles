@@ -97,7 +97,8 @@ ALTER TABLE "messages" ADD COLUMN path ltree;
 CREATE TABLE "comments" (
 	"id" serial NOT NULL,
 	"created_at" TIMESTAMP NOT NULL,
-	"manuscript_id" int,
+	"manuscript_id" int
+			REFERENCES "manuscripts" ("id") ON DELETE CASCADE,
 	"user_id" int NOT NULL,
 	"parent_id" int,
 	"comment" TEXT NOT NULL,

@@ -29,7 +29,6 @@ function ReadManuscriptPage() {
     }
   }, [manuscript]);
 
-  console.log(manuscript);
   return (
     <main className="content-main">
       <Header title={`Read`} />

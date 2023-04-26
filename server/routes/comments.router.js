@@ -48,7 +48,6 @@ const getThreadsQuery = `
   pool
     .query(getThreadsQuery, [req.params.id])
     .then((dbRes) => {
-      console.log(dbRes.rows)
       res.send(dbRes.rows);
     })
     .catch((err) => {
@@ -90,7 +89,6 @@ router.post("/", rejectUnauthenticated, async (req, res) => {
     const pathResponse = await connection.query(pathQuery, [result.rows[0].id]);
     const path = pathResponse.rows[0].path.substr(1);
     result.rows[0].path = path;
-    console.log("path:", path);
     // Making new query to set path (ltree type) for reply
     const updateQuery = `UPDATE comments SET path = $1 WHERE id = $2;`;
     const updateResponse = await connection.query(updateQuery, [path, result.rows[0].id]);

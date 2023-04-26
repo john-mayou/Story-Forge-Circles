@@ -25,8 +25,6 @@ function* fetchWritersDeskList() {
 function* fetchManuscript(action) {
     try {
         const response = yield axios.get(`/manuscript/${action.payload}`);
-
-        console.log('response.data in saga', response.data);
         yield put({ type: "SET_MANUSCRIPT", payload: response.data[0] });
       } catch (error) {
         console.log("Get Manuscript by ID request failed in Saga", error);
