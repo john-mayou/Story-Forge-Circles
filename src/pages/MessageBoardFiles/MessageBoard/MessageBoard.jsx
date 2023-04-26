@@ -69,9 +69,11 @@ function MessageBoard() {
         className="sub-header-wrapper"
         style={{ backgroundColor: "#FCF5F0" }}
       >
+        {/* Search Bar Implementation incomplete in SearchMessageBoard.jsx
         <div>
           <SearchMessageBoard />
-        </div>
+        </div> */}
+        
         <div>
           {/** +THREAD & DASHBOARD BUTTON **/}
           <ButtonGroup sx={{ my: 1 }}>
@@ -121,7 +123,7 @@ function MessageBoard() {
                     ? {
                         // Adding indentation based on path length
                         marginLeft: `${
-                          4 *
+                          8 *
                           (message?.path?.includes(".")
                             ? message?.path?.split(".").length
                             : 1)
@@ -170,7 +172,9 @@ function MessageBoard() {
                         )}
                       </Button>
                     ) : (
-                      ""
+                      <Button disabled>
+                        <FontAwesomeIcon icon={faChevronRight} />
+                      </Button>
                     )}
                     {/** DYNAMIC AVATAR **/}
                     <Avatar

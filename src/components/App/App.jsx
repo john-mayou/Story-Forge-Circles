@@ -55,6 +55,12 @@ const themeOptions = {
       default: "#fcf5f0",
       paper: "#ffffff",
     },
+    text: {
+        primary: '#373F51',
+        secondary: '#373F51',
+        disabled: '#373F51',
+        hint: '#373F51',
+      },
   },
   shape: {
     borderRadius: 0,
