@@ -69,9 +69,11 @@ function MessageBoard() {
         className="sub-header-wrapper"
         style={{ backgroundColor: "#FCF5F0" }}
       >
+        {/* Search Bar Implementation incomplete in SearchMessageBoard.jsx
         <div>
           <SearchMessageBoard />
-        </div>
+        </div> */}
+        
         <div>
           {/** +THREAD & DASHBOARD BUTTON **/}
           <ButtonGroup sx={{ my: 1 }}>
