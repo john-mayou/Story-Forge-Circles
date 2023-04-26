@@ -74,11 +74,6 @@ function WriteManuscriptPage() {
           <br></br>
           <br></br>
           <textarea
-            onClick={(e) => {
-              console.log("clicked");
-              setNewTitle("`Twas A Starry Knight");
-              setNewBody(`Knight errant In the name of my lady! I shall vanquish your blight! And gain her affection ere the mornings first light. For Juliet! For Charlotte! For Anna and Ann. Oh my lady, my lady, where fore art Gamesome. Where fire art sceptered to give your heart to me. Curious how thy mind is bent. And thy knight rode on. Thyne armor shone bright, In the moonlight's glow. In thoust living dream, memories lament. A willow tree. On a dune. Sway, Sway in thy brese. Sway Sway in thy dream. Oh Time. Oh Time. When to stop, When to find, and wonder why. Who hath heard the cry. Time slips to thy other side. And the knight rode on. Thyne armor shone bright, In the moonlight's glow. A silver knight, with a helmet of steel, and a sword of fire. A starry knight, with a helmet of gold, and a sword of light.Thy two knights who ride side by side. Fly among thy heavens, free thyne bonds of gravity!`);
-            }}
             style={{
               border: !isValidSubmission.newBody
                 ? "2px solid red"
