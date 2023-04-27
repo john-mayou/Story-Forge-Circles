@@ -1,8 +1,11 @@
 const express = require("express");
 const pool = require("../modules/pool");
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", rejectUnauthenticated, (req, res) => {
   const notificationsQuery = `
     SELECT 
         n.id AS "notification_id",
@@ -39,20 +42,24 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/user-exists/:username", async (req, res) => {
-  try {
-    const userExistsResult = await pool.query(
-      `SELECT * FROM "user" WHERE username = $1;`,
-      [req.params.username]
-    );
-    res.send(userExistsResult.rows).status(200);
-  } catch (error) {
-    console.log(`Error making query ${userExistsQuery}`, error);
-    res.sendStatus(500);
+router.get(
+  "/user-exists/:username",
+  rejectUnauthenticated,
+  async (req, res) => {
+    try {
+      const userExistsResult = await pool.query(
+        `SELECT * FROM "user" WHERE username = $1;`,
+        [req.params.username]
+      );
+      res.send(userExistsResult.rows).status(200);
+    } catch (error) {
+      console.log(`Error making query ${userExistsQuery}`, error);
+      res.sendStatus(500);
+    }
   }
-});
+);
 
-router.post("/new", async (req, res) => {
+router.post("/new", rejectUnauthenticated, async (req, res) => {
   const connection = await pool.connect();
   const { circle_id, recipient_id, type } = req.body;
 
@@ -100,7 +107,7 @@ router.post("/new", async (req, res) => {
   }
 });
 
-router.post("/add-member", (req, res) => {
+router.post("/add-member", rejectUnauthenticated, (req, res) => {
   const { user_id, circle_id } = req.body;
 
   const newMemberInsertion = `
@@ -119,7 +126,7 @@ router.post("/add-member", (req, res) => {
     });
 });
 
-router.put("/new-leader", (req, res) => {
+router.put("/new-leader", rejectUnauthenticated, (req, res) => {
   const { new_leader, circle_id } = req.body;
 
   const newLeaderUpdateQuery = `
@@ -137,7 +144,7 @@ router.put("/new-leader", (req, res) => {
     });
 });
 
-router.put("/complete/:id", (req, res) => {
+router.put("/complete/:id", rejectUnauthenticated, (req, res) => {
   const completionUpdate = `
         UPDATE "notifications" SET "completed" = true WHERE "id" = $1;
     `;

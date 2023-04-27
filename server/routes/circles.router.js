@@ -10,36 +10,40 @@ const {
 /**
  * POST - create circle manuscript
  */
-router.post("/createCircleManuscript", async (req, res) => {
-  const { selectedManuscriptsId, circle_id } = req.body;
-  const { owned_circles, joined_circles } = req.user;
+router.post(
+  "/createCircleManuscript",
+  rejectUnauthenticated,
+  async (req, res) => {
+    const { selectedManuscriptsId, circle_id } = req.body;
+    const { owned_circles, joined_circles } = req.user;
 
-  const isInCircle =
-    owned_circles.some((circle) => circle.id === Number(circle_id)) ||
-    joined_circles.some((circle) => circle.id === Number(circle_id));
+    const isInCircle =
+      owned_circles.some((circle) => circle.id === Number(circle_id)) ||
+      joined_circles.some((circle) => circle.id === Number(circle_id));
 
-  if (!isInCircle) {
-    return res.status(403).json({ message: "Unauthorized" });
-  }
-
-  try {
-    // create circle manuscripts
-    for (let i = 0; i < selectedManuscriptsId.length; i++) {
-      const manuscript_id = selectedManuscriptsId[i];
-      await pool.query(
-        "INSERT INTO circle_manuscript (manuscript_id, circle_id) VALUES ($1, $2)",
-        [manuscript_id, circle_id]
-      );
+    if (!isInCircle) {
+      return res.status(403).json({ message: "Unauthorized" });
     }
 
-    res.status(200).json({ message: "Manuscripts added to circle" });
-  } catch (error) {
-    console.error("Error adding manuscripts to circle:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+    try {
+      // create circle manuscripts
+      for (let i = 0; i < selectedManuscriptsId.length; i++) {
+        const manuscript_id = selectedManuscriptsId[i];
+        await pool.query(
+          "INSERT INTO circle_manuscript (manuscript_id, circle_id) VALUES ($1, $2)",
+          [manuscript_id, circle_id]
+        );
+      }
 
-router.get("/details/:id", async (req, res) => {
+      res.status(200).json({ message: "Manuscripts added to circle" });
+    } catch (error) {
+      console.error("Error adding manuscripts to circle:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
+
+router.get("/details/:id", rejectUnauthenticated, async (req, res) => {
   const { id: circle_id } = req.params;
 
   try {
@@ -58,7 +62,7 @@ router.get("/details/:id", async (req, res) => {
 /**
  * GET all public circles
  */
-router.get("/public", async (req, res) => {
+router.get("/public", rejectUnauthenticated, async (req, res) => {
   try {
     const publicCirclesQuery = `
       SELECT c.* FROM "circles" AS c
@@ -79,7 +83,7 @@ router.get("/public", async (req, res) => {
 /**
  * POST - create a new circle
  */
-router.post("/", async (req, res) => {
+router.post("/", rejectUnauthenticated, async (req, res) => {
   const { name, description, ownerId } = req.body;
   const connection = await pool.connect();
 
@@ -109,7 +113,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id/members", (req, res) => {
+router.get("/:id/members", rejectUnauthenticated, (req, res) => {
   const circleMembersQuery = `
     SELECT 
       u.id,
@@ -165,7 +169,7 @@ router.delete(
 /**
  * GET circle Manuscripts list route
  */
-router.get("/manuscript", async (req, res) => {
+router.get("/manuscript", rejectUnauthenticated, async (req, res) => {
   try {
     const { id } = req.query;
 
@@ -192,7 +196,6 @@ router.get("/manuscript", async (req, res) => {
       `,
       [id]
     );
-    
 
     res.json(circleManuscriptsList.rows);
   } catch (error) {
@@ -204,11 +207,14 @@ router.get("/manuscript", async (req, res) => {
 /**
  * GET all user's manuscript list
  */
-router.get("/userManuscriptNotInCircle", async (req, res) => {
-  try {
-    const { userId, circle_id } = req.query;
-    const userManuscripts = await pool.query(
-      `
+router.get(
+  "/userManuscriptNotInCircle",
+  rejectUnauthenticated,
+  async (req, res) => {
+    try {
+      const { userId, circle_id } = req.query;
+      const userManuscripts = await pool.query(
+        `
       SELECT *
       FROM "manuscripts"
       WHERE id NOT IN (
@@ -226,17 +232,18 @@ router.get("/userManuscriptNotInCircle", async (req, res) => {
         )
       )
       `,
-      [userId, circle_id]
-    );
-    res.json(userManuscripts.rows);
-  } catch (error) {
-    console.error("Error fetching user manuscripts not in circle:", error);
-    res.status(500).json({ message: "Internal server error" });
+        [userId, circle_id]
+      );
+      res.json(userManuscripts.rows);
+    } catch (error) {
+      console.error("Error fetching user manuscripts not in circle:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
-});
+);
 
 // DELETE /api/manuscript/:id
-router.delete("/manuscript/:id", async (req, res) => {
+router.delete("/manuscript/:id", rejectUnauthenticated, async (req, res) => {
   const manuscriptId = req.params.id;
   const circleId = req.body.circle_id;
   try {
@@ -253,19 +260,24 @@ router.delete("/manuscript/:id", async (req, res) => {
 });
 
 // Todo
-router.delete("/close/:id", isCircleOwner, async (req, res) => {
-  const { id: circle_id } = req.params;
+router.delete(
+  "/close/:id",
+  rejectUnauthenticated,
+  isCircleOwner,
+  async (req, res) => {
+    const { id: circle_id } = req.params;
 
-  try {
-    const circleDeletionQuery = `DELETE FROM "circles" WHERE id = $1;`;
+    try {
+      const circleDeletionQuery = `DELETE FROM "circles" WHERE id = $1;`;
 
-    await pool.query(circleDeletionQuery, [circle_id]);
+      await pool.query(circleDeletionQuery, [circle_id]);
 
-    res.sendStatus(204);
-  } catch (error) {
-    console.error("Error deleting shared circle manuscript", error);
-    res.sendStatus(500);
+      res.sendStatus(204);
+    } catch (error) {
+      console.error("Error deleting shared circle manuscript", error);
+      res.sendStatus(500);
+    }
   }
-});
+);
 
 module.exports = router;
