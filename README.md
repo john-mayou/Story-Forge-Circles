@@ -55,7 +55,7 @@ Before you get started, make sure you have the following software installed on y
 
 After completing the installation and starting the application, it should automatically open in your default browser. If it does not, navigate to http://localhost:3000/#/ to access the application.
 
-For a detailed walkthrough of the application, please watch the following video by [clicking here!]()
+For a detailed walkthrough of the application, please watch the following video by [clicking here!](https://www.loom.com/share/69146fad6fce45c4a8d3cffb9f866489)
 
 ---
 ## Deployment
