@@ -73,7 +73,7 @@ const CreateManuscriptDialog = (props) => {
   };
 
   return (
-    <Dialog
+    <Dialog 
       open={open}
       onClose={() => setOpen(false)}
       aria-labelledby="create-dialog"
